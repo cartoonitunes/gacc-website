@@ -216,7 +216,7 @@ function App() {
                               <div className="MuiCardContent-root">
                                 <h2 className="d-flex justify-content-center common-sub-title">CONNECT WALLET</h2>
                                 <hr className="white-line" />
-                                <div>
+                                {/* <div>
                                   <p className="common-p">You need to connect your wallet before you can mutate an ape.</p>
                                 </div>
                                 <div>
@@ -224,7 +224,7 @@ function App() {
                                 </div>
                                 <div >
                                 GACC: <input value={apeNum} type="text"  />
-                                </div>
+                                </div> */}
                                 {/* <div className="d-flex justify-content-center">
                                 {blockchain.account === "" || blockchain.smartContract === null ? (
                                   <>
