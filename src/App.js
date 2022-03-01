@@ -181,7 +181,7 @@ function App() {
                     <div className="mb-5 mb-lg-0 col-lg-7 col-12 order-lg-last">
                       <h1 className="common-title mb-3">DISTRIBUTION &amp; PRICING</h1>
                       <p className="common-p text-justify">A total of 5,000 Mutant Serums have been airdropped to all GACC token holders.</p>
-                      <p className="common-p text-justify">5,000 Mutant Apes will be available to mint in a public Dutch Auction. The price to mint a Mutant will start 3 ETH, and gradually reduce to .01 ETH over the course of 9 hours. This is to allow the community to set a fair starting price and, hopefully, avoid any gas war.</p>
+                      <p className="common-p text-justify">5,000 Mutant Apes will be available to mint in a public Dutch Auction. The price to mint a Mutant will start ??? ETH, and gradually reduce to .01 ETH over the course of 3 hours. This is to allow the community to set a fair starting price and, hopefully, avoid any gas war.</p>
                       <p className="common-p text-justify">At the time of minting, Mutant Apes will be unrevealed. Once the public sale has concluded, a randomized starting index will be set and all Mutant Apes will be revealed. This is to prevent anyone, including the founders, from knowing which mutant will be minted during the sale.</p>
                       <p className="common-p text-justify mb-0">After the starting index is set and the mutants are revealed, GACC members will be able to begin mutating their apes with serums here on the site.</p>
                     </div>
@@ -225,7 +225,7 @@ function App() {
                                 <div >
                                 GACC: <input value={apeNum} type="text"  />
                                 </div>
-                                <div className="d-flex justify-content-center">
+                                {/* <div className="d-flex justify-content-center">
                                 {blockchain.account === "" || blockchain.smartContract === null ? (
                                   <>
                                   <button 
@@ -257,7 +257,7 @@ function App() {
                                     {claimingNft ? "Mutating..." : "Mutate 1 GACC"}
                                     </button>
                                   )}
-                                </div>
+                                </div> */}
                               </div>
                             </div>
                           </div>
