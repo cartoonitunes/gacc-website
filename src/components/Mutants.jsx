@@ -186,7 +186,7 @@ function Mutants() {
                   </div>
                   <hr className="gray-line mb-5" />
                   <div className="mb-5  row">
-                    <div className="mb-5 mb-lg-0 col-lg-7 col-12">
+                    <div>
                       <h1 className="common-title mb-3">MUTATION
                         <span className="bayc-color">(FOR GACC MEMBERS)</span>
                       </h1>
