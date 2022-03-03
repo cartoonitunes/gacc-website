@@ -134,7 +134,7 @@ function Home () {
                                   <p className="goal">70%</p>
                                 </div>
                                 <div className="m-auto col-lg-10 col-9">
-                                  <p className=" common-sub-p">We add 3 more ETH to the Community Wallet.</p>
+                                  <p className="text-decoration-line-through common-sub-p">We add 3 more ETH to the Community Wallet.</p>
                                 </div>
                               </div>
                               <div className="mb-3 mb-lg-1 row">
@@ -142,7 +142,7 @@ function Home () {
                                   <p className="goal">80%</p>
                                 </div>
                                 <div className="m-auto col-lg-10 col-9">
-                                  <p className=" common-sub-p">GACC Laboratory will open and begin testing Mutant Serums to be ready for an airdrop.</p>
+                                  <p className="text-decoration-line-through common-sub-p">GACC Laboratory will open and begin testing Mutant Serums to be ready for an airdrop.</p>
                                 </div>
                               </div>
                               <div className="mb-3 mb-lg-1 row">
@@ -150,7 +150,7 @@ function Home () {
                                   <p className="goal">90%</p>
                                 </div>
                                 <div className="m-auto col-lg-10 col-9">
-                                  <p className="text-decoration-line-through common-sub-p">We add 3 more ETH to the Community Wallet and GACC holders will decide on use and distribution amongst holders.</p>
+                                  <p className="common-sub-p">We add 3 more ETH to the Community Wallet and GACC holders will decide on use and distribution amongst holders.</p>
                                 </div>
                               </div>
                               <div className="row">
@@ -158,7 +158,7 @@ function Home () {
                                   <p className="goal">100%</p>
                                 </div>
                                 <div className="m-auto col-lg-10 col-9">
-                                  <p className="text-decoration-line-through common-sub-p">The Grandpa Ape Kitten Club opens its doors for adoption.</p>
+                                  <p className="common-sub-p">The Grandpa Ape Kitten Club opens its doors for adoption.</p>
                                 </div>
                               </div>
                             </div>
