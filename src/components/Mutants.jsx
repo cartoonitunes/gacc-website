@@ -1,55 +1,54 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { connect } from "../redux/blockchain/blockchainActions";
-import { fetchData } from "../redux/data/dataActions";
-import '../styles/maccStyle.css'
+import React from "react";
+// import { useEffect, useState } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import { connect } from "../redux/blockchain/blockchainActions";
+// import { fetchData } from "../redux/data/dataActions";
+import '../styles/style.css'
 
 
 function Mutants() {
-  const dispatch = useDispatch();
-  const blockchain = useSelector((state) => state.blockchain);
-  const data = useSelector((state) => state.data);
-  const serumType = 1;
-  const apeNum = 4;
-  const [feedback, setFeedback] = useState("What mutation will your GACC have?");
-  const [claimingNft, setClaimingNft] = useState(false);
+  // const dispatch = useDispatch();
+  // const blockchain = useSelector((state) => state.blockchain);
+  // const data = useSelector((state) => state.data);
+  // const [feedback, setFeedback] = useState("What mutation will your GACC have?");
+  // const [claimingNft, setClaimingNft] = useState(false);
 
-  const claimNFTs = (_amount) => {
-    if (_amount <= 0) {
-      return;
-    }
-    setFeedback("Mutating your GACC...");
-    setClaimingNft(true);
-    blockchain.smartContract.methods
-      .mutateApeWithSerum(serumType, apeNum)
-      .send({
-        from: blockchain.account
-      })
-      .once("error", (err) => {
-        console.log(err);
-        setFeedback("It seems the transaction was cancelled.");
-        setClaimingNft(false);
-      })
-      .then((receipt) => {
-        setFeedback(
-          "Woohoo! You just mutated your GACC! Visit Opensea.io to view your mutated NFT!"
-        );
-        setClaimingNft(false);
-        dispatch(fetchData(blockchain.account));
-      });
-  };
+  // const claimNFTs = (_amount) => {
+  //   if (_amount <= 0) {
+  //     return;
+  //   }
+  //   setFeedback("Mutating your GACC...");
+  //   setClaimingNft(true);
+  //   blockchain.smartContract.methods
+  //     .mutateApeWithSerum(serumType, apeNum)
+  //     .send({
+  //       from: blockchain.account
+  //     })
+  //     .once("error", (err) => {
+  //       console.log(err);
+  //       setFeedback("It seems the transaction was cancelled.");
+  //       setClaimingNft(false);
+  //     })
+  //     .then((receipt) => {
+  //       setFeedback(
+  //         "Woohoo! You just mutated your GACC! Visit Opensea.io to view your mutated NFT!"
+  //       );
+  //       setClaimingNft(false);
+  //       dispatch(fetchData(blockchain.account));
+  //     });
+  // };
 
-  const getData = () => {
-    console.log(blockchain.smartContract)
-    if (blockchain.account !== "" && blockchain.smartContract !== null) {
-      dispatch(fetchData());
-      console.log(data.totalSupply);
-    }
-  };
+  // const getData = () => {
+  //   console.log(blockchain.smartContract)
+  //   if (blockchain.account !== "" && blockchain.smartContract !== null) {
+  //     dispatch(fetchData());
+  //     console.log(data.totalSupply);
+  //   }
+  // };
 
-  useEffect(() => {
-    getData();
-  }, [blockchain.account]);
+  // useEffect(() => {
+  //   getData();
+  // }, [blockchain.account]);
 
 
   return (

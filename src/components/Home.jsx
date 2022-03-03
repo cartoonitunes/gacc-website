@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/homeStyle.css'
+import '../styles/style.css'
 
 function Home () {
     return (
@@ -7,7 +7,8 @@ function Home () {
         <div id="root">
           <div className="app">
             <nav id="nav" className="navbar navbar-expand-md navbar-light sticky-top">
-              <a href="/home" id="bayc-brand" className="navbar-brand"><img src="https://ik.imagekit.io/l7p0svlzgvd/gacc_logo_white_B26qrGJUj.png" className="d-inline-block align-top" alt="bored ape logo" width="auto" height="75px" /></a><button aria-controls="responsive-navbar-nav" id="nav-toggle" type="button" aria-label="Toggle navigation" className="navbar-dark navbar-toggler collapsed"><span className="navbar-toggler-icon" /></button>
+              <a href="/home" id="bayc-brand" className="navbar-brand"><img src="https://ik.imagekit.io/l7p0svlzgvd/gacc_logo_white_B26qrGJUj.png" className="d-inline-block align-top" alt="bored ape logo" width="auto" height="75px" /></a>
+              <button aria-controls="responsive-navbar-nav" id="nav-toggle" type="button" aria-label="Toggle navigation" className="navbar-dark navbar-toggler collapsed" data-toggle="collapse" data-target="#navbar"><span className="navbar-toggler-icon" /></button>
               <div className="navbar-collapse" data-toggle="collapse">
                 <div className="navbar-nav" id="nav-bar">
                   <a id="nav-link" title="BUY AN APE" href="/home#buy-an-ape" className="nav-link">BUY AN APE</a><a id="nav-link" title="ROADMAP" href="/home#roadmap" className="nav-link">ROADMAP</a><a id="nav-link" title="TEAM" href="/home#team" className="nav-link">TEAM</a><a id="nav-link" title="MACC" href="/macc" data-rb-event-key="/macc" className="nav-link">MACC</a>
