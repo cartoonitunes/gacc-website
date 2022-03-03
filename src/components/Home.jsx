@@ -1,16 +1,14 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import '../styles/homeStyle.css'
 
 function Home () {
-    const history = useHistory();
     return (
         <div>
         <div id="root">
           <div className="app">
             <nav id="nav" className="navbar navbar-expand-md navbar-light sticky-top">
               <a href="/home" id="bayc-brand" className="navbar-brand"><img src="https://ik.imagekit.io/l7p0svlzgvd/gacc_logo_white_B26qrGJUj.png" className="d-inline-block align-top" alt="bored ape logo" width="auto" height="75px" /></a><button aria-controls="responsive-navbar-nav" id="nav-toggle" type="button" aria-label="Toggle navigation" className="navbar-dark navbar-toggler collapsed"><span className="navbar-toggler-icon" /></button>
-              <div className="navbar-collapse collapse">
+              <div className="navbar-collapse">
                 <div className="navbar-nav" id="nav-bar">
                   <a id="nav-link" title="BUY AN APE" href="/home#buy-an-ape" className="nav-link">BUY AN APE</a><a id="nav-link" title="ROADMAP" href="/home#roadmap" className="nav-link">ROADMAP</a><a id="nav-link" title="TEAM" href="/home#team" className="nav-link">TEAM</a><a id="nav-link" title="MACC" href="/macc" data-rb-event-key="/macc" className="nav-link">MACC</a>
                 </div>
@@ -22,7 +20,7 @@ function Home () {
                 <div className="common-container">
                   <div className="mb-4 mb-lg-5 container">
                     <div className="row">
-                      <div className="px-0 col-12"><img src="https://ik.imagekit.io/l7p0svlzgvd/GACC_COVER_osNu3h9kq7V.png" className="img-fluid px-0" useMap="#mutant" /></div>
+                      <div className="px-0 col-12"><img src="https://ik.imagekit.io/l7p0svlzgvd/GACC_COVER_osNu3h9kq7V.png" className="img-fluid px-0" useMap="#mutant" alt=""/></div>
                     </div>
                   </div>
                   <div className="px-4 mt-md-4 container">
