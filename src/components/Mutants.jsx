@@ -181,7 +181,7 @@ function Mutants() {
                       <p className="common-p text-justify mb-0">After the starting index is set and the mutants are revealed, GACC members will be able to begin mutating their apes with serums here on the site.</p>
                     </div>
                     <div className="mb-0 my-lg-auto col-lg-5 col-12 offset-lg-0">
-                      <img src="https://ik.imagekit.io/bayc/assets/mystery-serums.gif" className="img-fluid rounded" alt="" />
+                      <img src="https://ik.imagekit.io/l7p0svlzgvd/serums_Pzo3lNyV-.gif" className="img-fluid rounded" alt="" />
                     </div>
                   </div>
                   <hr className="gray-line mb-5" />
@@ -197,9 +197,9 @@ function Mutants() {
                       <p className="common-p bold-text text-justify">THERE IS NO SET TIME LIMIT FOR APPLYING SERUMS.</p>
                       <p className="common-p text-justify mb-0">Remember, a Grandpa Ape can only be mutated via a vial of a certain type once. We will introduce a method for checking whether a Grandpa Ape has been exposed to a given vial type.</p>
                     </div>
-                    <div className="my-auto col-lg-5 col-12 offset-lg-0">
+                    {/* <div className="my-auto col-lg-5 col-12 offset-lg-0">
                       <img src="https://ik.imagekit.io/bayc/assets/serum-machine.gif" className="img-fluid rounded" alt=""/>
-                    </div>
+                    </div> */}
                   </div>
                   <hr className="gray-line mb-5" />
                   {/* <div>
