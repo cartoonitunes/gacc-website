@@ -76,7 +76,7 @@ function Mutants() {
                 <a href="https://www.instagram.com/grandpaapecountryclubofficial">
                   <i className="fa fa-instagram social-icon pr-lg-0" />
                 </a>
-                <a href="https://discord.gg/uHXUsYuZ">
+                <a href="https://discord.com/invite/gacc">
                   <i className="fa fa-discord-alt social-icon pr-lg-0" />
                 </a>
                 <a href="https://twitter.com/GrandpaApeCC">
@@ -192,7 +192,7 @@ function Mutants() {
                       </h1>
                       <p className="common-p text-justify">GACC token holders will be able to begin applying their airdropped serums to their Grandpa Apes upon completion of the public sale. The exact time will be announced on Twitter (
                         <a href="https://twitter.com/GrandpaApeCC" className="link">@GrandpaApeCC</a>) and in our
-                        <a href="https://discord.gg/uHXUsYuZ" className="link">Discord</a>. Applying a serum to a Grandpa Ape will burn that serum, and result in a MUTANT NFT which may retain aspects of the original Grandpa Ape. The Grandpa Ape NFT will not be harmed.
+                        <a href="https://discord.com/invite/gacc" className="link">Discord</a>. Applying a serum to a Grandpa Ape will burn that serum, and result in a MUTANT NFT which may retain aspects of the original Grandpa Ape. The Grandpa Ape NFT will not be harmed.
                       </p>
                       <p className="common-p bold-text text-justify">THERE IS NO SET TIME LIMIT FOR APPLYING SERUMS.</p>
                       <p className="common-p text-justify mb-0">Remember, a Grandpa Ape can only be mutated via a vial of a certain type once. We will introduce a method for checking whether a Grandpa Ape has been exposed to a given vial type.</p>
@@ -296,7 +296,7 @@ function Mutants() {
                       <a href="https://www.instagram.com/grandpaapecountryclubofficial">
                         <i className="fa fa-instagram social-icon pr-lg-0" />
                       </a>
-                      <a href="https://discord.gg/uHXUsYuZ">
+                      <a href="https://discord.com/invite/gacc">
                         <i className="fa fa-discord-alt social-icon pr-lg-0" />
                       </a>
                       <a href="https://twitter.com/GrandpaApeCC">
