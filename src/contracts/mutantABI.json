@@ -761,37 +761,6 @@
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "serumTypeId",
-				"type": "uint256"
-			}
-		],
-		"name": "testBurn",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "serumTypeId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "apeId",
-				"type": "uint256"
-			}
-		],
-		"name": "testMint",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"inputs": [],
 		"name": "togglePublicSaleActive",
 		"outputs": [],
