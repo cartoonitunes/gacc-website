@@ -63,7 +63,7 @@ function Mutants() {
             <button aria-controls="responsive-navbar-nav" id="nav-toggle" type="button" aria-label="Toggle navigation" className="navbar-dark navbar-toggler collapsed">
               <span className="navbar-toggler-icon" />
             </button>
-            <div className="navbar-collapse collapse">
+            <div className="navbar-collapse">
               <div className="navbar-nav" id="nav-bar">
                 <a id="nav-link" title="BUY AN APE" href="/home#buy-an-ape" className="nav-link">BUY AN APE</a>
                 <a id="nav-link" title="ROADMAP" href="/home#roadmap" className="nav-link">ROADMAP</a>

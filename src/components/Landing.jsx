@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import '../styles/landingStyle.css'
+import '../styles/style.css'
 
 function Landing () {
     const history = useHistory();
@@ -27,7 +27,7 @@ function Landing () {
                       <div className="col-lg-4 col-12">
                         <div className="welcome pt-lg-4 row">
                           <div className="border-bottom px-0 ml-3 ml-lg-0 col-9">
-                            <h1 className="common-title mb-3">WELCOME TO<br /><br />THE GRANDPA APE<br /><br />COUNTRY CLUB</h1>
+                            <h1 className="common-title mb-3">WELCOME TO<br />THE GRANDPA APE<br />COUNTRY CLUB</h1>
                             <button className="bayc-button mb-4 w-100" type="button" onClick={() => history.push('/home')}>ENTER</button>
                           </div>
                           <div className="scroll m-auto pr-0 col-2">
