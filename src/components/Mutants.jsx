@@ -55,7 +55,7 @@ function Mutants() {
     <div>
       <div id="root">
         <div className="app">
-          <nav id="nav" className="navbar navbar-expand-md navbar-light sticky-top">
+          <nav id="nav" className="navbar navbar-expand navbar-light sticky-top">
             <a href="/home" id="bayc-brand" className="navbar-brand">
               <img src="https://ik.imagekit.io/l7p0svlzgvd/gacc_logo_white_B26qrGJUj.png" className="d-inline-block align-top" alt="bored ape logo" width="auto" height="75px" />
             </a>
