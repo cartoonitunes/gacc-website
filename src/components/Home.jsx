@@ -50,14 +50,14 @@ function Home () {
                     <div className="mb-5 row">
                       <div className="col">
                         <div id="buy-an-ape" className="buy-token-container">
-                          <div className="bayc-bg p-4 m-auto row">
+                          <div className="bayc-bg p-4 m-auto row" style={{backgroundColor: 'white'}}>
                             <div className="m-auto col-lg-3 col-12">
                               <h3 className="buy-ape-title">BUY AN APE</h3>
                             </div>
                             <div className="m-auto col-lg-4 col-12 offset-lg-1">
                               <p className="common-p mb-lg-0">The initial sale has sold out. To get your Grandpa Ape, check out the collection on OpenSea.</p>
                             </div>
-                            <div className="m-auto col-lg-3 col-12 offset-lg-1"><a href="https://opensea.io/collection/grandpaapecountryclub"><button className="bayc-button mint" type="button">BUY AN APE ON OPENSEA</button></a></div>
+                            <div className="m-auto col-lg-3 col-12 offset-lg-1"><a href="https://opensea.io/collection/grandpaapecountryclub"><button className="bayc-button mint" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>BUY AN APE ON OPENSEA</button></a></div>
                           </div>
                         </div>
                       </div>
@@ -176,7 +176,7 @@ function Home () {
                           </div>
                           <div className="m-lg-auto col-lg-3 col-12 offset-lg-1">
                             <div className="d-flex row">
-                              <div className="mx-auto col-lg-12 col-md-6 col-sm-12"><a href="https://rarity.tools/grandpaapecountryclub"><button className="bayc-button w-100" type="button">RARITY.TOOLS</button></a></div>
+                              <div className="mx-auto col-lg-12 col-md-6 col-sm-12"><a href="https://rarity.tools/grandpaapecountryclub"><button className="bayc-button w-100" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>RARITY.TOOLS</button></a></div>
                             </div>
                           </div>
                         </div>
@@ -190,8 +190,8 @@ function Home () {
                             <div className="mb-2 col-lg-7 col-12" style={{top: '-10px'}}>
                               <h2 className="common-title mb-3" style={{color: 'black'}}>THE TEAM</h2>
                               <p className="common-p" style={{color: 'black'}}>GACC was created by two friends who set out to make some spiffy apes, test our skills, and try to build something (very silly).</p>
-                              <p className="common-p" style={{color: 'black'}}><span className="bayc-color bold-text">ASLAN.</span> <span className="font-italic" style={{color: 'black', textAlign: 'left'}}>POKEMON MASTER. HARD DEGEN.</span></p>
-                              <p className="common-p" style={{color: 'black'}}><span className="bayc-color bold-text">KUCHUYA.</span> <span className="font-italic" style={{color: 'black'}}>FORCED TO BE BROUGHT ALONG, BUT EXTREMELY HANDSOME.</span></p>
+                              <p className="common-p" style={{color: '#977039'}}><span className="bayc-color bold-text" style={{color: '#977039'}}>ASLAN.</span> <span className="font-italic" style={{color: 'black', textAlign: 'left'}}>POKEMON MASTER. HARD DEGEN.</span></p>
+                              <p className="common-p" style={{color: '#977039'}}><span className="bayc-color bold-text" style={{color: '#977039'}}>KUCHUYA.</span> <span className="font-italic" style={{color: 'black'}}>FORCED TO BE BROUGHT ALONG, BUT EXTREMELY HANDSOME.</span></p>
                             </div>
                             <div className="col-lg-4 col-12 offset-lg-1">
                               <div className="common-container">
@@ -208,7 +208,7 @@ function Home () {
                     <div className="mb-5 row">
                       <div className="col">
                         <div className="d-flex justify-content-center">
-                          <p className="common-p text-center text-break mb-0"><span className="bold-text" style={{color: 'black'}}>VERIFIED SMART CONTRACT ADDRESS: </span><a title="0x656B9E24de2e41a94A7dBbaeb3937777Cf34E448" href="https://etherscan.io/address/0x656b9e24de2e41a94a7dbbaeb3937777cf34e448" className="link">0x656B9E24de2e41a94A7dBbaeb3937777Cf34E448</a></p>
+                          <p className="common-p text-center text-break mb-0"><span className="bold-text" style={{color: '#977039'}}>VERIFIED SMART CONTRACT ADDRESS: </span><a title="0x656B9E24de2e41a94A7dBbaeb3937777Cf34E448" href="https://etherscan.io/address/0x656b9e24de2e41a94a7dbbaeb3937777cf34e448" className="link" >0x656B9E24de2e41a94A7dBbaeb3937777Cf34E448</a></p>
                         </div>
                       </div>
                     </div>
