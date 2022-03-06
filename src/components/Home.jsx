@@ -234,7 +234,7 @@ function Home () {
                   </div>
                 </div>
               </div>
-              <div className="container-fluid m-0 p-0" style={{borderBottom: '#fffff'}}><span className="last-line" style={{borderBottom: '#fffff'}} /></div>
+              <div className="container-fluid m-0 p-0" style={{borderBottom: 'white'}}><span className="last-line" style={{borderBottom: 'white'}} /></div>
             </footer>
           </div>
         </div>
