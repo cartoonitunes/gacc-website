@@ -200,7 +200,7 @@ function Mutants() {
                       <img src="https://ik.imagekit.io/bayc/assets/serum-machine.gif" className="img-fluid rounded" alt=""/>
                     </div> */}
                   </div>
-                  <hr className="gray-line mb-5" />
+                  {/* <hr className="gray-line mb-5" /> */}
                   {/* <div>
                     <div style={{transition: 'opacity 400ms ease 0s, transform 400ms ease 0s', transform: 'none', opacity: 1}}>
                       <div className="mb-5  row">
