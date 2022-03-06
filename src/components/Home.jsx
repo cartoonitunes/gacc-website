@@ -228,7 +228,7 @@ function Home () {
                     <div className="row">
                     <div className="text-lg-right col-sm-12 col-12"><a href="https://www.youtube.com/channel/UCkiX36fFF4xekyRVTWDKIXg"><i className="fa fa-youtube-play black-social-icon pr-lg-0" /></a><a href="https://www.instagram.com/grandpaapecountryclubofficial"><i className="fa fa-instagram black-social-icon pr-lg-0" /></a><a href="https://discord.com/invite/gacc"><i className="fa fa-discord-alt black-social-icon pr-lg-0" /></a><a href="https://twitter.com/GrandpaApeCC"><i className="fa fa-twitter black-social-icon pr-lg-0" /></a></div>
                       <div className="col-lg-12 col-sm-6 col-6">
-                        <p className="copyright text-right"><span className="copy-left">© 2022 Grandpa Ape Country Club</span></p>
+                        <p className="copyright text-right"><span className="copy-left" style={{color: 'black'}}>© 2022 Grandpa Ape Country Club</span></p>
                       </div>
                     </div>
                   </div>
