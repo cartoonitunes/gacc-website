@@ -1,6 +1,6 @@
 .welcome-title{
     font-size:1.8em;
-    font-weight:900
+    font-weight:900;
 }
 .fair-title{
     color:#bfc500;
@@ -189,6 +189,13 @@ div.qr-code-border{
     color:#000;
     background-color:#fff
 }
+
+.black-social-icon{
+    color:black;
+    padding:20px 10px;
+    transition:.3s
+}
+
 .social-icon{
     color:#fff;
     padding:20px 10px;
@@ -8995,7 +9002,8 @@ a.bg-dark:hover,a.bg-dark:focus,button.bg-dark:hover,button.bg-dark:focus{
         padding:1.5rem !important
     }
     .pt-lg-4,.py-lg-4{
-        padding-top:1.5rem !important
+        padding-top:1.5rem !important;
+        background-color: #F9EDCD;
     }
     .pr-lg-4,.px-lg-4{
         padding-right:1.5rem !important
