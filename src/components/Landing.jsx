@@ -7,7 +7,7 @@ function Landing () {
     return (
         <div>
         <div id="root">
-          <div className="app">
+          <div className="app" style={{backgroundColor: '#f9edcd'}}>
             <div>
               <div style={{transition: 'opacity 400ms ease 0s, transform 400ms ease 0s', transform: 'none', opacity: 1, backgroundColor: '#f9edcd'}}>
                 <div className="common-container">
@@ -25,7 +25,7 @@ function Landing () {
                         </div>
                       </div>
                       <div className="col-lg-4 col-12">
-                        <div className="welcome pt-lg-4 row">
+                        <div className="welcome pt-lg-4 row" style={{backgroundColor: '#f9edcd'}}>
                           <div className="px-0 ml-3 ml-lg-0 col-9">
                             <h1 className="common-title mb-3" style={{color: 'black'}}>WELCOME TO<br />THE GRANDPA APE<br />COUNTRY CLUB</h1>
                             <button className="bayc-button mb-4 w-100" style={{backgroundColor: '#83D8FC'}} type="button" onClick={() => history.push('/home')}>ENTER</button>
