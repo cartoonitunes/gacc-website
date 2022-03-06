@@ -90,7 +90,7 @@ function Mutants() {
                 <div className="mb-4 mb-lg-5 container">
                   <div className="row">
                     <div className="px-0 col-12">
-                      <img src="https://ik.imagekit.io/bayc/assets/mayc-hero.jpg" className="img-fluid px-0" useMap="#mutant" alt=""/>
+                      <img src="https://ik.imagekit.io/l7p0svlzgvd/MACC_COVER_mjy2kZkyYNox.png" className="img-fluid px-0" useMap="#mutant" alt=""/>
                     </div>
                   </div>
                 </div>
