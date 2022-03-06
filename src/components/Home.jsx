@@ -208,7 +208,7 @@ function Home () {
                     <div className="mb-5 row">
                       <div className="col">
                         <div className="d-flex justify-content-center">
-                          <p className="common-p text-center text-break mb-0"><span className="bold-text" style={{color: '#977039'}}>VERIFIED SMART CONTRACT ADDRESS: </span><a title="0x656B9E24de2e41a94A7dBbaeb3937777Cf34E448" href="https://etherscan.io/address/0x656b9e24de2e41a94a7dbbaeb3937777cf34e448" className="link" >0x656B9E24de2e41a94A7dBbaeb3937777Cf34E448</a></p>
+                          <p className="common-p text-center text-break mb-0"><span className="bold-text" style={{color: 'black'}}>VERIFIED SMART CONTRACT ADDRESS: </span><a title="0x656B9E24de2e41a94A7dBbaeb3937777Cf34E448" href="https://etherscan.io/address/0x656b9e24de2e41a94a7dbbaeb3937777cf34e448" className="link" style={{color: '#977039'}}>0x656B9E24de2e41a94A7dBbaeb3937777Cf34E448</a></p>
                         </div>
                       </div>
                     </div>
