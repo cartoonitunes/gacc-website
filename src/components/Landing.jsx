@@ -58,7 +58,7 @@ function Landing () {
                   </div>
                 </div>
               </div>
-              <div className="container-fluid m-0 p-0"><span className="last-line" /></div>
+              <div className="container-fluid m-0 p-0"><span className="last-line" style={{borderBottom: 'white'}} /></div>
             </footer>
           </div>
         </div>
