@@ -161,7 +161,7 @@ function Home () {
                                 </div>
                               </div>
                             </div>
-                            <div className="shirt-container mx-auto mb-5 my-lg-auto col-lg-3 col-12 offset-lg-1"><img className="shirt-mask" style={{borderRadius: '5px'}} src="https://ik.imagekit.io/l7p0svlzgvd/gacc-tee_bb3i6vBD7Jh.png" alt="shirt" /><img className="shirt" style={{borderRadius: '5px'}} src="https://ik.imagekit.io/l7p0svlzgvd/gacc-tee_bb3i6vBD7Jh.png" alt="shirt" /></div>
+                            <div className="shirt-container mx-auto mb-5 my-lg-auto col-lg-3 col-12 offset-lg-1"><img className="shirt-mask" style={{borderRadius: '5px'}} src="https://ik.imagekit.io/l7p0svlzgvd/Road_Map_13xqD85UzPj.png" alt="shirt" /><img className="shirt" style={{borderRadius: '5px'}} src="https://ik.imagekit.io/l7p0svlzgvd/Road_Map_13xqD85UzPj.png" alt="shirt" /></div>
                           </div>
                         </div>
                       </div>
