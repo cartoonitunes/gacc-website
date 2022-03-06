@@ -57,7 +57,7 @@ function Mutants() {
         <div className="app">
           <nav id="nav" className="navbar navbar-expand navbar-light sticky-top">
             <a href="/home" id="bayc-brand" className="navbar-brand">
-              <img src="https://ik.imagekit.io/l7p0svlzgvd/gacc_logo_white_B26qrGJUj.png" className="d-inline-block align-top" alt="bored ape logo" width="auto" height="75px" />
+              <img src="https://ik.imagekit.io/l7p0svlzgvd/MACC_LOGO_Q4lIIr5xI.png" className="d-inline-block align-top" alt="bored ape logo" width="auto" height="75px" />
             </a>
             <button aria-controls="responsive-navbar-nav" id="nav-toggle" type="button" aria-label="Toggle navigation" className="navbar-dark navbar-toggler collapsed">
               <span className="navbar-toggler-icon" />
@@ -142,7 +142,7 @@ function Mutants() {
                     <div className="col-lg-6 col-12 order-lg-2">
                       <div className="row">
                         <div className="col-lg-6 col-6 order-lg-2 offset-lg-0 offset-3">
-                          <img className="img-fluid" src="https://ik.imagekit.io/l7p0svlzgvd/3748_f7Oesc6B_.png" alt="" style={{borderRadius: '5px'}} />
+                          <img className="img-fluid" src="https://ik.imagekit.io/l7p0svlzgvd/ASLAN_LHwxBJJx3Ot.png" alt="" style={{borderRadius: '5px'}} />
                           <p className="mt-2 mb-0 text-center">Aslan</p>
                         </div>
                         <div className="my-lg-3 d-lg-flex justify-content-center align-items-center col-lg-3 col-3 offset-lg-0 offset-2">
@@ -162,11 +162,11 @@ function Mutants() {
                       </div>
                     </div>
                     <div className="col-lg-3 col-6 order-lg-1">
-                      <img className="img-fluid" src="https://ik.imagekit.io/l7p0svlzgvd/M1_3748_Nc70YtxYa.jpg" alt="" style={{borderRadius: '5px'}} />
+                      <img className="img-fluid" src="https://ik.imagekit.io/l7p0svlzgvd/M1_ASLAN_md-AGsodH.png" alt="" style={{borderRadius: '5px'}} />
                       <p className="mt-2 mb-0 text-center">M1 Aslan</p>
                     </div>
                     <div className="col-lg-3 col-6 order-lg-3">
-                      <img className="img-fluid" src="https://ik.imagekit.io/l7p0svlzgvd/M2_3748_pNQmWkmsA.jpg" alt="" style={{borderRadius: '5px'}} />
+                      <img className="img-fluid" src="https://ik.imagekit.io/l7p0svlzgvd/M2_ASLAN_l7rN8XxvuG.png" alt="" style={{borderRadius: '5px'}} />
                       <p className="mt-2 mb-0 text-center">M2 Aslan</p>
                     </div>
                   </div>
@@ -284,7 +284,7 @@ function Mutants() {
                 <div className="col-12 col-lg-4 order-lg-first my-lg-auto">
                 </div>
                 <div className="col-12 col-lg-4 order-first">
-                  <img className="img-fluid footer-logo" src="https://ik.imagekit.io/l7p0svlzgvd/gacc_logo_white_B26qrGJUj.png" alt="logo" />
+                  <img className="img-fluid footer-logo" src="https://ik.imagekit.io/l7p0svlzgvd/MACC_LOGO_Q4lIIr5xI.png" alt="logo" />
                 </div>
                 <div className="order-last my-auto text-center col-lg-4 col-sm-12 col-12">
                   <div className="row">
