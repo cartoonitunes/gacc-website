@@ -57,7 +57,7 @@ function Mutants() {
         <div className="app">
           <nav id="nav" className="navbar navbar-expand navbar-light sticky-top">
             <a href="/home" id="bayc-brand" className="navbar-brand">
-              <img src="https://ik.imagekit.io/l7p0svlzgvd/MACC_LOGO_Q4lIIr5xI.png" className="d-inline-block align-top" alt="bored ape logo" width="auto" height="75px" />
+              <img src={process.env.PUBLIC_URL + '/assets/images/MACC_LOGO.png'} className="d-inline-block align-top" alt="bored ape logo" width="auto" height="75px" />
             </a>
             <button aria-controls="responsive-navbar-nav" id="nav-toggle" type="button" aria-label="Toggle navigation" className="navbar-dark navbar-toggler collapsed">
               <span className="navbar-toggler-icon" />
@@ -90,7 +90,7 @@ function Mutants() {
                 <div className="mb-4 mb-lg-5 container">
                   <div className="row">
                     <div className="px-0 col-12">
-                      <img src="https://ik.imagekit.io/l7p0svlzgvd/MACC_COVER_mjy2kZkyYNox.png" className="img-fluid px-0" useMap="#mutant" alt=""/>
+                      <img src={process.env.PUBLIC_URL + '/assets/images/MACC_COVER.png'} className="img-fluid px-0" useMap="#mutant" alt=""/>
                     </div>
                   </div>
                 </div>
@@ -105,18 +105,18 @@ function Mutants() {
                       <div className="common-container">
                         <div className="row">
                           <div className="pb-2 pr-2 col-6">
-                            <img className="img-fluid" src="https://ik.imagekit.io/l7p0svlzgvd/ASTRONAUT_xtactOiZGcq.jpg" alt="mutant-1" aria-label="mutant-1" style={{borderRadius: '5px'}} />
+                            <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/ASTRONAUT.jpg'} alt="mutant-1" aria-label="mutant-1" style={{borderRadius: '5px'}} />
                           </div>
                           <div className="pb-2 pl-2 col-6">
-                            <img className="img-fluid" src="https://ik.imagekit.io/l7p0svlzgvd/SUSHI_OPxFeVzqD.jpg" alt="mutant-2" aria-label="mutant-2" style={{borderRadius: '5px'}} />
+                            <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/SUSHI.jpg'} alt="mutant-2" aria-label="mutant-2" style={{borderRadius: '5px'}} />
                           </div>
                         </div>
                         <div className="row">
                           <div className="pt-2 pr-2 col-6">
-                            <img className="img-fluid" src="https://ik.imagekit.io/l7p0svlzgvd/RAINBOW_GRILL_xwe6HMyEI.jpg" alt="mutant-3" aria-label="mutant-3" style={{borderRadius: '5px'}} />
+                            <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/RAINBOW_GRILL.jpg'} alt="mutant-3" aria-label="mutant-3" style={{borderRadius: '5px'}} />
                           </div>
                           <div className="pt-2 pl-2 col-6">
-                            <img className="img-fluid" src="https://ik.imagekit.io/l7p0svlzgvd/deathbot_0ggqQrsQn.jpg" aria-label="mutant-4" style={{borderRadius: '5px'}} />
+                            <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/deathbot.jpg'} aria-label="mutant-4" style={{borderRadius: '5px'}} />
                           </div>
                         </div>
                       </div>
@@ -142,7 +142,7 @@ function Mutants() {
                     <div className="col-lg-6 col-12 order-lg-2">
                       <div className="row">
                         <div className="col-lg-6 col-6 order-lg-2 offset-lg-0 offset-3">
-                          <img className="img-fluid" src="https://ik.imagekit.io/l7p0svlzgvd/ASLAN_LHwxBJJx3Ot.png" alt="" style={{borderRadius: '5px'}} />
+                          <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/ASLAN.png'} alt="" style={{borderRadius: '5px'}} />
                           <p className="mt-2 mb-0 text-center">Aslan</p>
                         </div>
                         <div className="my-lg-3 d-lg-flex justify-content-center align-items-center col-lg-3 col-3 offset-lg-0 offset-2">
@@ -162,11 +162,11 @@ function Mutants() {
                       </div>
                     </div>
                     <div className="col-lg-3 col-6 order-lg-1">
-                      <img className="img-fluid" src="https://ik.imagekit.io/l7p0svlzgvd/M1_ASLAN_md-AGsodH.png" alt="" style={{borderRadius: '5px'}} />
+                      <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/M1_ASLAN.png'} alt="" style={{borderRadius: '5px'}} />
                       <p className="mt-2 mb-0 text-center">M1 Aslan</p>
                     </div>
                     <div className="col-lg-3 col-6 order-lg-3">
-                      <img className="img-fluid" src="https://ik.imagekit.io/l7p0svlzgvd/M2_ASLAN_l7rN8XxvuG.png" alt="" style={{borderRadius: '5px'}} />
+                      <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/M2_ASLAN.png'} alt="" style={{borderRadius: '5px'}} />
                       <p className="mt-2 mb-0 text-center">M2 Aslan</p>
                     </div>
                   </div>
@@ -180,7 +180,7 @@ function Mutants() {
                       <p className="common-p text-justify mb-0">After the mutants are revealed, GACC members will be able to begin mutating their apes with serums here on the site.</p>
                     </div>
                     <div className="mb-0 my-lg-auto col-lg-5 col-12 offset-lg-0">
-                      <img src="https://ik.imagekit.io/l7p0svlzgvd/serums_Pzo3lNyV-.gif" className="img-fluid rounded" alt="" />
+                      <img src={process.env.PUBLIC_URL + '/assets/images/serum.gif'} className="img-fluid rounded" alt="" />
                     </div>
                   </div>
                   <hr className="gray-line mb-5" />
@@ -196,9 +196,6 @@ function Mutants() {
                       <p className="common-p bold-text text-justify">THERE IS NO SET TIME LIMIT FOR APPLYING SERUMS.</p>
                       <p className="common-p text-justify mb-0">Remember, a Grandpa Ape can only be mutated via a vial of a certain type once. We will introduce a method for checking whether a Grandpa Ape has been exposed to a given vial type.</p>
                     </div>
-                    {/* <div className="my-auto col-lg-5 col-12 offset-lg-0">
-                      <img src="https://ik.imagekit.io/bayc/assets/serum-machine.gif" className="img-fluid rounded" alt=""/>
-                    </div> */}
                   </div>
                   {/* <hr className="gray-line mb-5" /> */}
                   {/* <div>
@@ -284,7 +281,7 @@ function Mutants() {
                 <div className="col-12 col-lg-4 order-lg-first my-lg-auto">
                 </div>
                 <div className="col-12 col-lg-4 order-first">
-                  <img className="img-fluid footer-logo" src="https://ik.imagekit.io/l7p0svlzgvd/MACC_LOGO_Q4lIIr5xI.png" alt="logo" />
+                  <img className="img-fluid footer-logo" src={process.env.PUBLIC_URL + '/assets/images/MACC_LOGO.png'} alt="logo" />
                 </div>
                 <div className="order-last my-auto text-center col-lg-4 col-sm-12 col-12">
                   <div className="row">

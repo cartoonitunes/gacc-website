@@ -13,13 +13,13 @@ function Landing () {
                 <div className="common-container">
                   <div className="container">
                     <div className="mb-5 mb-lg-0 row">
-                      <div className="col-lg-4 col-12 offset-lg-4"><img className="img-fluid d-block mx-auto custom-logo pt-4" src="https://ik.imagekit.io/l7p0svlzgvd/GACC-Banner-Black-V6_W5ylOt1lF.png" alt="gacc header logo" width="300px" height="300px" /></div>
+                      <div className="col-lg-4 col-12 offset-lg-4"><img className="img-fluid d-block mx-auto custom-logo pt-4" src={process.env.PUBLIC_URL + '/assets/images/GACC-Banner-Black-V6.png'} alt="gacc header logo" width="300px" height="300px" /></div>
                       <div className="d-none d-lg-flex justify-content-end social-icons col-lg-4"><a href="https://www.youtube.com/channel/UCkiX36fFF4xekyRVTWDKIXg"><i className="fa fa-youtube-play black-social-icon pr-lg-0" /></a><a href="https://www.instagram.com/grandpaapecountryclubofficial"><i className="fa fa-instagram black-social-icon pr-lg-0" /></a><a href="https://discord.com/invite/gacc"><i className="fa fa-discord-alt black-social-icon pr-lg-0" /></a><a href="https://twitter.com/GrandpaApeCC"><i className="fa fa-twitter black-social-icon pr-lg-0" /></a></div>
                       <div className="px-0 col-12">
                         <div className="mb-4 mb-lg-5 container">
                           <div className="row">
                             <div className="px-0 col-12">
-                                <img className="mx-auto w-100" src="https://ik.imagekit.io/l7p0svlzgvd/GACC_COVER_osNu3h9kq7V.png" alt=""></img>
+                                <img className="mx-auto w-100" src={process.env.PUBLIC_URL + '/assets/images/GACC_COVER-2.png'} alt=""></img>
                             </div>
                           </div>
                         </div>
@@ -45,7 +45,7 @@ function Landing () {
                 <hr className="p-0 line" />
                 <div className="row mx-0 footer-padding">
                   <div className="col-12 col-lg-4 order-lg-first my-lg-auto">
-                  <img className="col-12 col-lg-8 order-first" src="https://ik.imagekit.io/l7p0svlzgvd/GACC-Banner-Black-V6_W5ylOt1lF.png" alt=""></img>
+                  <img className="col-12 col-lg-8 order-first" src={process.env.PUBLIC_URL + '/assets/images/GACC-Banner-Black-V6.png'} alt=""></img>
                   </div>
                   <div className="col-12 col-lg-4 order-first"><img className="img-fluid footer-logo" src="https://lh3.googleusercontent.com/n9HKrkgouw_PsI79-XDrbfeomqcpVDXwDuJTKykWQjxVIOitQeDongPHwap1SbsFb_X0mVyoNGzztJPIV776N0kmnFkApZa-JBxyMA=s0" alt="logo" /></div>
                   <div className="order-last my-auto text-center col-lg-4 col-sm-12 col-12">

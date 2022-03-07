@@ -7,7 +7,7 @@ function Home () {
         <div id="root">
           <div className="app" style={{backgroundColor: '#f9edcd'}}>
             <nav id="nav" className="navbar navbar-expand-md navbar-light" style={{backgroundColor: '#f9edcd'}}>
-              <a href="/home" id="bayc-brand" className="navbar-brand"><img src="https://ik.imagekit.io/l7p0svlzgvd/GACC-Banner-Black-V6_W5ylOt1lF.png" className="d-inline-block align-top" alt="bored ape logo" width="auto" height="70px" /></a>
+              <a href="/home" id="bayc-brand" className="navbar-brand"><img src={process.env.PUBLIC_URL + '/assets/images/GACC-Banner-Black-V6.png'} className="d-inline-block align-top" alt="bored ape logo" width="auto" height="70px" /></a>
               <button aria-controls="responsive-navbar-nav" id="nav-toggle" type="button" aria-label="Toggle navigation" className="navbar-light navbar-toggler collapsed" data-toggle="collapse" data-target="#collapse target"><span className="navbar-toggler-icon" /></button>
               <div className="navbar-collapse">
                 <div className="navbar-nav" id="nav-bar">
@@ -21,7 +21,7 @@ function Home () {
                 <div className="common-container">
                   <div className="mb-4 mb-lg-5 container">
                     <div className="row">
-                      <div className="px-0 col-12"><img src="https://ik.imagekit.io/l7p0svlzgvd/GACC_COVER_osNu3h9kq7V.png" className="img-fluid px-0" useMap="#mutant" alt=""/></div>
+                      <div className="px-0 col-12"><img src={process.env.PUBLIC_URL + '/assets/images/GACC_COVER-2.png'} className="img-fluid px-0" useMap="#mutant" alt=""/></div>
                     </div>
                   </div>
                   <div className="px-4 mt-md-4 container">
@@ -35,12 +35,12 @@ function Home () {
                           <div className="my-lg-auto col-lg-4 col-12 offset-lg-1">
                             <div className="common-container">
                               <div className="row">
-                                <div className="pb-2 pr-2 col-6"><img className="img-fluid" style={{borderRadius: '5px'}} src="https://ik.imagekit.io/l7p0svlzgvd/Ape_1-scaled_rFyJJKpBkA.jpg" alt="ape1" aria-label="ape1" /></div>
-                                <div className="pb-2 pl-2 col-6"><img className="img-fluid" style={{borderRadius: '5px'}} src="https://ik.imagekit.io/l7p0svlzgvd/Ape_4-scaled__PH2KKJgugJ.jpg" alt="ape2" aria-label="ape2" /></div>
+                                <div className="pb-2 pr-2 col-6"><img className="img-fluid" style={{borderRadius: '5px'}} src={process.env.PUBLIC_URL + '/assets/images/Ape_1-scaled.jpg'} alt="ape1" aria-label="ape1" /></div>
+                                <div className="pb-2 pl-2 col-6"><img className="img-fluid" style={{borderRadius: '5px'}} src={process.env.PUBLIC_URL + '/assets/images/Ape_4-scaled.jpg'} alt="ape2" aria-label="ape2" /></div>
                               </div>
                               <div className="row">
-                                <div className="pt-2 pr-2 col-6"><img className="img-fluid" style={{borderRadius: '5px'}} src="https://ik.imagekit.io/l7p0svlzgvd/Ape_6-scaled_V7Saf7x7A.jpg" alt="ape3" aria-label="ape3" /></div>
-                                <div className="pt-2 pl-2 col-6"><img className="img-fluid" style={{borderRadius: '5px'}} src="https://ik.imagekit.io/l7p0svlzgvd/Ape_2-scaled_ZzL7VWhBO.jpg" aria-label="ape4" /></div>
+                                <div className="pt-2 pr-2 col-6"><img className="img-fluid" style={{borderRadius: '5px'}} src={process.env.PUBLIC_URL + '/assets/images/Ape_6-scaled.jpg'} alt="ape3" aria-label="ape3" /></div>
+                                <div className="pt-2 pl-2 col-6"><img className="img-fluid" style={{borderRadius: '5px'}} src={process.env.PUBLIC_URL + '/assets/images/Ape_2-scaled.jpg'} aria-label="ape4" /></div>
                               </div>
                             </div>
                           </div>
@@ -71,7 +71,7 @@ function Home () {
                               <h2 className="common-title mb-3" style={{color: 'black'}}>THE SPECS</h2>
                               <p className="common-p" style={{color: 'black'}}>Each Grandpa Ape is unique and programmatically generated from over 200 possible traits, including expression, headwear, clothing, and more. All apes are spiffy, but some are rarer than others.<br /><br />The apes are stored as ERC-721 tokens on the Ethereum blockchain and hosted on IPFS.</p>
                             </div>
-                            <div className="my-auto col-lg-4 col-12 offset-lg-1"><img className="img-fluid w-100" style={{borderRadius: '5px'}} src="https://ik.imagekit.io/l7p0svlzgvd/Sneak_Peek_Preview_Au2e37ixO.gif" alt="mystery token" /></div>
+                            <div className="my-auto col-lg-4 col-12 offset-lg-1"><img className="img-fluid w-100" style={{borderRadius: '5px'}} src={process.env.PUBLIC_URL + '/assets/images/Sneak_Peek_Preview.gif'} alt="mystery token" /></div>
                           </div>
                         </div>
                       </div>
@@ -161,7 +161,7 @@ function Home () {
                                 </div>
                               </div>
                             </div>
-                            <div className="shirt-container mx-auto mb-5 my-lg-auto col-lg-3 col-12 offset-lg-1"><img className="shirt-mask" style={{borderRadius: '5px'}} src="https://ik.imagekit.io/l7p0svlzgvd/Road_Map_13xqD85UzPj.png" alt="shirt" /><img className="shirt" style={{borderRadius: '5px'}} src="https://ik.imagekit.io/l7p0svlzgvd/Road_Map_13xqD85UzPj.png" alt="shirt" /></div>
+                            <div className="shirt-container mx-auto mb-5 my-lg-auto col-lg-3 col-12 offset-lg-1"><img className="shirt-mask" style={{borderRadius: '5px'}} src={process.env.PUBLIC_URL + '/assets/images/Road_Map.png'} alt="shirt" /><img className="shirt" style={{borderRadius: '5px'}} src={process.env.PUBLIC_URL + '/assets/images/Road_Map.png'} alt="shirt" /></div>
                           </div>
                         </div>
                       </div>
@@ -196,8 +196,8 @@ function Home () {
                             <div className="col-lg-4 col-12 offset-lg-1">
                               <div className="common-container">
                                 <div className="row">
-                                  <div className="pb-2 pr-2 col-6"><img className="img-fluid" style={{borderRadius: '5px'}} src="https://ik.imagekit.io/l7p0svlzgvd/aslan_6zbw_17Jlup.jpg" alt="aslan" aria-label="aslan" /></div>
-                                  <div className="pb-2 pl-2 col-6"><img className="img-fluid" style={{borderRadius: '5px'}} src="https://ik.imagekit.io/l7p0svlzgvd/kuchuya_NSSE2ZSX5.jpg" alt="kuchuya" aria-label="kuchuya" /></div>
+                                  <div className="pb-2 pr-2 col-6"><img className="img-fluid" style={{borderRadius: '5px'}} src={process.env.PUBLIC_URL + '/assets/images/ASLAN.png'} alt="aslan" aria-label="aslan" /></div>
+                                  <div className="pb-2 pl-2 col-6"><img className="img-fluid" style={{borderRadius: '5px'}} src={process.env.PUBLIC_URL + '/assets/images/kuchuya.jpg'} alt="kuchuya" aria-label="kuchuya" /></div>
                                 </div>
                               </div>
                             </div>
@@ -221,7 +221,7 @@ function Home () {
                 <hr className="p-0 line" />
                 <div className="row mx-0 footer-padding">
                 <div className="col-12 col-lg-4 order-lg-first my-lg-auto">
-                  <img className="col-12 col-lg-8 order-first" src="https://ik.imagekit.io/l7p0svlzgvd/GACC-Banner-Black-V6_W5ylOt1lF.png" alt=""></img>
+                  <img className="col-12 col-lg-8 order-first" src={process.env.PUBLIC_URL + '/assets/images/GACC-Banner-Black-V6.png'} alt=""></img>
                   </div>
                   <div className="col-12 col-lg-4 order-first"><img className="img-fluid footer-logo" src="https://lh3.googleusercontent.com/n9HKrkgouw_PsI79-XDrbfeomqcpVDXwDuJTKykWQjxVIOitQeDongPHwap1SbsFb_X0mVyoNGzztJPIV776N0kmnFkApZa-JBxyMA=s0" alt="logo" /></div>
                   <div className="order-last my-auto text-center col-lg-4 col-sm-12 col-12">
