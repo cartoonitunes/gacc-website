@@ -65,6 +65,7 @@ function Mutants() {
             <div className="navbar-collapse">
               <div className="navbar-nav" id="nav-bar">
                 <a id="nav-link" title="BUY AN APE" href="/home#buy-an-ape" className="nav-link">BUY AN APE</a>
+                <a id="nav-link" title="BUY A SERUM" href="/macc#buy-a-serum" className="nav-link">BUY A SERUM</a>
                 <a id="nav-link" title="ROADMAP" href="/home#roadmap" className="nav-link">ROADMAP</a>
                 <a id="nav-link" title="TEAM" href="/home#team" className="nav-link">TEAM</a>
               </div>
@@ -183,6 +184,21 @@ function Mutants() {
                       <img src={process.env.PUBLIC_URL + '/assets/images/serum.gif'} className="img-fluid rounded" alt="" />
                     </div>
                   </div>
+                  <div className="mb-5 row">
+                      <div className="col">
+                        <div id="buy-a-serum" className="buy-token-container">
+                          <div className="bayc-bg p-4 m-auto row">
+                            <div className="m-auto col-lg-3 col-12">
+                              <h3 className="buy-ape-title">BUY A SERUM</h3>
+                            </div>
+                            <div className="m-auto col-lg-4 col-12 offset-lg-1">
+                              <p className="common-p mb-lg-0">The serum snapshot and airdrop has ended. To get your M1, M2, or Mega Serum, check out the collection on OpenSea.</p>
+                            </div>
+                            <div className="m-auto col-lg-3 col-12 offset-lg-1"><a href="https://opensea.io/collection/grandpaapechemistryclub"><button className="bayc-button mint" type="button">BUY A SERUM ON OPENSEA</button></a></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   <hr className="gray-line mb-5" />
                   <div className="mb-5  row">
                     <div>
