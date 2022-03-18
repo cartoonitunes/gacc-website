@@ -57,7 +57,12 @@ function Home () {
                             <div className="m-auto col-lg-4 col-12 offset-lg-1">
                               <p className="common-p mb-lg-0">The initial sale has sold out. To get your Grandpa Ape, check out the collection on OpenSea.</p>
                             </div>
-                            <div className="m-auto col-lg-3 col-12 offset-lg-1"><a href="https://opensea.io/collection/grandpaapecountryclub"><button className="bayc-button mint" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>BUY AN APE ON OPENSEA</button></a></div>
+                            <div className="m-auto col-lg-2 col-12 offset-lg-1">
+                              <a href="https://opensea.io/collection/grandpaapecountryclub"><button className="bayc-button mint" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>BUY ON OPENSEA</button></a>                              </div>
+
+                            <div className="m-auto col-lg-2 col-12 offset-lg-1">
+                              <a href="https://looksrare.org/collections/0x656B9E24de2e41a94A7dBbaeb3937777Cf34E448"><button className="bayc-button mint" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>BUY ON LOOKSRARE</button></a>
+                              </div>
                           </div>
                         </div>
                       </div>
