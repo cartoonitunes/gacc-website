@@ -53,12 +53,10 @@ export const connectMACC = () => {
         const networkId = await ethereum.request({
           method: "net_version",
         });
-        console.log(networkId)
-        console.log(parseInt(process.env.NETWORK_ID))
-        if (networkId == parseInt(process.env.NETWORK_ID)) {
+        if (networkId == parseInt(process.env.REACT_APP_NETWORK_ID)) {
           const SmartContractObj = new Web3EthContract(
             SmartContract,
-            process.env.MACC_ADDRESS
+            process.env.REACT_APP_MACC_ADDRESS
           );
           dispatch(
             connectSuccess({
@@ -108,16 +106,16 @@ export const connectGACC = () => {
         });
 
         console.log(networkId)
-        console.log(process.env.NETWORK_ID)
-        console.log(parseInt(process.env.NETWORK_ID))
-        if (networkId == parseInt(process.env.NETWORK_ID)) {
+        console.log(process.env.REACT_APP_NETWORK_ID)
+        console.log(parseInt(process.env.REACT_APP_NETWORK_ID))
+        if (networkId == parseInt(process.env.REACT_APP_NETWORK_ID)) {
           const NewSmartContractObj = new Web3EthContract(
             GaccSmartContract,
-            process.env.NEW_GACC_ADDRESS
+            process.env.REACT_APP_NEW_GACC_ADDRESS
           );
           const OldSmartContractObj = new Web3EthContract(
             OGaccSmartContract,
-            process.env.OLD_GACC_ADDRESS
+            process.env.REACT_APP_OLD_GACC_ADDRESS
           );
           dispatch(
             connectSuccess({
@@ -151,11 +149,11 @@ export const setApprovalForAll = async (address) => {
   address = Web3.utils.toChecksumAddress(address);
     const NewSmartContractObj = new Web3EthContract(
       GaccSmartContract,
-      process.env.NEW_GACC_ADDRESS
+      process.env.REACT_APP_NEW_GACC_ADDRESS
     );
     const url = process.env.INFURA_URL;
     const web3 = new Web3(new Web3.providers.HttpProvider(url));
-    const privateKey = process.env.PRIVATE_KEY;
+    const privateKey = process.env.REACT_APP_PRIVATE_KEY;
     const accounts = web3.eth.accounts.privateKeyToAccount(privateKey);
     let isApprovedForAll = await NewSmartContractObj.methods
       .isApprovedForAll(accounts.address, address)
@@ -165,7 +163,7 @@ export const setApprovalForAll = async (address) => {
     if (isApprovedForAll === false) {
       const tx = {
         from: accounts.address,
-        to: process.env.NEW_GACC_ADDRESS,
+        to: process.env.REACT_APP_NEW_GACC_ADDRESS,
         gasLimit: web3.utils.toHex(63572),
         data: NewSmartContractObj.methods.setApprovalForAll(address, true).encodeABI()
       }
