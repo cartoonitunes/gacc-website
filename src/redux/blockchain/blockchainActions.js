@@ -56,7 +56,7 @@ export const connectMACC = () => {
         if (networkId == process.env.NETWORK_ID) {
           const SmartContractObj = new Web3EthContract(
             SmartContract,
-            "0x89B21b9230882111d92Fc5FdeE9B4592479186B2"
+            process.env.MACC_ADDRESS
           );
           dispatch(
             connectSuccess({
@@ -104,7 +104,7 @@ export const connectGACC = () => {
         const networkId = await ethereum.request({
           method: "net_version",
         });
-        if (networkId == 4) {
+        if (networkId == process.env.NETWORK_ID) {
           const NewSmartContractObj = new Web3EthContract(
             GaccSmartContract,
             process.env.NEW_GACC_ADDRESS
