@@ -54,7 +54,7 @@ export const connectMACC = () => {
           method: "net_version",
         });
         console.log(networkId)
-        console.log(parseInt(process.env.NETWORK_ID)))
+        console.log(parseInt(process.env.NETWORK_ID))
         if (networkId == parseInt(process.env.NETWORK_ID)) {
           const SmartContractObj = new Web3EthContract(
             SmartContract,
@@ -106,6 +106,9 @@ export const connectGACC = () => {
         const networkId = await ethereum.request({
           method: "net_version",
         });
+
+        console.log(networkId)
+        console.log(parseInt(process.env.NETWORK_ID))
         if (networkId == parseInt(process.env.NETWORK_ID)) {
           const NewSmartContractObj = new Web3EthContract(
             GaccSmartContract,
