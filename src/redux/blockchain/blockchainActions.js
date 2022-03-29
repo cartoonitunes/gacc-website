@@ -108,6 +108,7 @@ export const connectGACC = () => {
         });
 
         console.log(networkId)
+        console.log(process.env.NETWORK_ID)
         console.log(parseInt(process.env.NETWORK_ID))
         if (networkId == parseInt(process.env.NETWORK_ID)) {
           const NewSmartContractObj = new Web3EthContract(
