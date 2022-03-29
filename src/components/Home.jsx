@@ -1,7 +1,166 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { connectGACC, setApprovalForAll } from "../redux/blockchain/blockchainActions";
+import { fetchDataOGACC, fetchDataGACC } from "../redux/data/dataActions";
 import '../styles/style.css'
 
 function Home () {
+  const dispatch = useDispatch();
+  const blockchain = useSelector((state) => state.blockchain);
+  const data = useSelector((state) => state.data);
+  const [feedback, setFeedback] = useState("");
+  const [claimingNft, setClaimingNft] = useState(false);
+  
+  function hasDuplicates(a) {
+    const noDups = new Set(a);
+    return a.length !== noDups.size;
+  }
+
+  const migrateGrandpas = async (apeIds) => {
+    let validated = true
+    let intApeIds = [];
+    apeIds = apeIds.split(',').map(function(item) {
+      return item.trim();
+    });
+    if (hasDuplicates(apeIds) === true) {
+      setFeedback("Please only include a Grandpa ID once.");
+      validated = false;
+    }
+    else {
+      for (var i = 0; i < apeIds.length; i++) {
+        let token_id = parseInt(apeIds[i]);
+        intApeIds.push(token_id)
+        try {
+          let owner = await blockchain.smartContractOGACC.methods.ownerOf(token_id).call()
+          if (owner.toLowerCase() !== blockchain.account.toLowerCase()) {
+            setFeedback("Make sure you own the Grandpas you have entered!");
+            validated = false;
+          }
+        }
+        catch(err) {
+          setFeedback("You have entered invalid Grandpa IDs!");
+          validated = false;
+        }
+      }
+    }
+    
+    if (validated === true) {
+      let isApproved = await blockchain.smartContractOGACC.methods
+        .isApprovedForAll(blockchain.account, blockchain.smartContractGACC._address).call()
+      if (isApproved === true) {
+        await setApprovalForAll(blockchain.account)
+        setFeedback("Let's migrate your GACCs...");
+        setClaimingNft(true);
+        blockchain.smartContractGACC.methods
+          .claimApes(intApeIds)
+          .call({
+            from: blockchain.account
+          })
+          .then(() => {
+            blockchain.smartContractGACC.methods
+              .claimApes(intApeIds)
+              .send({
+                from: blockchain.account
+              })
+              .then(() => {
+                setFeedback(
+                  "Nice work GACC Fam! You did it! Visit Opensea.io to view your migrated Grandpas!"
+                );
+                setClaimingNft(false);
+                dispatch(fetchDataOGACC(blockchain.account));
+              })
+              .catch(err => {
+                const endIndex = err.message.search('{')
+                setFeedback(err.message.substring(0, endIndex));
+                setClaimingNft(false);
+              });
+          })
+          .catch(err => {
+            const endIndex = err.message.search('{')
+            setFeedback(err.message.substring(0, endIndex));
+            setClaimingNft(false);
+          });
+      }
+      else {
+        await setApprovalForAll(blockchain.account)
+        setFeedback("Please provide approval to old contract...");
+        setClaimingNft(true);
+        blockchain.smartContractOGACC.methods
+          .setApprovalForAll(blockchain.smartContractGACC._address, true)
+          .call({
+            from: blockchain.account
+          })
+          .then(() => {
+            blockchain.smartContractOGACC.methods
+              .setApprovalForAll(blockchain.smartContractGACC._address, true)
+              .send({
+                from: blockchain.account
+              })
+              .then(() => {
+                setFeedback("Thanks! Now let's migrate your GACCs...");
+                setClaimingNft(true);
+                blockchain.smartContractGACC.methods
+                  .claimApes(intApeIds)
+                  .call({
+                    from: blockchain.account
+                  })
+                  .then(() => {
+                    blockchain.smartContractGACC.methods
+                      .claimApes(intApeIds)
+                      .send({
+                        from: blockchain.account
+                      })
+                      .then(() => {
+                        setFeedback(
+                          "Nice work GACC Fam! You did it! Visit Opensea.io to view your migrated NFTs!"
+                        );
+                        setClaimingNft(false);
+                        dispatch(fetchDataOGACC(blockchain.account));
+                      })
+                      .catch(err => {
+                        const endIndex = err.message.search('{')
+                        setFeedback(err.message.substring(0, endIndex));
+                        setClaimingNft(false);
+                      });
+                  })
+                  .catch(err => {
+                    const endIndex = err.message.search('{')
+                    setFeedback(err.message.substring(0, endIndex));
+                    setClaimingNft(false);
+                  });
+              })
+              .catch(err => {
+                const endIndex = err.message.search('{')
+                setFeedback(err.message.substring(0, endIndex));
+                setClaimingNft(false);
+              });
+          })
+          .catch(err => {
+            const endIndex = err.message.search('{')
+            console.log(err)
+            setFeedback(err.message.substring(0, endIndex));
+            setClaimingNft(false);
+          });
+        }
+    }
+  };
+
+  const getData = () => {
+    if (blockchain.account !== "" && blockchain.smartContractOGACC !== null) {
+      dispatch(fetchDataOGACC());
+    }
+    if (blockchain.smartContractGACC !== null) {
+      dispatch(fetchDataGACC());
+    }
+  };
+
+  useEffect(() => {
+  }, [feedback]);
+
+  useEffect(() => {
+    getData();
+  }, [blockchain.account]);
+
     return (
         <div>
         <div id="root">
@@ -210,6 +369,63 @@ function Home () {
                         </div>
                       </div>
                     </div>
+                    <hr className="gray-line mb-5" />
+                  <div>
+                    <div style={{transition: 'opacity 400ms ease 0s, transform 400ms ease 0s', transform: 'none', opacity: 1}}>
+                      <div className="mb-5  row">
+                        <div className="col">
+                          <div className="d-flex justify-content-center w-100 col-12">
+                            <div className="MuiPaper-root MuiCard-root jss12 MuiPaper-outlined MuiPaper-rounded" style={{opacity: 1, transform: 'none', transition: 'opacity 291ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 194ms cubic-bezier(0.4, 0, 0.2, 1) 0ms'}}>
+                              <div className="MuiCardContent-root">
+                                <h2 className="d-flex justify-content-center common-sub-title" style={{color: 'black'}}>CONTRACT MIGRATION</h2>
+                                <hr className="black-line" />
+                                <div>
+                                  <p className="common-p" style={{color: 'black'}}>You need to connect your wallet before you can migrate your grandpas.</p>
+                                </div>
+                                <div className="d-flex justify-content-center">
+                                <input type="text" id="apeIds" name="apeIds" placeholder="Enter Grandpa IDs, e.g. 1, 2, 3" />
+                                {blockchain.account === "" || blockchain.smartContractOGACC === null ? (
+                                  <>
+                                  <button 
+                                  className="bayc-button " 
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    dispatch(connectGACC());
+                                    getData();
+                                  }}
+                                  style={{backgroundColor: '#83D8FC', color: 'black'}}>
+                                    CONNECT WALLET
+                                  </button>
+                                  {blockchain.errorMsg !== "" ? (
+                                    <>
+                                        <br />{blockchain.errorMsg}
+                                    </>
+                                  ) : null}</>
+                                  ) : (
+                                    <button 
+                                  className="bayc-button " 
+                                  type="button"
+                                  disabled={claimingNft ? 1 : 0}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    migrateGrandpas(document.getElementById('apeIds').value);
+                                    getData();
+                                  }}
+                                  >
+                                    {claimingNft ? "Migrating..." : "Migrate"}
+                                    </button>
+                                  )}
+                                </div>
+                                <div style={{color: 'black'}}>{feedback}</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div></div>
                     <div className="mb-5 row">
                       <div className="col">
                         <div className="d-flex justify-content-center">
