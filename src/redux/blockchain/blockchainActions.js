@@ -104,10 +104,6 @@ export const connectGACC = () => {
         const networkId = await ethereum.request({
           method: "net_version",
         });
-
-        console.log(networkId)
-        console.log(process.env.REACT_APP_NETWORK_ID)
-        console.log(parseInt(process.env.REACT_APP_NETWORK_ID))
         if (networkId == parseInt(process.env.REACT_APP_NETWORK_ID)) {
           const NewSmartContractObj = new Web3EthContract(
             GaccSmartContract,
