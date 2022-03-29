@@ -1,55 +1,8 @@
 import React from "react";
-// import { useEffect, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { connect } from "../redux/blockchain/blockchainActions";
-// import { fetchData } from "../redux/data/dataActions";
 import '../styles/style.css'
 
 
 function Mutants() {
-  // const dispatch = useDispatch();
-  // const blockchain = useSelector((state) => state.blockchain);
-  // const data = useSelector((state) => state.data);
-  // const [feedback, setFeedback] = useState("What mutation will your GACC have?");
-  // const [claimingNft, setClaimingNft] = useState(false);
-
-  // const claimNFTs = (_amount) => {
-  //   if (_amount <= 0) {
-  //     return;
-  //   }
-  //   setFeedback("Mutating your GACC...");
-  //   setClaimingNft(true);
-  //   blockchain.smartContract.methods
-  //     .mutateApeWithSerum(serumType, apeNum)
-  //     .send({
-  //       from: blockchain.account
-  //     })
-  //     .once("error", (err) => {
-  //       console.log(err);
-  //       setFeedback("It seems the transaction was cancelled.");
-  //       setClaimingNft(false);
-  //     })
-  //     .then((receipt) => {
-  //       setFeedback(
-  //         "Woohoo! You just mutated your GACC! Visit Opensea.io to view your mutated NFT!"
-  //       );
-  //       setClaimingNft(false);
-  //       dispatch(fetchData(blockchain.account));
-  //     });
-  // };
-
-  // const getData = () => {
-  //   console.log(blockchain.smartContract)
-  //   if (blockchain.account !== "" && blockchain.smartContract !== null) {
-  //     dispatch(fetchData());
-  //     console.log(data.totalSupply);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getData();
-  // }, [blockchain.account]);
-
 
   return (
     <div>
@@ -213,79 +166,6 @@ function Mutants() {
                       <p className="common-p text-justify mb-0">Remember, a Grandpa Ape can only be mutated via a vial of a certain type once. We will introduce a method for checking whether a Grandpa Ape has been exposed to a given vial type.</p>
                     </div>
                   </div>
-                  {/* <hr className="gray-line mb-5" /> */}
-                  {/* <div>
-                    <div style={{transition: 'opacity 400ms ease 0s, transform 400ms ease 0s', transform: 'none', opacity: 1}}>
-                      <div className="mb-5  row">
-                        <div className="col">
-                          <div className="d-flex justify-content-center w-100 col-12">
-                            <div className="MuiPaper-root MuiCard-root jss12 MuiPaper-outlined MuiPaper-rounded" style={{opacity: 1, transform: 'none', transition: 'opacity 291ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 194ms cubic-bezier(0.4, 0, 0.2, 1) 0ms'}}>
-                              <div className="MuiCardContent-root">
-                                <h2 className="d-flex justify-content-center common-sub-title">CONNECT WALLET</h2>
-                                <hr className="white-line" />
-                                <div>
-                                  <p className="common-p">You need to connect your wallet before you can mutate an ape.</p>
-                                </div>
-                                <div>
-                                Serum: <input value={serumType} type="text" />
-                                </div>
-                                <div >
-                                GACC: <input value={apeNum} type="text"  />
-                                </div>
-                                <div className="d-flex justify-content-center">
-                                {blockchain.account === "" || blockchain.smartContract === null ? (
-                                  <>
-                                  <button 
-                                  className="bayc-button " 
-                                  type="button"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    dispatch(connect());
-                                    getData();
-                                  }}>
-                                    CONNECT WALLET
-                                  </button>
-                                  {blockchain.errorMsg !== "" ? (
-                                    <>
-                                        {blockchain.errorMsg}
-                                    </>
-                                  ) : null}</>
-                                  ) : (
-                                    <button 
-                                  className="bayc-button " 
-                                  type="button"
-                                  disabled={claimingNft ? 1 : 0}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    claimNFTs(1);
-                                    getData();
-                                  }}
-                                  >
-                                    {claimingNft ? "Mutating..." : "Mutate 1 GACC"}
-                                    </button>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <div style={{transition: 'opacity 400ms ease 0s, transform 400ms ease 0s', transform: 'none', opacity: 1}}>
-                      <div className="mb-5  row">
-                        <div className="col">
-                          <div className="d-flex justify-content-center">
-                            <p className="common-p text-center text-break mb-0">
-                              <span className="bold-text">VERIFIED SMART CONTRACT ADDRESS:</span>
-                              <a title="MACC CONTRACT HERE" href="LINK TO ETHERSCAN" className="link">MACC CONTRACT HERE</a>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div> */}
                 </div>
               </div>
             </div>

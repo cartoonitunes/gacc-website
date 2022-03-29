@@ -54,44 +54,6 @@
 		"inputs": [
 			{
 				"indexed": true,
-				"internalType": "uint256",
-				"name": "_currentPrice",
-				"type": "uint256"
-			},
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "_timeElapsed",
-				"type": "uint256"
-			}
-		],
-		"name": "MutantPublicSalePaused",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "_saleDuration",
-				"type": "uint256"
-			},
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "_saleStartTime",
-				"type": "uint256"
-			}
-		],
-		"name": "MutantPublicSaleStart",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
 				"internalType": "address",
 				"name": "previousOwner",
 				"type": "address"
@@ -104,25 +66,6 @@
 			}
 		],
 		"name": "OwnershipTransferred",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "_mintedMutantsStartingIndex",
-				"type": "uint256"
-			},
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "_megaMutantsStartingIndex",
-				"type": "uint256"
-			}
-		],
-		"name": "StartingIndicesSet",
 		"type": "event"
 	},
 	{
@@ -159,6 +102,24 @@
 			},
 			{
 				"internalType": "uint256",
+				"name": "numberOfTokens",
+				"type": "uint256"
+			}
+		],
+		"name": "airdrop",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
 				"name": "tokenId",
 				"type": "uint256"
 			}
@@ -172,51 +133,13 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "numMutants",
+				"name": "numberOfTokens",
 				"type": "uint256"
 			}
 		],
-		"name": "mintMutants",
+		"name": "purchase",
 		"outputs": [],
 		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "numMutants",
-				"type": "uint256"
-			}
-		],
-		"name": "mintWhitelist",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "serumTypeId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "apeId",
-				"type": "uint256"
-			}
-		],
-		"name": "mutateApeWithSerum",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "pausePublicSale",
-		"outputs": [],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -280,6 +203,24 @@
 	{
 		"inputs": [
 			{
+				"internalType": "uint256",
+				"name": "activeDateTime",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "revealDateTime",
+				"type": "uint256"
+			}
+		],
+		"name": "setActiveDateTime",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "address",
 				"name": "operator",
 				"type": "address"
@@ -299,7 +240,7 @@
 		"inputs": [
 			{
 				"internalType": "string",
-				"name": "uri",
+				"name": "baseURI",
 				"type": "string"
 			}
 		],
@@ -309,8 +250,107 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "setStartingIndices",
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "devFee",
+				"type": "uint256"
+			}
+		],
+		"name": "setDevFee",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "maxLimit",
+				"type": "uint256"
+			}
+		],
+		"name": "setMaxLimit",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "presaleMintPrice",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "publicMintPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "setMintPrice",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "paymentAddress",
+				"type": "address"
+			}
+		],
+		"name": "setPaymentAddress",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "presaleHours",
+				"type": "uint256"
+			}
+		],
+		"name": "setPresaleHours",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "purchaseLimit",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "presaleMintLimit",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "publicMintLimit",
+				"type": "uint256"
+			}
+		],
+		"name": "setPurchaseLimit",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "revealURI",
+				"type": "string"
+			}
+		],
+		"name": "setRevealURI",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -329,45 +369,6 @@
 			}
 		],
 		"name": "setWhiteList",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "saleDuration",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "saleStartPrice",
-				"type": "uint256"
-			}
-		],
-		"name": "startPublicSale",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "togglePublicSaleActive",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "toggleSerumMutationActive",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "toggleWhiteListSaleActive",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -416,43 +417,9 @@
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "symbol",
-				"type": "string"
-			},
-			{
-				"internalType": "address",
-				"name": "gaccAddress",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "gascAddress",
-				"type": "address"
-			}
-		],
+		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
-	},
-	{
-		"inputs": [],
-		"name": "apesMinted",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
 	},
 	{
 		"inputs": [
@@ -475,7 +442,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "collectionStartingIndexBlock",
+		"name": "GACC_MAX",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -506,80 +473,6 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "getMintPrice",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "apeId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint8",
-				"name": "serumTypeId",
-				"type": "uint8"
-			}
-		],
-		"name": "getMutantIdForApeAndSerumCombination",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getRemainingSaleTime",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint8",
-				"name": "serumType",
-				"type": "uint8"
-			},
-			{
-				"internalType": "uint256",
-				"name": "apeId",
-				"type": "uint256"
-			}
-		],
-		"name": "hasApeBeenMutatedWithType",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -604,77 +497,6 @@
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "isMinted",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "MAX_MINTED_MUTANTS",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "megaMutantsStartingIndex",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "merkleRoot",
-		"outputs": [
-			{
-				"internalType": "bytes32",
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "mintedMutantsStartingIndex",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [],
 		"name": "name",
 		"outputs": [
@@ -682,32 +504,6 @@
 				"internalType": "string",
 				"name": "",
 				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "NUM_MEGA_MUTANTS",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "numMutantsMinted",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -746,14 +542,40 @@
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "PRESALE_MINT_LIMIT",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "PRESALE_PRICE",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "",
+				"name": "addr",
 				"type": "address"
 			}
 		],
-		"name": "presaleAddresses",
+		"name": "PRICE",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -766,7 +588,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "PS_MAX_MUTANT_PURCHASE",
+		"name": "PUBLIC_MINT_LIMIT",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -779,7 +601,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "PS_MUTANT_ENDING_PRICE",
+		"name": "PUBLIC_PRICE",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -792,90 +614,12 @@
 	},
 	{
 		"inputs": [],
-		"name": "publicSaleActive",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "publicSaleDuration",
+		"name": "PURCHASE_LIMIT",
 		"outputs": [
 			{
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "publicSaleMutantStartingPrice",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "publicSaleStartTime",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "saleWhitelistActive",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "SERUM_MUTATION_OFFSET",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "serumMutationActive",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
 			}
 		],
 		"stateMutability": "view",
@@ -977,46 +721,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "totalApesMutated",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
 		"name": "totalSupply",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "WL_MAX_MUTANT_PURCHASE",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "WlPrice",
 		"outputs": [
 			{
 				"internalType": "uint256",
