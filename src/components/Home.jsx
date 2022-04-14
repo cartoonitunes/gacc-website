@@ -220,7 +220,7 @@ function Home () {
                               <a href="https://opensea.io/collection/grandpaapecountryclub"><button className="bayc-button mint" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>BUY ON OPENSEA</button></a>                              </div>
 
                             <div className="m-auto col-lg-2 col-12 offset-lg-1">
-                              <a href="https://looksrare.org/collections/0x656B9E24de2e41a94A7dBbaeb3937777Cf34E448"><button className="bayc-button mint" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>BUY ON LOOKSRARE</button></a>
+                              <a href="https://looksrare.org/collections/0x4b103d07c18798365946e76845edc6b565779402"><button className="bayc-button mint" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>BUY ON LOOKSRARE</button></a>
                               </div>
                           </div>
                         </div>
@@ -429,7 +429,7 @@ function Home () {
                     <div className="mb-5 row">
                       <div className="col">
                         <div className="d-flex justify-content-center">
-                          <p className="common-p text-center text-break mb-0"><span className="bold-text" style={{color: 'black'}}>VERIFIED SMART CONTRACT ADDRESS: </span><a title="0x656B9E24de2e41a94A7dBbaeb3937777Cf34E448" href="https://etherscan.io/address/0x656b9e24de2e41a94a7dbbaeb3937777cf34e448" className="link" style={{color: '#977039'}}>0x656B9E24de2e41a94A7dBbaeb3937777Cf34E448</a></p>
+                          <p className="common-p text-center text-break mb-0"><span className="bold-text" style={{color: 'black'}}>VERIFIED SMART CONTRACT ADDRESS: </span><a title="0x4b103d07c18798365946e76845edc6b565779402" href="https://etherscan.io/address/0x4b103d07c18798365946e76845edc6b565779402" className="link" style={{color: '#977039'}}>0x4b103d07c18798365946e76845edc6b565779402</a></p>
                         </div>
                       </div>
                     </div>
