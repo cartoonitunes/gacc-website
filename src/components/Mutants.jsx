@@ -1,8 +1,292 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { connectMACC } from "../redux/blockchain/blockchainActions";
+import { fetchData } from "../redux/data/dataActions";
 import '../styles/style.css'
+require('dotenv').config();
 
 
 function Mutants() {
+  const dispatch = useDispatch();
+  const blockchain = useSelector((state) => state.blockchain);
+  // eslint-disable-next-line
+  const data = useSelector((state) => state.data);
+  const [feedback, setFeedback] = useState("");
+  const [mintingNft, setMintingNft] = useState(false);
+
+  const mintMutant = async (serumId=null, apeId=null, numMints=null) => {
+    let action = process.env.REACT_APP_ACTION;
+    if (action === 'FREE_WHITELIST_MINT') {
+      freeWhiteListMint()
+    }
+    else if (action === 'WHITELIST_MINT') {
+      whiteListMint()
+    }
+    else if (action === 'DUTCH_AUCTION_MINT') {
+      dutchAuctionMint(numMints)
+    }
+    else {
+      mutationCaller(serumId, apeId)
+    }
+  };
+
+  let maccLabels = {
+    'FREE_WHITELIST_MINT': {
+      'title': 'MINT A MUTANT',
+      'subTitle': 'Connect your wallet to mint a MACC.',
+      'connectedSubTitle': 'Connected! Time to mint that free MACC!'
+    },
+    'WHITELIST_MINT': {
+      'title': 'MINT A MUTANT',
+      'subTitle': 'Connect your wallet to mint a MACC.',
+      'connectedSubTitle': 'Connected! Time to mint that MACC!'
+    },
+    'DUTCH_AUCTION_MINT': {
+      'title': 'MINT A MUTANT',
+      'subTitle': 'Connect your wallet to mint a MACC.',
+      'connectedSubTitle': 'Connected! Time to mint that MACC!'
+    },
+    'MUTATE': {
+      'title': 'MUTATE A GRANDPA APE',
+      'subTitle': 'Connect your wallet to mutate a GACC.',
+      'connectedSubTitle': 'Connected! Are you ready to mutate?'
+    },
+  }
+
+  const processErrorMessage = (errorMessage) => {
+    const endIndex = errorMessage.message.search('{')
+    if (endIndex === -1) {
+      return('Insufficient Funds to Mint.')
+    } else {
+      let err_message = errorMessage.message.substring(0, endIndex)
+      let execution = 'execution reverted: '
+      let executionIndex = err_message.indexOf(execution)
+      if (executionIndex === -1) {
+        return(err_message);
+      }
+      else {
+        let cleaned_error = err_message.slice(executionIndex + execution.length)
+        return(cleaned_error);
+      }
+    }
+  }
+
+  const freeWhiteListMint = async () => {
+    setFeedback(`Minting your MACC...`);
+    setMintingNft(true);
+    blockchain.smartContract.methods
+      .mintFreeWhitelist()
+      .call({
+        to: process.env.REACT_APP_MACC_ADDRESS,
+        from: blockchain.account
+      })
+      .then(() => {
+        blockchain.smartContract.methods
+        .mintFreeWhitelist()
+        .send({ 
+          to: process.env.REACT_APP_MACC_ADDRESS,
+          from: blockchain.account
+        })
+        .then((receipt) => {
+          console.log(receipt);
+          setFeedback(
+            `Congratulations and welcome to the Mutant Ape Country Club! Go visit Opensea.io and holler in the Discord.`
+          );
+          setMintingNft(false);
+          dispatch(fetchData(blockchain.account));
+        })
+        .catch(err => {
+          const endIndex = err.message.search('{')
+          setFeedback(err.message.substring(0, endIndex));
+          setMintingNft(false);
+        });
+      })
+      .catch(err => {
+        setFeedback(processErrorMessage(err))
+        setMintingNft(false);
+      });
+  }
+
+  const whiteListMint = async () => {
+    let cost = process.env.REACT_APP_WL_PRICE;
+    let totalCostWei = String(cost);
+    setFeedback(`Minting your MACC...`);
+    setMintingNft(true);
+    blockchain.smartContract.methods
+      .mintWhitelist()
+      .call({
+        to: process.env.REACT_APP_MACC_ADDRESS,
+        from: blockchain.account,
+        value: totalCostWei
+      })
+      .then(() => {
+        blockchain.smartContract.methods
+        .mintWhitelist()
+        .send({ 
+          to: process.env.REACT_APP_MACC_ADDRESS,
+          from: blockchain.account,
+          value: totalCostWei,
+        })
+        .then((receipt) => {
+          console.log(receipt);
+          setFeedback(
+            `Congratulations and welcome to the Mutant Ape Country Club! Go visit Opensea.io and holler in the Discord.`
+          );
+          setMintingNft(false);
+          dispatch(fetchData(blockchain.account));
+        })
+        .catch(err => {
+          const endIndex = err.message.search('{')
+          setFeedback(err.message.substring(0, endIndex));
+          setMintingNft(false);
+        });
+      })
+      .catch(err => {
+        setFeedback(processErrorMessage(err))
+        setMintingNft(false);
+      });
+  }
+
+  const dutchAuctionMint = async (numMints) => {
+    let cost = await blockchain.smartContract.methods.getMintPrice().call()
+    console.log(cost)
+    let totalCostWei = String(cost);
+    console.log(totalCostWei);
+    setFeedback(`Minting your MACC...`);
+    setMintingNft(true);
+    blockchain.smartContract.methods
+      .mintMutants(1)
+      .call({
+        to: process.env.REACT_APP_MACC_ADDRESS,
+        from: blockchain.account,
+        value: totalCostWei
+      })
+      .then(() => {
+        blockchain.smartContract.methods
+        .mintMutants(1)
+        .send({ 
+          to: process.env.REACT_APP_MACC_ADDRESS,
+          from: blockchain.account,
+          value: totalCostWei,
+        })
+        .then((receipt) => {
+          console.log(receipt);
+          setFeedback(
+            `Congratulations and welcome to the Mutant Ape Country Club! Go visit Opensea.io and holler in the Discord.`
+          );
+          setMintingNft(false);
+          dispatch(fetchData(blockchain.account));
+        })
+        .catch(err => {
+          const endIndex = err.message.search('{')
+          setFeedback(err.message.substring(0, endIndex));
+          setMintingNft(false);
+        });
+      })
+      .catch(err => {
+        let prettyCost = ((cost/1000000000000000000)).toFixed(3);
+        let priceInfo = ` The current price is ${prettyCost}ETH.`
+        setFeedback(processErrorMessage(err)+priceInfo)
+        setMintingNft(false);
+      });
+  }
+
+  const mutationCaller = (serumId, apeId) => {
+    let legendaries = [0,1,2,3,4,5,6,7,8,9,156,576,1713,2976,3023,3622,3767,3967];
+
+    if (!serumId && legendaries.includes(apeId)) {
+      mutateLegendary(apeId)
+    }
+    else {
+      mutateGrandpa(serumId, apeId)
+    }
+  }
+
+  const mutateGrandpa = async (serumId, apeId) => {
+    setFeedback(`Mutating your GACC...`);
+    setMintingNft(true);
+    blockchain.smartContract.methods
+      .mutateApeWithSerum(serumId, apeId)
+      .call({
+        to: process.env.REACT_APP_MACC_ADDRESS,
+        from: blockchain.account
+      })
+      .then(() => {
+        blockchain.smartContract.methods
+        .mutateApeWithSerum(serumId, apeId)
+        .send({ 
+          to: process.env.REACT_APP_MACC_ADDRESS,
+          from: blockchain.account
+        })
+        .then((receipt) => {
+          console.log(receipt);
+          setFeedback(
+            `Congratulations and welcome to the Mutant Ape Country Club! Go visit Opensea.io and holler in the Discord.`
+          );
+          setMintingNft(false);
+          dispatch(fetchData(blockchain.account));
+        })
+        .catch(err => {
+          const endIndex = err.message.search('{')
+          setFeedback(err.message.substring(0, endIndex));
+          setMintingNft(false);
+        });
+      })
+      .catch(err => {
+        setFeedback(processErrorMessage(err))
+        setMintingNft(false);
+      });
+  }
+
+  const mutateLegendary = async (apeId) => {
+    setFeedback(`Mutating your Legendary GACC...`);
+    setMintingNft(true);
+    blockchain.smartContract.methods
+      .mutateApeWithoutSerum(apeId)
+      .call({
+        to: process.env.REACT_APP_MACC_ADDRESS,
+        from: blockchain.account
+      })
+      .then(() => {
+        blockchain.smartContract.methods
+        .mutateApeWithoutSerum(apeId)
+        .send({ 
+          to: process.env.REACT_APP_MACC_ADDRESS,
+          from: blockchain.account
+        })
+        .then((receipt) => {
+          console.log(receipt);
+          setFeedback(
+            `Congratulations you legend! Go visit Opensea.io and holler in the Discord.`
+          );
+          setMintingNft(false);
+          dispatch(fetchData(blockchain.account));
+        })
+        .catch(err => {
+          const endIndex = err.message.search('{')
+          setFeedback(err.message.substring(0, endIndex));
+          setMintingNft(false);
+        });
+      })
+      .catch(err => {
+        setFeedback(processErrorMessage(err))
+        setMintingNft(false);
+      });
+  }
+
+  const getData = () => {
+    if (blockchain.account !== "" && blockchain.smartContract !== null) {
+      dispatch(fetchData());
+    }
+  };
+
+  useEffect(() => {
+  }, [feedback]);
+
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line
+  }, [blockchain.account]);
 
   return (
     <div>
@@ -170,6 +454,99 @@ function Mutants() {
               </div>
             </div>
           </div>
+          <hr className="gray-line mb-5" />
+                  <div>
+                    <div style={{transition: 'opacity 400ms ease 0s, transform 400ms ease 0s', transform: 'none', opacity: 1}}>
+                      <div className="mb-5  row">
+                        <div className="col">
+                          <div className="d-flex justify-content-center w-100 col-12">
+                            <div className="MuiPaper-root MuiCard-root jss12 MuiPaper-outlined MuiPaper-rounded" style={{opacity: 1, transform: 'none', transition: 'opacity 291ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 194ms cubic-bezier(0.4, 0, 0.2, 1) 0ms'}}>
+                              <div className="MuiCardContent-root">
+                                <h2 className="d-flex justify-content-center common-sub-title">{maccLabels[process.env.REACT_APP_ACTION]['title']}</h2>
+                                <hr className="black-line" />
+                                <div>
+                                {blockchain.account === "" ? (
+                                  <p className="common-p">{maccLabels[process.env.REACT_APP_ACTION]['subTitle']}</p>): (
+                                    <p className="common-p">{maccLabels[process.env.REACT_APP_ACTION]['connectedSubTitle']}</p>
+                                  )}
+                                </div>
+                                {process.env.REACT_APP_ACTION === 'MUTATE' && (blockchain.account !== "" && blockchain.smartContract !== null) && (
+                                  <>
+                                  <form onSubmit={e => { mintMutant(e) }}>
+                                    <div class="form-group">
+                                      <label for="exampleInputEmail1">Enter Ape ID to Mutate</label>
+                                      <input className="form-control bayc-button " name='apeId'></input>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="exampleInputPassword1">Select Serum</label>
+                                      <select className="form-control bayc-button ">
+                                        <option value="1" name='serumId'>M1 Serum</option>
+                                        <option value="2" name='serumId'>M2 Serum</option>
+                                        <option value="69" name='serumId'>M3 Serum</option>
+                                      </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary bayc-button " disabled={mintingNft ? 1 : 0}
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        mintMutant();
+                                        getData();
+                                      }}>Mutate</button>
+                                  </form>
+                                  <br></br><br></br>
+                                  </>
+                                )}
+                                <div className="d-flex justify-content-center">
+                                
+                                {blockchain.account === "" || blockchain.smartContract === null ? (
+                                  <>
+                                  <button 
+                                  className="bayc-button " 
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    dispatch(connectMACC());
+                                    getData();
+                                  }}
+                                  style={{backgroundColor: '#83D8FC', color: 'black'}}>
+                                    CONNECT WALLET
+                                  </button>
+                                  {blockchain.errorMsg !== "" ? (
+                                    <>
+                                        <br />{blockchain.errorMsg}
+                                    </>
+                                  ) : null}</>
+                                  ) : (
+                                    <button 
+                                  className="bayc-button " 
+                                  type="button"
+                                  disabled={mintingNft ? 1 : 0}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    mintMutant();
+                                    getData();
+                                  }}
+                                  >
+                                    {mintingNft ? "Minting..." : "Mint 1 MACC"}
+                                    </button>
+                                  )}
+                                </div>
+                                <br></br>
+                                <div><center>{feedback}</center></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div></div>
+                    <div className="mb-5 row">
+                      <div className="col">
+                        <div className="d-flex justify-content-center">
+                          <p className="common-p text-center text-break mb-0"><span className="bold-text">VERIFIED SMART CONTRACT ADDRESS: </span><a title="0x4B103d07C18798365946E76845EDC6b565779402" href="https://etherscan.io/address/0x4B103d07C18798365946E76845EDC6b565779402" className="link" style={{color: '#977039'}}>0x4B103d07C18798365946E76845EDC6b565779402</a></p>
+                        </div>
+                      </div>
+                    </div>
           <footer className="footer">
             <div className="container-fluid footer-line">
               <hr className="p-0 line" />
