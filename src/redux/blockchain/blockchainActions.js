@@ -4,6 +4,7 @@ import Web3 from "web3";
 import SmartContract from "../../contracts/mutantABI.json";
 // log
 import { fetchData } from "../data/dataActions";
+require('dotenv').config();
 
 const connectRequest = () => {
   return {
@@ -51,6 +52,7 @@ export const connectMACC = () => {
         const networkId = await ethereum.request({
           method: "net_version",
         });
+        // eslint-disable-next-line
         if (networkId == parseInt(process.env.REACT_APP_NETWORK_ID)) {
           const SmartContractObj = new Web3EthContract(
             SmartContract,
