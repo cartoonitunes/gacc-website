@@ -12,7 +12,9 @@ function Mutants() {
   // eslint-disable-next-line
   const data = useSelector((state) => state.data);
   const [feedback, setFeedback] = useState("");
+  const [apeSelection, setApeSelection] = useState(null);
   const [mintingNft, setMintingNft] = useState(false);
+  const legendaries = ["0","1","2","3","4","5","6","7","8","9","156","576","1713","2976","3023","3622","3767","3967"];
 
   const mintMutant = async (serumId=null, apeId=null, numMints=null) => {
     let action = process.env.REACT_APP_ACTION;
@@ -148,14 +150,13 @@ function Mutants() {
   }
 
   const dutchAuctionMint = async (numMints) => {
-    let cost = await blockchain.smartContract.methods.getMintPrice().call()
-    console.log(cost)
-    let totalCostWei = String(cost);
-    console.log(totalCostWei);
+    let cost = await blockchain.smartContract.methods.getMintPrice().call() * numMints
+    let buffer = 1000
+    let totalCostWei = String(cost + buffer);
     setFeedback(`Minting your MACC...`);
     setMintingNft(true);
     blockchain.smartContract.methods
-      .mintMutants(1)
+      .mintMutants(numMints)
       .call({
         to: process.env.REACT_APP_MACC_ADDRESS,
         from: blockchain.account,
@@ -163,7 +164,7 @@ function Mutants() {
       })
       .then(() => {
         blockchain.smartContract.methods
-        .mintMutants(1)
+        .mintMutants(numMints)
         .send({ 
           to: process.env.REACT_APP_MACC_ADDRESS,
           from: blockchain.account,
@@ -192,7 +193,6 @@ function Mutants() {
   }
 
   const mutationCaller = (serumId, apeId) => {
-    let legendaries = [0,1,2,3,4,5,6,7,8,9,156,576,1713,2976,3023,3622,3767,3967];
 
     if (!serumId && legendaries.includes(apeId)) {
       mutateLegendary(apeId)
@@ -272,6 +272,109 @@ function Mutants() {
         setFeedback(processErrorMessage(err))
         setMintingNft(false);
       });
+  }
+
+  const titleText = () => {
+    return (
+      <div className="d-flex justify-content-center">
+        {(blockchain.account === "" || blockchain.smartContract === null) ? (
+        <p className="common-p">{maccLabels[process.env.REACT_APP_ACTION]['subTitle']}</p>): (
+          <p className="common-p"></p>
+        )}
+        </div>
+    )
+  }
+
+  function updateTextInput(val) {
+    document.getElementById('textInput').value=val; 
+  }
+
+  const connectAndMintButton = () => {
+    if (blockchain.account === "" || blockchain.smartContract === null) {
+      return (
+        <div className="d-flex justify-content-center"><button 
+        className="bayc-button " 
+        type="button"
+        onClick={(e) => {
+          e.preventDefault();
+          dispatch(connectMACC());
+          getData();
+        }}
+        style={{backgroundColor: '#83D8FC', color: 'black'}}>
+          CONNECT WALLET
+        </button></div>
+      )
+    }
+    else if (process.env.REACT_APP_ACTION === 'FREE_WHITELIST_MINT' || process.env.REACT_APP_ACTION === 'WHITELIST_MINT') {
+      return (
+      <div className="d-flex justify-content-center">
+        <button 
+          className="bayc-button " 
+          type="button"
+          disabled={mintingNft ? 1 : 0}
+          onClick={(e) => {
+            e.preventDefault();
+            mintMutant();
+            getData();
+          }}
+          >
+            {mintingNft ? "Minting..." : "Mint 1 MACC"}
+        </button>
+      </div>
+      )
+    }
+    else if (process.env.REACT_APP_ACTION === 'DUTCH_AUCTION_MINT') {
+      return (
+      <div className="d-flex justify-content-center">
+        <form>
+          <div className="form-group">
+            <label htmlFor="formControlRange" className="form-label">How many do you want to mint? (max 20)</label>
+            <input type="range" className="form-range" defaultValue="1" min="1" max="20" id="mintQuantity" onChange={(e) => updateTextInput(e.target.value)}/>
+            <input type="text" id="textInput" defaultValue="1"></input>
+          </div>
+          <button type="submit" className="bayc-button" disabled={mintingNft ? 1 : 0}
+            onClick={(e) => {
+              e.preventDefault();
+              mintMutant(null, null, document.getElementById("mintQuantity").value);
+              getData();
+            }}>Mutate</button>
+        </form>
+      </div>
+      )
+    }
+    else if (process.env.REACT_APP_ACTION === 'MUTATE') {
+      return (
+      <div className="d-flex justify-content-center">
+        <form>
+          <div className="form-group">
+            <label htmlFor="exampleInputEmail1">Enter Ape ID to Mutate</label>
+            <input className="form-control bayc-button " name='apeId' id='apeId' onChange={(e) => setApeSelection(e.target.value)}></input>
+          </div>
+          {!legendaries.includes(apeSelection) && (
+              <div className="form-group">
+              <label htmlFor="exampleInputPassword1">Select Serum</label>
+              <select className="form-control bayc-button " id='serumId'>
+                <option value="1" name='serumId'>M1 Serum</option>
+                <option value="2" name='serumId'>M2 Serum</option>
+                <option value="69" name='serumId'>M3 Serum</option>
+              </select>
+            </div>
+          )}
+          <button type="submit" className="btn btn-primary bayc-button " disabled={mintingNft ? 1 : 0}
+            onClick={(e) => {
+              e.preventDefault();
+              if (document.getElementById("serumId")) {
+                mintMutant(document.getElementById("serumId").value, document.getElementById("apeId").value);
+              }
+              else {
+                mintMutant(null, document.getElementById("apeId").value);
+              }
+              getData();
+            }}>Mutate</button>
+        </form>
+      </div>
+      )
+    }
   }
 
   const getData = () => {
@@ -463,73 +566,9 @@ function Mutants() {
                             <div className="MuiPaper-root MuiCard-root jss12 MuiPaper-outlined MuiPaper-rounded" style={{opacity: 1, transform: 'none', transition: 'opacity 291ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 194ms cubic-bezier(0.4, 0, 0.2, 1) 0ms'}}>
                               <div className="MuiCardContent-root">
                                 <h2 className="d-flex justify-content-center common-sub-title">{maccLabels[process.env.REACT_APP_ACTION]['title']}</h2>
-                                <hr className="black-line" />
-                                <div>
-                                {blockchain.account === "" ? (
-                                  <p className="common-p">{maccLabels[process.env.REACT_APP_ACTION]['subTitle']}</p>): (
-                                    <p className="common-p">{maccLabels[process.env.REACT_APP_ACTION]['connectedSubTitle']}</p>
-                                  )}
-                                </div>
-                                {process.env.REACT_APP_ACTION === 'MUTATE' && (blockchain.account !== "" && blockchain.smartContract !== null) && (
-                                  <>
-                                  <form onSubmit={e => { mintMutant(e) }}>
-                                    <div class="form-group">
-                                      <label for="exampleInputEmail1">Enter Ape ID to Mutate</label>
-                                      <input className="form-control bayc-button " name='apeId'></input>
-                                    </div>
-                                    <div class="form-group">
-                                      <label for="exampleInputPassword1">Select Serum</label>
-                                      <select className="form-control bayc-button ">
-                                        <option value="1" name='serumId'>M1 Serum</option>
-                                        <option value="2" name='serumId'>M2 Serum</option>
-                                        <option value="69" name='serumId'>M3 Serum</option>
-                                      </select>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary bayc-button " disabled={mintingNft ? 1 : 0}
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        mintMutant();
-                                        getData();
-                                      }}>Mutate</button>
-                                  </form>
-                                  <br></br><br></br>
-                                  </>
-                                )}
-                                <div className="d-flex justify-content-center">
-                                
-                                {blockchain.account === "" || blockchain.smartContract === null ? (
-                                  <>
-                                  <button 
-                                  className="bayc-button " 
-                                  type="button"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    dispatch(connectMACC());
-                                    getData();
-                                  }}
-                                  style={{backgroundColor: '#83D8FC', color: 'black'}}>
-                                    CONNECT WALLET
-                                  </button>
-                                  {blockchain.errorMsg !== "" ? (
-                                    <>
-                                        <br />{blockchain.errorMsg}
-                                    </>
-                                  ) : null}</>
-                                  ) : (
-                                    <button 
-                                  className="bayc-button " 
-                                  type="button"
-                                  disabled={mintingNft ? 1 : 0}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    mintMutant();
-                                    getData();
-                                  }}
-                                  >
-                                    {mintingNft ? "Minting..." : "Mint 1 MACC"}
-                                    </button>
-                                  )}
-                                </div>
+                                <hr className="black-line" /><center>
+                                {titleText()}
+                                {connectAndMintButton()}</center>
                                 <br></br>
                                 <div><center>{feedback}</center></div>
                               </div>
