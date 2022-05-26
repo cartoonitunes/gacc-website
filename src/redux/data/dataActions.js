@@ -33,11 +33,56 @@ export const fetchData = () => {
         .getState()
         .blockchain.smartContract.methods.totalSupply()
         .call();
+      let wlPrice = await store
+        .getState()
+        .blockchain.smartContract.methods.WlPrice()
+        .call();
+      let apesMinted = await store
+        .getState()
+        .blockchain.smartContract.methods.apesMinted()
+        .call();
+      let saleFreeWhitelistActive = await store
+        .getState()
+        .blockchain.smartContract.methods.saleFreeWhitelistActive()
+        .call();
+      let saleWhitelistActive = await store
+        .getState()
+        .blockchain.smartContract.methods.saleWhitelistActive()
+        .call();
+      let publicSaleActive = await store
+        .getState()
+        .blockchain.smartContract.methods.publicSaleActive()
+        .call();
+      let serumMutationActive = await store
+        .getState()
+        .blockchain.smartContract.methods.serumMutationActive()
+        .call();
+      let remainingSaleTime = 0;
+      let currentPrice = 300000000000000000;
+      if (publicSaleActive) {
+        remainingSaleTime = await store
+          .getState()
+          .blockchain.smartContract.methods.getRemainingSaleTime()
+          .call();
+        currentPrice = await store
+          .getState()
+          .blockchain.smartContract.methods.getMintPrice()
+          .call();
+      }
+      
 
       dispatch(
         fetchDataSuccess({
           name,
           totalSupply,
+          wlPrice,
+          apesMinted,
+          remainingSaleTime,
+          currentPrice,
+          saleFreeWhitelistActive,
+          saleWhitelistActive,
+          publicSaleActive,
+          serumMutationActive,
         })
       );
     } catch (err) {
