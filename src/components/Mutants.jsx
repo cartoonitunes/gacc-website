@@ -17,43 +17,62 @@ function Mutants() {
   const legendaries = ["0","1","2","3","4","5","6","7","8","9","156","576","1713","2976","3023","3622","3767","3967"];
 
   const mintMutant = async (serumId=null, apeId=null, numMints=null) => {
-    let action = process.env.REACT_APP_ACTION;
-    if (action === 'FREE_WHITELIST_MINT') {
+    if (data.saleFreeWhitelistActive) {
       freeWhiteListMint()
     }
-    else if (action === 'WHITELIST_MINT') {
+    else if (data.saleWhitelistActive) {
       whiteListMint()
     }
-    else if (action === 'DUTCH_AUCTION_MINT') {
+    else if (data.publicSaleActive) {
       dutchAuctionMint(numMints)
     }
-    else {
+    else if (data.serumMutationActive) {
       mutationCaller(serumId, apeId)
     }
   };
 
-  let maccLabels = {
-    'FREE_WHITELIST_MINT': {
-      'title': 'MINT A MUTANT',
-      'subTitle': 'Connect your wallet to mint a MACC.',
-      'connectedSubTitle': 'Connected! Time to mint that free MACC!'
-    },
-    'WHITELIST_MINT': {
-      'title': 'MINT A MUTANT',
-      'subTitle': 'Connect your wallet to mint a MACC.',
-      'connectedSubTitle': 'Connected! Time to mint that MACC!'
-    },
-    'DUTCH_AUCTION_MINT': {
-      'title': 'MINT A MUTANT',
-      'subTitle': 'Connect your wallet to mint a MACC.',
-      'connectedSubTitle': 'Connected! Time to mint that MACC!'
-    },
-    'MUTATE': {
-      'title': 'MUTATE A GRANDPA APE',
-      'subTitle': 'Connect your wallet to mutate a GACC.',
-      'connectedSubTitle': 'Connected! Are you ready to mutate?'
-    },
-  }
+  const maccLabels = () => {
+    if (data.saleFreeWhitelistActive) {
+      return (
+        {
+          'title': 'MINT A MUTANT',
+          'subTitle': 'Connect your wallet to mint a MACC.',
+          'connectedSubTitle': `Free Whitelist Mint. ${5000 - data.apesMinted} left!`
+        }
+      )
+    }
+    else if (data.saleWhitelistActive) {
+     return (
+      {
+        'title': 'MINT A MUTANT',
+        'subTitle': 'Connect your wallet to mint a MACC.',
+        'connectedSubTitle': `Whitelist Mint. ${5000 - data.apesMinted} left!`
+      }
+     )
+    }
+    else if (data.publicSaleActive) {
+      let remainingTime = new Date(data.remainingSaleTime * 1000).toISOString().substr(11, 8);
+      return (
+        {
+          'title': 'MINT A MUTANT',
+          'subTitle': 'Connect your wallet to mint a MACC.',
+          'connectedSubTitle': `Dutch Auction. ${5000 - data.apesMinted} left!\nPrice: ${((data.currentPrice/1000000000000000000)).toFixed(3)}Ξ\nTime remaining: ${remainingTime}.`
+        }
+      )
+    }
+    else if (data.serumMutationActive) {
+      return (
+        {
+          'title': `MUTATE A GRANDPA APE`,
+          'subTitle': 'Connect your wallet to mutate a GACC.',
+          'connectedSubTitle': ''
+        }
+      )
+    }
+    else {
+      return({})
+    }
+  };
 
   const processErrorMessage = (errorMessage) => {
     const endIndex = errorMessage.message.search('{')
@@ -278,15 +297,15 @@ function Mutants() {
     return (
       <div className="d-flex justify-content-center">
         {(blockchain.account === "" || blockchain.smartContract === null) ? (
-        <p className="common-p">{maccLabels[process.env.REACT_APP_ACTION]['subTitle']}</p>): (
-          <p className="common-p"></p>
+        <p className="common-p">{maccLabels()['subTitle']}</p>): (
+          <p className="common-p">{maccLabels()['connectedSubTitle']}</p>
         )}
         </div>
     )
   }
 
   function updateTextInput(val) {
-    document.getElementById('textInput').value=val; 
+    document.getElementById('textLabel').value=val; 
   }
 
   const connectAndMintButton = () => {
@@ -305,7 +324,7 @@ function Mutants() {
         </button></div>
       )
     }
-    else if (process.env.REACT_APP_ACTION === 'FREE_WHITELIST_MINT' || process.env.REACT_APP_ACTION === 'WHITELIST_MINT') {
+    else if (data.saleFreeWhitelistActive || data.saleWhitelistActive) {
       return (
       <div className="d-flex justify-content-center">
         <button 
@@ -323,14 +342,14 @@ function Mutants() {
       </div>
       )
     }
-    else if (process.env.REACT_APP_ACTION === 'DUTCH_AUCTION_MINT') {
+    else if (data.publicSaleActive) {
       return (
       <div className="d-flex justify-content-center">
         <form>
           <div className="form-group">
             <label htmlFor="formControlRange" className="form-label">How many do you want to mint? (max 20)</label>
             <input type="range" className="form-range" defaultValue="1" min="1" max="20" id="mintQuantity" onChange={(e) => updateTextInput(e.target.value)}/>
-            <input type="text" id="textInput" defaultValue="1"></input>
+            <input type="text" id="textLabel" defaultValue="1" readOnly></input>
           </div>
           <button type="submit" className="bayc-button" disabled={mintingNft ? 1 : 0}
             onClick={(e) => {
@@ -565,7 +584,7 @@ function Mutants() {
                           <div className="d-flex justify-content-center w-100 col-12">
                             <div className="MuiPaper-root MuiCard-root jss12 MuiPaper-outlined MuiPaper-rounded" style={{opacity: 1, transform: 'none', transition: 'opacity 291ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 194ms cubic-bezier(0.4, 0, 0.2, 1) 0ms'}}>
                               <div className="MuiCardContent-root">
-                                <h2 className="d-flex justify-content-center common-sub-title">{maccLabels[process.env.REACT_APP_ACTION]['title']}</h2>
+                                <h2 className="d-flex justify-content-center common-sub-title">{maccLabels()['title']}</h2>
                                 <hr className="black-line" /><center>
                                 {titleText()}
                                 {connectAndMintButton()}</center>
