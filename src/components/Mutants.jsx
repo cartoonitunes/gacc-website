@@ -205,7 +205,7 @@ function Mutants() {
       })
       .catch(err => {
         let prettyCost = ((cost/1000000000000000000)).toFixed(3);
-        let priceInfo = ` The current price is ${prettyCost}ETH.`
+        let priceInfo = ` The price to mint ${numMints} mutants is ${prettyCost}ETH.`
         setFeedback(processErrorMessage(err)+priceInfo)
         setMintingNft(false);
       });
@@ -361,7 +361,7 @@ function Mutants() {
       </div>
       )
     }
-    else if (process.env.REACT_APP_ACTION === 'MUTATE') {
+    else if (data.serumMutationActive) {
       return (
       <div className="d-flex justify-content-center">
         <form>
