@@ -152,6 +152,12 @@ div.qr-code-border{
     left:-5%;
     max-width:114%
 }
+.roadmap{
+    position:block;
+    top:-8%;
+    right:10%;
+    max-width:75%
+}
 .bayc-button{
     background-color:#bfc500;
     border-radius:8px;
@@ -317,7 +323,7 @@ input:focus{
     display: block;
     margin-left: auto;
     margin-right: auto;
-    max-width:200px;
+    max-width:400px;
     max-height:200px;
 }
 .teaser-button{
@@ -332,26 +338,32 @@ input:focus{
     transition:.3s
 }
 .teaser-countdown{
-    color:#bfc500;
+    color:#7DB165;
     border:0;
     font-weight:700;
     font-size:16px;
     margin:auto auto;
     transition:.3s
 }
+.teaser-countdown span{
+    color:#D1DF40;
+}
 .teaser-video{
     display: block;
     margin-left: auto;
     margin-right: auto;
+    width: auto;
+    height: auto;
     max-width:640px;
     max-height:360px;
 }
-iframe {
-    display: block;
-    width: 100%;
-    max-width:640;
-    margin: auto;
-}
+.react-player {
+    position: relative;
+  }
+  
+  .react-player > div {
+    position: absolute;
+  }
 .footer{
     position:absolute;
     bottom:0;
