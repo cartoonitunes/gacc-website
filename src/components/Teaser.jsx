@@ -3,7 +3,7 @@ import ReactPlayer from "react-player";
 import "../styles/style.css";
 
 function calculateTimeLeft() {
-  const difference = +new Date(`2022-06-8`) - +new Date();
+  const difference = +Date.parse("Jun 8, 2022 00:00:00") - +new Date();
   let timeLeft = {};
 
   if (difference > 0) {
@@ -86,7 +86,7 @@ function Teaser() {
         {discordButton()}
         <div className="teaser-countdown mb-5">
           <center>
-            {timerComponents.length ? timerComponents : <span>Time's up!</span>}
+            {timerComponents.length ? timerComponents : <span>Are you ready for MACC?</span>}
           </center>
         </div>
       </div>
