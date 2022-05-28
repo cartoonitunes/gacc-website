@@ -176,7 +176,7 @@ function Teaser() {
             <div className="col-12 col-lg-4 order-lg-first my-lg-auto"></div>
             <div className="col-12 col-lg-4 order-first">
               <img
-                className="img-fluid footer-logo"
+                className="img-fluid"
                 src={process.env.PUBLIC_URL + "/assets/images/MACC_LOGO.png"}
                 alt="logo"
               />
@@ -197,7 +197,7 @@ function Teaser() {
                     <i className="fa fa-twitter social-icon pr-lg-0" />
                   </a>
                 </div>
-                <div className="col-lg-12 col-sm-6 col-6">
+                <div className="col-lg-12 col-sm-6 col-8">
                   <p className="copyright text-right">
                     <span className="copy-left">
                       © 2022 Grandpa Ape Country Club
