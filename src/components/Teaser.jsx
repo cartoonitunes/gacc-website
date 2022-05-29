@@ -3,7 +3,7 @@ import ReactPlayer from "react-player";
 import "../styles/style.css";
 
 function calculateTimeLeft() {
-  const difference = +Date.parse("Jun 8, 2022 00:00:00") - +new Date();
+  const difference = +Date.parse("Jun 18, 2022 00:00:00") - +new Date();
   let timeLeft = {};
 
   if (difference > 0) {
@@ -104,18 +104,18 @@ function Teaser() {
               />
             </div>
             <br />
-            <p className="common-sub-title mb-3" key="uniqueId1">Hole 1: OG Grandpas</p>
-            <p className="common-text mb-3" key="uniqueId2">Release Og Grandpas to</p>
-            <p className="common-sub-title mb-3">Hole 2: OG Grandpas</p>
-            <p className="common-text mb-3">Release Og Grandpas to</p>
-            <p className="common-sub-title mb-3">Hole 3: OG Grandpas</p>
-            <p className="common-text mb-3">Release Og Grandpas to</p>
-            <p className="common-sub-title mb-3">Hole 4: OG Grandpas</p>
-            <p className="common-text mb-3">Release Og Grandpas to</p>
-            <p className="common-sub-title mb-3">Hole 5: OG Grandpas</p>
-            <p className="common-text mb-3">Release Og Grandpas to</p>
-            <p className="common-sub-title mb-3">Hole 6: OG Grandpas</p>
-            <p className="common-text mb-3">Release Og Grandpas to</p>
+            <p className="common-sub-title mb-3" key="roadmap1">Hole 1: OG Grandpas</p>
+            <p className="common-text mb-3" key="roadmap2">Release Og Grandpas to</p>
+            <p className="common-sub-title mb-3" key="roadmap3">Hole 2: OG Grandpas</p>
+            <p className="common-text mb-3" key="roadmap4">Release Og Grandpas to</p>
+            <p className="common-sub-title mb-3" key="roadmap5">Hole 3: OG Grandpas</p>
+            <p className="common-text mb-3" key="roadmap6">Release Og Grandpas to</p>
+            <p className="common-sub-title mb-3" key="roadmap7">Hole 4: OG Grandpas</p>
+            <p className="common-text mb-3" key="roadmap8">Release Og Grandpas to</p>
+            <p className="common-sub-title mb-3" key="roadmap9">Hole 5: OG Grandpas</p>
+            <p className="common-text mb-3" key="roadmap10">Release Og Grandpas to</p>
+            <p className="common-sub-title mb-3" key="roadmap11">Hole 6: OG Grandpas</p>
+            <p className="common-text mb-3" key="roadmap12">Release Og Grandpas to</p>
           </div>
           <div className="col-sm">
             <h3 className="common-title mb-3">Holes 7-12</h3>
@@ -128,18 +128,18 @@ function Teaser() {
               />
             </div>
             <br />
-            <p className="common-sub-title mb-3">Hole 7: OG Grandpas</p>
-            <p className="common-text mb-3">Release Og Grandpas to</p>
-            <p className="common-sub-title mb-3">Hole 8: OG Grandpas</p>
-            <p className="common-text mb-3">Release Og Grandpas to</p>
-            <p className="common-sub-title mb-3">Hole 9: OG Grandpas</p>
-            <p className="common-text mb-3">Release Og Grandpas to</p>
-            <p className="common-sub-title mb-3">Hole 10: OG Grandpas</p>
-            <p className="common-text mb-3">Release Og Grandpas to</p>
-            <p className="common-sub-title mb-3">Hole 11: OG Grandpas</p>
-            <p className="common-text mb-3">Release Og Grandpas to</p>
-            <p className="common-sub-title mb-3">Hole 12: OG Grandpas</p>
-            <p className="common-text mb-3">Release Og Grandpas to</p>
+            <p className="common-sub-title mb-3" key="roadmap13">Hole 7: OG Grandpas</p>
+            <p className="common-text mb-3" key="roadmap14">Release Og Grandpas to</p>
+            <p className="common-sub-title mb-3" key="roadmap15">Hole 8: OG Grandpas</p>
+            <p className="common-text mb-3" key="roadmap16">Release Og Grandpas to</p>
+            <p className="common-sub-title mb-3" key="roadmap17">Hole 9: OG Grandpas</p>
+            <p className="common-text mb-3" key="roadmap18">Release Og Grandpas to</p>
+            <p className="common-sub-title mb-3" key="roadmap19">Hole 10: OG Grandpas</p>
+            <p className="common-text mb-3" key="roadmap20">Release Og Grandpas to</p>
+            <p className="common-sub-title mb-3" key="roadmap21">Hole 11: OG Grandpas</p>
+            <p className="common-text mb-3" key="roadmap22">Release Og Grandpas to</p>
+            <p className="common-sub-title mb-3" key="roadmap23">Hole 12: OG Grandpas</p>
+            <p className="common-text mb-3" key="roadmap24">Release Og Grandpas to</p>
           </div>
           <div className="col-sm">
             <h3 className="common-title mb-3">Holes 13-18</h3>
@@ -152,18 +152,18 @@ function Teaser() {
               />
             </div>
             <br />
-            <p className="common-sub-title mb-3">Hole 13: OG Grandpas</p>
-            <p className="common-text mb-3">Release Og Grandpas to</p>
-            <p className="common-sub-title mb-3">Hole 14: OG Grandpas</p>
-            <p className="common-text mb-3">Release Og Grandpas to</p>
-            <p className="common-sub-title mb-3">Hole 15: OG Grandpas</p>
-            <p className="common-text mb-3">Release Og Grandpas to</p>
-            <p className="common-sub-title mb-3">Hole 16: OG Grandpas</p>
-            <p className="common-text mb-3">Release Og Grandpas to</p>
-            <p className="common-sub-title mb-3">Hole 17: OG Grandpas</p>
-            <p className="common-text mb-3">Release Og Grandpas to</p>
-            <p className="common-sub-title mb-3">Hole 18: OG Grandpas</p>
-            <p className="common-text mb-3">Release Og Grandpas to</p>
+            <p className="common-sub-title mb-3" key="roadmap25">Hole 13: OG Grandpas</p>
+            <p className="common-text mb-3" key="roadmap26">Release Og Grandpas to</p>
+            <p className="common-sub-title mb-3" key="roadmap27">Hole 14: OG Grandpas</p>
+            <p className="common-text mb-3" key="roadmap29">Release Og Grandpas to</p>
+            <p className="common-sub-title mb-3" key="roadmap29">Hole 15: OG Grandpas</p>
+            <p className="common-text mb-3" key="roadmap30">Release Og Grandpas to</p>
+            <p className="common-sub-title mb-3" key="roadmap31">Hole 16: OG Grandpas</p>
+            <p className="common-text mb-3" key="roadmap32">Release Og Grandpas to</p>
+            <p className="common-sub-title mb-3" key="roadmap33">Hole 17: OG Grandpas</p>
+            <p className="common-text mb-3" key="roadmap34">Release Og Grandpas to</p>
+            <p className="common-sub-title mb-3" key="roadmap35">Hole 18: OG Grandpas</p>
+            <p className="common-text mb-3" key="roadmap36">Release Og Grandpas to</p>
           </div>
         </div>
       </div>
