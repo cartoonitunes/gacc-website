@@ -155,7 +155,7 @@ function Teaser() {
             <p className="common-sub-title mb-3" key="roadmap25">Hole 13: OG Grandpas</p>
             <p className="common-text mb-3" key="roadmap26">Release Og Grandpas to</p>
             <p className="common-sub-title mb-3" key="roadmap27">Hole 14: OG Grandpas</p>
-            <p className="common-text mb-3" key="roadmap29">Release Og Grandpas to</p>
+            <p className="common-text mb-3" key="roadmap28">Release Og Grandpas to</p>
             <p className="common-sub-title mb-3" key="roadmap29">Hole 15: OG Grandpas</p>
             <p className="common-text mb-3" key="roadmap30">Release Og Grandpas to</p>
             <p className="common-sub-title mb-3" key="roadmap31">Hole 16: OG Grandpas</p>
