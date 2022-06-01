@@ -388,6 +388,9 @@ input:focus{
     padding-top:30px;
     margin:0
 }
+.video-section {
+    height: 100vh;
+}
 .last-line{
     border-bottom:15px solid #bfc500;
     display:block;

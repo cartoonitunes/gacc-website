@@ -64,7 +64,7 @@ function Teaser() {
 
   return (
     <>
-      <div>
+      <div className="video-section">
         <div>
           <img
             className="img-fluid teaser-logo"
