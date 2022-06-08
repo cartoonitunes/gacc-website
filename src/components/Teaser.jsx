@@ -47,11 +47,14 @@ function Teaser() {
     return (
       <div className="container">
         <div className="row">
-          <div className="teaser-btn-box">
+          <div className="teaser-btn-box text-center">
             <a href="https://discord.com/invite/gacc">
               <button className="teaser-button" type="button">
                 JOIN US ON DISCORD{" "}
-                <i className="fa fa_appended   fa-arrow-right"></i>
+                <i
+                  className="fa fa_appended   fa-arrow-right"
+                  style={{ color: "black" }}
+                ></i>
               </button>
             </a>
             <br />
@@ -64,30 +67,36 @@ function Teaser() {
 
   return (
     <>
-      <div className="video-section">
-        <div>
-          <img
-            className="img-fluid teaser-logo"
-            src={process.env.PUBLIC_URL + "/assets/images/MACC_LOGO.png"}
-            alt="logo"
-          />
-        </div>
-        <div className="teaser-video">
-          <ReactPlayer
-            className="react-player"
-            url={process.env.PUBLIC_URL + "/assets/images/MACC_PROMO.mp4"}
-            controls={true}
-            playing={true}
-            width="100%"
-            height="100%"
-          />
-        </div>
-        <br />
-        {discordButton()}
-        <div className="teaser-countdown mb-5">
-          <center>
-            {timerComponents.length ? timerComponents : <span>Are you ready for MACC?</span>}
-          </center>
+      <div className="mb-5">
+        <div className="video-section">
+          <div>
+            <img
+              className="img-fluid teaser-logo"
+              src={process.env.PUBLIC_URL + "/assets/images/MACC_LOGO.png"}
+              alt="logo"
+            />
+          </div>
+          <div className="teaser-video">
+            <ReactPlayer
+              className="react-player"
+              url={process.env.PUBLIC_URL + "/assets/images/MACC_PROMO.mp4"}
+              controls={true}
+              playing={true}
+              width="100%"
+              height="100%"
+            />
+          </div>
+          <br />
+          {discordButton()}
+          <div className="teaser-countdown mb-5">
+            <center>
+              {timerComponents.length ? (
+                timerComponents
+              ) : (
+                <span>Are you ready for MACC?</span>
+              )}
+            </center>
+          </div>
         </div>
       </div>
       <footer>
@@ -104,20 +113,6 @@ function Teaser() {
             </div>
             <div className="order-last my-auto text-center col-lg-4 col-sm-12 col-12">
               <div className="row">
-                <div className="text-lg-right col-sm-12 col-12">
-                  <a href="https://www.youtube.com/channel/UCkiX36fFF4xekyRVTWDKIXg">
-                    <i className="fa fa-youtube-play social-icon pr-lg-0" />
-                  </a>
-                  <a href="https://www.instagram.com/grandpaapecountryclubofficial">
-                    <i className="fa fa-instagram social-icon pr-lg-0" />
-                  </a>
-                  <a href="https://discord.com/invite/gacc">
-                    <i className="fa fa-discord-alt social-icon pr-lg-0" />
-                  </a>
-                  <a href="https://twitter.com/GrandpaApeCC">
-                    <i className="fa fa-twitter social-icon pr-lg-0" />
-                  </a>
-                </div>
                 <div className="col-lg-12 col-sm-6 col-8">
                   <p className="copyright text-right">
                     <span className="copy-left">

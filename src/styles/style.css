@@ -323,6 +323,7 @@ input:focus{
     display: block;
     margin-left: auto;
     margin-right: auto;
+    width: 400px;
     max-width:400px;
     max-height:200px;
 }
