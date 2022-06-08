@@ -2,9 +2,15 @@ import React from "react";
 import ReactPlayer from "react-player";
 import "../styles/style.css";
 
+function getPSTOffset(end) {
+
+  return new Date().getTimezoneOffset() - (end.getTimezoneOffset())
+}
+
 function calculateTimeLeft() {
-  var now = new Date();
-  const difference = +new Date('June 18, 2022 00:00:00 EST') - +new Date(now.getTime());
+  var now = new Date().getTime();
+  var mintDate = new Date('June 17, 2022 23:00:00 PST');
+  const difference = mintDate - now - getPSTOffset(mintDate) * 60000;
   let timeLeft = {};
 
   if (difference > 0) {
