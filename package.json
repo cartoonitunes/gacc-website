@@ -30,6 +30,7 @@
   },
   "homepage": "http://grandpaapecountryclub.com/",
   "scripts": {
+    "preinstall": "npm config set package-lock true",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
