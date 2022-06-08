@@ -82,8 +82,8 @@ function Teaser() {
               url={process.env.PUBLIC_URL + "/assets/images/MACC_PROMO.mp4"}
               controls={true}
               playing={true}
+              light={process.env.PUBLIC_URL + "/assets/images/macc_screen.png"}
               width="100%"
-              height="100%"
             />
           </div>
           <br />
