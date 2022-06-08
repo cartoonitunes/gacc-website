@@ -87,8 +87,10 @@ function Teaser() {
             />
           </div>
           <br />
+          <div className="mb-5 ">
           {discordButton()}
-          <div className="teaser-countdown mb-5">
+          </div>
+          <div className="mb-5 teaser-countdown">
             <center>
               {timerComponents.length ? (
                 timerComponents
