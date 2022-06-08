@@ -3,7 +3,7 @@ import ReactPlayer from "react-player";
 import "../styles/style.css";
 
 function calculateTimeLeft() {
-  const difference = +Date.parse("Jun 18, 2022 00:00:00") - +new Date();
+  const difference = +Date.parse("Jun 18, 2022 00:00:00").toLocaleString('en-US', { timeZone: 'America/New_York' }) - +new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
   let timeLeft = {};
 
   if (difference > 0) {
@@ -82,7 +82,6 @@ function Teaser() {
               url={process.env.PUBLIC_URL + "/assets/images/MACC_PROMO.mp4"}
               controls={true}
               playing={true}
-              light={process.env.PUBLIC_URL + "/assets/images/macc_screen.png"}
               width="100%"
               height="100%"
             />

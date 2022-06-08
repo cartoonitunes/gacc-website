@@ -358,13 +358,6 @@ input:focus{
     height: auto;
     max-width:640px;
     max-height:360px;
-    height: 100vh;
-}
-@media only screen and (min-width: 960){
-    .teaser-video {
-        height: 20vh;
-        width: 30%
-    }
 }
 .react-player {
     position: relative;
