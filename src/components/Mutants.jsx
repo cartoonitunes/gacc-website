@@ -44,7 +44,7 @@ function Mutants() {
                 <div className="mb-4 mb-lg-5 container">
                   <div className="row">
                     <div className="px-0 col-12">
-                      <a href='/thelab'><img src={process.env.PUBLIC_URL + '/assets/images/MACC_COVER.png'} className="img-fluid px-0" useMap="#mutant" alt=""/></a>
+                      <img src={process.env.PUBLIC_URL + '/assets/images/MACC_COVER.png'} className="img-fluid px-0" useMap="#mutant" alt=""/>
                     </div>
                   </div>
                 </div>
