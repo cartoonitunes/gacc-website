@@ -5,7 +5,6 @@ import Mutants from './components/Mutants';
 import Home from './components/Home';
 import Landing from './components/Landing';
 import Teaser from './components/Teaser';
-import Error from './Error';
 import Navigation from './components/Navigation';
  
 class App extends Component {

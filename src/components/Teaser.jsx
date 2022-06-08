@@ -84,6 +84,7 @@ function Teaser() {
               playing={true}
               light={process.env.PUBLIC_URL + "/assets/images/macc_screen.png"}
               width="100%"
+              height="100%"
             />
           </div>
           <br />
