@@ -2,7 +2,10 @@
   "name": "frontend_base_dapp",
   "version": "0.1.0",
   "private": true,
-  "engines": {"node": "16.13.1", "npm": "8.1.2"},
+  "engines": {
+    "node": "16.13.1",
+    "npm": "8.1.2"
+  },
   "dependencies": {
     "@openzeppelin/contracts": "^4.2.0",
     "@testing-library/jest-dom": "^5.11.4",
