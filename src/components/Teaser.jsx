@@ -3,7 +3,7 @@ import ReactPlayer from "react-player";
 import "../styles/style.css";
 
 function calculateTimeLeft() {
-  const difference = +Date.parse("Jun 18, 2022 00:00:00").toLocaleString('en-US', { timeZone: 'America/New_York' }) - +new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
+  const difference = +new Date(Date.UTC(2022, 6, 18)) - +new Date().getTime();
   let timeLeft = {};
 
   if (difference > 0) {
