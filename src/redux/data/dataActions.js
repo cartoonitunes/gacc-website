@@ -35,7 +35,7 @@ export const fetchData = () => {
         .call();
       let wlPrice = await store
         .getState()
-        .blockchain.smartContract.methods.WlPrice()
+        .blockchain.smartContract.methods.WL_PRICE()
         .call();
       let apesMinted = await store
         .getState()

@@ -18,7 +18,7 @@ function Mutants() {
 
   const mintMutant = async (serumId=null, apeId=null, numMints=null) => {
     if (data.saleFreeWhitelistActive) {
-      freeWhiteListMint()
+      freeWhiteListMint(numMints)
     }
     else if (data.saleWhitelistActive) {
       whiteListMint()
@@ -92,18 +92,18 @@ function Mutants() {
     }
   }
 
-  const freeWhiteListMint = async () => {
+  const freeWhiteListMint = async (numMints) => {
     setFeedback(`Minting your MACC...`);
     setMintingNft(true);
     blockchain.smartContract.methods
-      .mintFreeWhitelist()
+      .mintFreeWhitelist(numMints)
       .call({
         to: process.env.REACT_APP_MACC_ADDRESS,
         from: blockchain.account
       })
       .then(() => {
         blockchain.smartContract.methods
-        .mintFreeWhitelist()
+        .mintFreeWhitelist(numMints)
         .send({ 
           to: process.env.REACT_APP_MACC_ADDRESS,
           from: blockchain.account
@@ -169,8 +169,12 @@ function Mutants() {
   }
 
   const dutchAuctionMint = async (numMints) => {
-    let cost = await blockchain.smartContract.methods.getMintPrice().call() * numMints
-    let buffer = 1000
+    let cost = await blockchain.smartContract.methods.getMintPrice().call()
+    console.log(`The contract says ${cost}`)
+    cost = cost * numMints
+    console.log(`Multiplied by ${numMints} its ${cost}`)
+    console.log(`As a string its ${String(cost)}`)
+    let buffer = 20000
     let totalCostWei = String(cost + buffer);
     setFeedback(`Minting your MACC...`);
     setMintingNft(true);
@@ -324,7 +328,7 @@ function Mutants() {
         </button></div>
       )
     }
-    else if (data.saleFreeWhitelistActive || data.saleWhitelistActive) {
+    else if (data.saleWhitelistActive) {
       return (
       <div className="d-flex justify-content-center">
         <button 
@@ -339,6 +343,25 @@ function Mutants() {
           >
             {mintingNft ? "Minting..." : "Mint 1 MACC"}
         </button>
+      </div>
+      )
+    }
+    else if (data.saleFreeWhitelistActive) {
+      return (
+        <div className="d-flex justify-content-center">
+        <form>
+          <div className="form-group">
+            <label htmlFor="formControlRange" className="form-label">How many do you want to mint? (max either 1 or 5 depending on your WL)</label>
+            <input type="range" className="form-range" defaultValue="1" min="1" max="5" id="mintQuantity" onChange={(e) => updateTextInput(e.target.value)}/>
+            <input type="text" id="textLabel" defaultValue="1" readOnly></input>
+          </div>
+          <button type="submit" className="bayc-button" disabled={mintingNft ? 1 : 0}
+            onClick={(e) => {
+              e.preventDefault();
+              mintMutant(null, null, document.getElementById("mintQuantity").value);
+              getData();
+            }}>Mint</button>
+        </form>
       </div>
       )
     }
@@ -391,6 +414,13 @@ function Mutants() {
               getData();
             }}>Mutate</button>
         </form>
+      </div>
+      )
+    }
+    else {
+      return (
+      <div className="d-flex justify-content-center">
+       No minting or mutating at the moment. Stay tuned.
       </div>
       )
     }
@@ -454,6 +484,36 @@ function Mutants() {
                     </div>
                   </div>
                 </div>
+                <hr className="gray-line mb-5" />
+                  <div>
+                    <div style={{transition: 'opacity 400ms ease 0s, transform 400ms ease 0s', transform: 'none', opacity: 1}}>
+                      <div className="mb-5  row">
+                        <div className="col">
+                          <div className="d-flex justify-content-center w-100 col-12">
+                            <div className="MuiPaper-root MuiCard-root jss12 MuiPaper-outlined MuiPaper-rounded" style={{opacity: 1, transform: 'none', transition: 'opacity 291ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 194ms cubic-bezier(0.4, 0, 0.2, 1) 0ms'}}>
+                              <div className="MuiCardContent-root">
+                                <h2 className="d-flex justify-content-center common-sub-title">{maccLabels()['title']}</h2>
+                                <hr className="black-line" /><center>
+                                {titleText()}
+                                {connectAndMintButton()}</center>
+                                <br></br>
+                                <div><center>{feedback}</center></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div></div>
+                    {/* <div className="mb-5 row">
+                      <div className="col">
+                        <div className="d-flex justify-content-center">
+                          <p className="common-p text-center text-break mb-0"><span className="bold-text">VERIFIED SMART CONTRACT ADDRESS: </span><a title="0x4B103d07C18798365946E76845EDC6b565779402" href="https://etherscan.io/address/0x4B103d07C18798365946E76845EDC6b565779402" className="link" style={{color: '#977039'}}>0x4B103d07C18798365946E76845EDC6b565779402</a></p>
+                        </div>
+                      </div>
+                    </div> */}
+                <hr className="gray-line mb-5" />
                 <div className="px-4 mt-md-4 container">
                   <div className="mb-5  row">
                     <div className="mb-5 mb-lg-0 col-lg-7 col-12">
@@ -576,35 +636,6 @@ function Mutants() {
               </div>
             </div>
           </div>
-          <hr className="gray-line mb-5" />
-                  <div>
-                    <div style={{transition: 'opacity 400ms ease 0s, transform 400ms ease 0s', transform: 'none', opacity: 1}}>
-                      <div className="mb-5  row">
-                        <div className="col">
-                          <div className="d-flex justify-content-center w-100 col-12">
-                            <div className="MuiPaper-root MuiCard-root jss12 MuiPaper-outlined MuiPaper-rounded" style={{opacity: 1, transform: 'none', transition: 'opacity 291ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 194ms cubic-bezier(0.4, 0, 0.2, 1) 0ms'}}>
-                              <div className="MuiCardContent-root">
-                                <h2 className="d-flex justify-content-center common-sub-title">{maccLabels()['title']}</h2>
-                                <hr className="black-line" /><center>
-                                {titleText()}
-                                {connectAndMintButton()}</center>
-                                <br></br>
-                                <div><center>{feedback}</center></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div></div>
-                    <div className="mb-5 row">
-                      <div className="col">
-                        <div className="d-flex justify-content-center">
-                          <p className="common-p text-center text-break mb-0"><span className="bold-text">VERIFIED SMART CONTRACT ADDRESS: </span><a title="0x4B103d07C18798365946E76845EDC6b565779402" href="https://etherscan.io/address/0x4B103d07C18798365946E76845EDC6b565779402" className="link" style={{color: '#977039'}}>0x4B103d07C18798365946E76845EDC6b565779402</a></p>
-                        </div>
-                      </div>
-                    </div>
           <footer className="footer">
             <div className="container-fluid footer-line">
               <hr className="p-0 line" />
