@@ -4,7 +4,7 @@ import Web3 from "web3";
 import SmartContract from "../../contracts/mutantABI.json";
 // log
 import { fetchData } from "../data/dataActions";
-require('dotenv').config();
+require("dotenv").config();
 
 const connectRequest = () => {
   return {
@@ -38,10 +38,10 @@ export const connectMACC = () => {
     dispatch(connectRequest());
     const { ethereum } = window;
     const metamaskIsInstalled = ethereum && ethereum.isMetaMask;
-    await ethereum.request({
-      method: "eth_requestAccounts",
-  });
     if (metamaskIsInstalled) {
+      await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
       Web3EthContract.setProvider(ethereum);
       let web3 = new Web3(ethereum);
       web3.eth.handleRevert = true;
@@ -62,7 +62,7 @@ export const connectMACC = () => {
             connectSuccess({
               account: accounts[0],
               smartContract: SmartContractObj,
-              web3: web3
+              web3: web3,
             })
           );
           // Add listeners start
@@ -84,7 +84,6 @@ export const connectMACC = () => {
     }
   };
 };
-
 
 export const updateAccount = (account) => {
   return async (dispatch) => {
