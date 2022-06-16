@@ -80,7 +80,7 @@ export const connectMACC = () => {
         dispatch(connectFailed("Something went wrong"));
       }
     } else {
-      dispatch(connectFailed("Install Metamask"));
+      dispatch(connectFailed("Install Metamask or open from you wallet browser"));
     }
   };
 };

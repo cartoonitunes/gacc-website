@@ -321,6 +321,7 @@ function Mutants() {
         onClick={(e) => {
           e.preventDefault();
           dispatch(connectMACC());
+          setFeedback(data.errorMsg);
           getData();
         }}
         style={{backgroundColor: '#83D8FC', color: 'black'}}>
