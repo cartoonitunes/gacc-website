@@ -47,6 +47,13 @@ const dataReducer = (state = initialState, action) => {
         error: true,
         errorMsg: action.payload,
       };
+    case "CONNECTION_FAILED":
+      return {
+        ...initialState,
+        loading: false,
+        error: true,
+        errorMsg: action.payload,
+      };
     default:
       return state;
   }
