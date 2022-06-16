@@ -339,6 +339,27 @@ input:focus{
     transition:.3s
 }
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,700&family=Nosifer&display=swap');
+.mint-title {
+    font-family: 'Nosifer', cursive;
+}
+.mint-subtitle {
+    color:#bfc500;
+}
+.mint-input {
+    background-color:#bfc500;
+    color: black;
+    font-weight:700;
+    text-align: center;
+}
+.mint-button {
+    background-color:#bfc500;
+    max-height:200px;
+    padding: 3%;
+}
+.mint-feedback {
+    color:#bfc500;
+    text-align: center;
+}
 .teaser-countdown{
     font-family: 'Nosifer', cursive;
     color:#7DB165;
