@@ -14,7 +14,7 @@ function Mutants() {
   const [feedback, setFeedback] = useState("");
   const [apeSelection, setApeSelection] = useState(null);
   const [mintingNft, setMintingNft] = useState(false);
-  const legendaries = ["0","1","2","3","4","5","6","7","8","9","156","576","1713","2976","3023","3622","3767","3967"];
+  const legendaries = ["0","1","2","3","4","5","6","7","8","9","156","576","1713","2976","3023","3622","3767","3867"];
 
   const mintMutant = async (serumId=null, apeId=null, numMints=null) => {
     if (data.saleFreeWhitelistActive) {
@@ -301,8 +301,8 @@ function Mutants() {
     return (
       <div className="d-flex justify-content-center">
         {(blockchain.account === "" || blockchain.smartContract === null) ? (
-        <p className="common-p">{maccLabels()['subTitle']}</p>): (
-          <p className="common-p">{maccLabels()['connectedSubTitle']}</p>
+        <p className="common-p mint-subtitle">{maccLabels()['subTitle']}</p>): (
+          <p className="common-p mint-subtitle">{maccLabels()['connectedSubTitle']}</p>
         )}
         </div>
     )
@@ -351,7 +351,7 @@ function Mutants() {
         <div className="d-flex justify-content-center">
         <form>
           <div className="form-group">
-            <label htmlFor="formControlRange" className="form-label">How many do you want to mint? (max either 1 or 5 depending on your WL)</label>
+            <label htmlFor="formControlRange" className="form-label mint-subtitle">How many do you want to mint? (max either 1 or 5 depending on your WL)</label>
             <input type="range" className="form-range" defaultValue="1" min="1" max="5" id="mintQuantity" onChange={(e) => updateTextInput(e.target.value)}/>
             <input type="text" id="textLabel" defaultValue="1" readOnly></input>
           </div>
@@ -370,11 +370,11 @@ function Mutants() {
       <div className="d-flex justify-content-center">
         <form>
           <div className="form-group">
-            <label htmlFor="formControlRange" className="form-label">How many do you want to mint? (max 20)</label>
-            <input type="range" className="form-range" defaultValue="1" min="1" max="20" id="mintQuantity" onChange={(e) => updateTextInput(e.target.value)}/>
-            <input type="text" id="textLabel" defaultValue="1" readOnly></input>
+            <label htmlFor="formControlRange" className="form-label mint-subtitle">How many do you want to mint? (max 20)</label>
+            <input type="range" className="form-range mint-input" defaultValue="1" min="1" max="20" id="mintQuantity" onChange={(e) => updateTextInput(e.target.value)}/>
+            <input type="text" className="mint-input" id="textLabel" defaultValue="1" readOnly></input>
           </div>
-          <button type="submit" className="bayc-button" disabled={mintingNft ? 1 : 0}
+          <button type="submit" className="bayc-button mint-button" disabled={mintingNft ? 1 : 0}
             onClick={(e) => {
               e.preventDefault();
               mintMutant(null, null, document.getElementById("mintQuantity").value);
@@ -389,8 +389,8 @@ function Mutants() {
       <div className="d-flex justify-content-center">
         <form>
           <div className="form-group">
-            <label htmlFor="exampleInputEmail1">Enter Ape ID to Mutate</label>
-            <input className="form-control bayc-button " name='apeId' id='apeId' onChange={(e) => setApeSelection(e.target.value)}></input>
+            <label htmlFor="exampleInputEmail1 mint-subtitle">Enter Ape ID to Mutate</label>
+            <input className="form-control bayc-button mint-input" name='apeId' id='apeId' onChange={(e) => setApeSelection(e.target.value)}></input>
           </div>
           {!legendaries.includes(apeSelection) && (
               <div className="form-group">
@@ -492,12 +492,12 @@ function Mutants() {
                           <div className="d-flex justify-content-center w-100 col-12">
                             <div className="MuiPaper-root MuiCard-root jss12 MuiPaper-outlined MuiPaper-rounded" style={{opacity: 1, transform: 'none', transition: 'opacity 291ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 194ms cubic-bezier(0.4, 0, 0.2, 1) 0ms'}}>
                               <div className="MuiCardContent-root">
-                                <h2 className="d-flex justify-content-center common-sub-title">{maccLabels()['title']}</h2>
+                                <h2 className="d-flex justify-content-center common-sub-title mint-title">{maccLabels()['title']}</h2>
                                 <hr className="black-line" /><center>
                                 {titleText()}
                                 {connectAndMintButton()}</center>
                                 <br></br>
-                                <div><center>{feedback}</center></div>
+                                <div className="mint-feedback">{feedback}</div>
                               </div>
                             </div>
                           </div>
