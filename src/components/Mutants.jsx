@@ -18,10 +18,10 @@ function Mutants() {
 
   const mintMutant = async (serumId=null, apeId=null, numMints=null) => {
     if (data.saleFreeWhitelistActive) {
-      freeWhiteListMint(numMints)
+      freeWhiteListMint()
     }
     else if (data.saleWhitelistActive) {
-      whiteListMint()
+      whiteListMint(numMints)
     }
     else if (data.publicSaleActive) {
       dutchAuctionMint(numMints)
@@ -92,18 +92,18 @@ function Mutants() {
     }
   }
 
-  const freeWhiteListMint = async (numMints) => {
+  const freeWhiteListMint = async () => {
     setFeedback(`Minting your MACC...`);
     setMintingNft(true);
     blockchain.smartContract.methods
-      .mintFreeWhitelist(numMints)
+      .mintFreeWhitelist()
       .call({
         to: process.env.REACT_APP_MACC_ADDRESS,
         from: blockchain.account
       })
       .then(() => {
         blockchain.smartContract.methods
-        .mintFreeWhitelist(numMints)
+        .mintFreeWhitelist()
         .send({ 
           to: process.env.REACT_APP_MACC_ADDRESS,
           from: blockchain.account
@@ -128,13 +128,14 @@ function Mutants() {
       });
   }
 
-  const whiteListMint = async () => {
-    let cost = process.env.REACT_APP_WL_PRICE;
+  const whiteListMint = async (numMints) => {
+    let cost = data.wlPrice;
+    cost = cost * numMints
     let totalCostWei = String(cost);
     setFeedback(`Minting your MACC...`);
     setMintingNft(true);
     blockchain.smartContract.methods
-      .mintWhitelist()
+      .mintWhitelist(numMints)
       .call({
         to: process.env.REACT_APP_MACC_ADDRESS,
         from: blockchain.account,
@@ -142,7 +143,7 @@ function Mutants() {
       })
       .then(() => {
         blockchain.smartContract.methods
-        .mintWhitelist()
+        .mintWhitelist(numMints)
         .send({ 
           to: process.env.REACT_APP_MACC_ADDRESS,
           from: blockchain.account,
@@ -170,10 +171,7 @@ function Mutants() {
 
   const dutchAuctionMint = async (numMints) => {
     let cost = await blockchain.smartContract.methods.getMintPrice().call()
-    console.log(`The contract says ${cost}`)
     cost = cost * numMints
-    console.log(`Multiplied by ${numMints} its ${cost}`)
-    console.log(`As a string its ${String(cost)}`)
     let buffer = 20000
     let totalCostWei = String(cost + buffer);
     setFeedback(`Minting your MACC...`);
@@ -331,24 +329,6 @@ function Mutants() {
     }
     else if (data.saleWhitelistActive) {
       return (
-      <div className="d-flex justify-content-center">
-        <button 
-          className="bayc-button " 
-          type="button"
-          disabled={mintingNft ? 1 : 0}
-          onClick={(e) => {
-            e.preventDefault();
-            mintMutant();
-            getData();
-          }}
-          >
-            {mintingNft ? "Minting..." : "Mint 1 MACC"}
-        </button>
-      </div>
-      )
-    }
-    else if (data.saleFreeWhitelistActive) {
-      return (
         <div className="d-flex justify-content-center">
         <form>
           <div className="form-group">
@@ -363,6 +343,24 @@ function Mutants() {
               getData();
             }}>Mint</button>
         </form>
+      </div>
+      )
+    }
+    else if (data.saleFreeWhitelistActive) {
+      return (
+        <div className="d-flex justify-content-center">
+        <button 
+          className="bayc-button " 
+          type="button"
+          disabled={mintingNft ? 1 : 0}
+          onClick={(e) => {
+            e.preventDefault();
+            mintMutant();
+            getData();
+          }}
+          >
+            {mintingNft ? "Minting..." : "Mint 1 MACC"}
+        </button>
       </div>
       )
     }
