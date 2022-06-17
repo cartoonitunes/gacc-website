@@ -328,7 +328,7 @@ function Mutants() {
     if (blockchain.account === "" || blockchain.smartContract === null) {
       return (
         <div className="d-flex justify-content-center"><button 
-        className="bayc-button " 
+        className="bayc-button mint-button" 
         type="button"
         onClick={(e) => {
           e.preventDefault();
@@ -336,7 +336,7 @@ function Mutants() {
           setFeedback(data.errorMsg);
           getData();
         }}
-        style={{backgroundColor: '#83D8FC', color: 'black'}}>
+        >
           CONNECT WALLET
         </button></div>
       )
@@ -350,7 +350,7 @@ function Mutants() {
             <input type="range" className="form-range" defaultValue="1" min="1" max="5" id="mintQuantity" onChange={(e) => updateTextInput(e.target.value)}/>
             <input type="text" id="textLabel" defaultValue="1" readOnly></input>
           </div>
-          <button type="submit" className="bayc-button" disabled={mintingNft ? 1 : 0}
+          <button type="submit" className="bayc-button mint-button" disabled={mintingNft ? 1 : 0}
             onClick={(e) => {
               e.preventDefault();
               mintMutant(null, null, document.getElementById("mintQuantity").value);
@@ -364,7 +364,7 @@ function Mutants() {
       return (
         <div className="d-flex justify-content-center">
         <button 
-          className="bayc-button " 
+          className="bayc-button mint-button" 
           type="button"
           disabled={mintingNft ? 1 : 0}
           onClick={(e) => {

@@ -39,7 +39,6 @@ app.post('/api/proof', (req, res) => {
         if (wlType === 'FREE') {
             proof = wlFreeMerkleTree.getHexProof(hashedAddress)
         }
-        console.log(proof)
         if (!proof) {
             res.status(422)
             res.send('Failed attempt')
