@@ -5,25 +5,27 @@
     "main": "index.js",
     "type": "commonjs",
     "scripts": {
-      "start": "NODE_OPTIONS='--experimental-json-modules --experimental-modules' node server/index.js",
-      "heroku-postbuild": "cd client && npm install && npm run build"
+        "start": "NODE_OPTIONS='--experimental-json-modules --experimental-modules' node server/index.js",
+        "heroku-postbuild": "cd client && npm install && npm run build"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "dependencies": {
-      "body-parser": "^1.19.2",
-      "dotenv": "^16.0.0",
-      "express": "^4.17.3",
-      "path": "^0.12.7",
-      "pg": "^8.7.3",
-      "pg-hstore": "^2.3.4",
-      "sequelize": "^6.17.0",
-      "sequelize-cli": "^6.4.1",
-      "web3": "^1.7.1",
-      "web3-eth-contract": "^1.7.1"
+        "body-parser": "^1.19.2",
+        "dotenv": "^16.0.0",
+        "express": "^4.17.3",
+        "keccak256": "^1.0.6",
+        "merkletreejs": "^0.2.31",
+        "path": "^0.12.7",
+        "pg": "^8.7.3",
+        "pg-hstore": "^2.3.4",
+        "sequelize": "^6.17.0",
+        "sequelize-cli": "^6.4.1",
+        "web3": "^1.7.1",
+        "web3-eth-contract": "^1.7.1"
     },
     "engines": {
-      "node": "16.13.1"
+        "node": "16.13.1"
     }
-  }
+}
