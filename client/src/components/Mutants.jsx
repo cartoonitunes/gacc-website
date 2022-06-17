@@ -166,7 +166,7 @@ function Mutants() {
         .then((receipt) => {
           console.log(receipt);
           setFeedback(
-            `Congratulations and welcome to the Mutant Ape Country Club! Go visit Opensea.io and holler in the Discord.`
+            `Congratulations and welcome to the Mutant Ape Country Club!`
           );
           setMintingNft(false);
           dispatch(fetchData(blockchain.account));
@@ -208,7 +208,7 @@ function Mutants() {
         .then((receipt) => {
           console.log(receipt);
           setFeedback(
-            `Congratulations and welcome to the Mutant Ape Country Club! Go visit Opensea.io and holler in the Discord.`
+            `Congratulations and welcome to the Mutant Ape Country Club!`
           );
           setMintingNft(false);
           dispatch(fetchData(blockchain.account));
@@ -256,7 +256,7 @@ function Mutants() {
         .then((receipt) => {
           console.log(receipt);
           setFeedback(
-            `Congratulations and welcome to the Mutant Ape Country Club! Go visit Opensea.io and holler in the Discord.`
+            `Congratulations and welcome to the Mutant Ape Country Club!`
           );
           setMintingNft(false);
           dispatch(fetchData(blockchain.account));
@@ -292,7 +292,7 @@ function Mutants() {
         .then((receipt) => {
           console.log(receipt);
           setFeedback(
-            `Congratulations you legend! Go visit Opensea.io and holler in the Discord.`
+            `Congratulations you legend!`
           );
           setMintingNft(false);
           dispatch(fetchData(blockchain.account));
