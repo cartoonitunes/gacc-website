@@ -5,6 +5,7 @@
     "main": "index.js",
     "type": "commonjs",
     "scripts": {
+        "begin": "npm run build && node server/index.js",
         "start": "NODE_OPTIONS='--experimental-json-modules --experimental-modules' node server/index.js",
         "heroku-postbuild": "cd client && npm install && npm run build"
     },

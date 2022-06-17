@@ -6,7 +6,6 @@ import '../styles/style.css'
 
 require('dotenv').config();
 
-
 function Mutants() {
   const dispatch = useDispatch();
   const blockchain = useSelector((state) => state.blockchain);
