@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { connectMACC } from "../redux/blockchain/blockchainActions";
 import { fetchData } from "../redux/data/dataActions";
-import { wlMerkleTree, wlFreeMerkleTree, wlMultiMerkleTree } from "../redux/data/merkle"
 import '../styles/style.css'
-const keccak256 = require("keccak256")
 
 require('dotenv').config();
 
@@ -18,6 +16,17 @@ function Mutants() {
   const [apeSelection, setApeSelection] = useState(null);
   const [mintingNft, setMintingNft] = useState(false);
   const legendaries = ["0","1","2","3","4","5","6","7","8","9","156","576","1713","2976","3023","3622","3767","3867"];
+
+  async function getProof(address, wlType) {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ address: address, wlType: wlType})
+    };
+    const response = await fetch(process.env.REACT_APP_BASE_API_URL + '/api/proof', requestOptions);
+    const result = await response.json();
+    return result;
+  }
 
   const mintMutant = async (serumId=null, apeId=null, numMints=null) => {
     if (data.saleFreeWhitelistActive) {
@@ -98,9 +107,7 @@ function Mutants() {
   const freeWhiteListMint = async () => {
     setFeedback(`Minting your MACC...`);
     setMintingNft(true);
-    let hashedAddress = keccak256(blockchain.account)
-    let proof = wlFreeMerkleTree.getHexProof(hashedAddress)
-    console.log(proof)
+    let proof = await getProof(blockchain.account, 'FREE');
     blockchain.smartContract.methods
       .mintFreeWhitelist(proof)
       .call({
@@ -135,9 +142,8 @@ function Mutants() {
   }
 
   const whiteListMint = async (numMints) => {
-    let hashedAddress = keccak256(blockchain.account)
-    let wlProof = wlMerkleTree.getHexProof(hashedAddress)
-    let wlMultiProof = wlMultiMerkleTree.getHexProof(hashedAddress)
+    let wlProof = await getProof(blockchain.account, 'WL');
+    let wlMultiProof = await getProof(blockchain.account, 'MULTI');
     let cost = data.wlPrice;
     cost = cost * numMints
     let totalCostWei = String(cost);

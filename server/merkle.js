@@ -14,4 +14,4 @@ let wlMulti = ["0x876CcD8F591555950A2Ad84CE929029188521FC2","0xeCAf13107472D3Ced
 let multiLeaves = wlMulti.map(addr => keccak256(addr))
 let wlMultiMerkleTree = new MerkleTree(multiLeaves, keccak256, {sortPairs: true})
 
-export {wlFreeMerkleTree, wlMerkleTree, wlMultiMerkleTree}
+module.exports = {wlFreeMerkleTree, wlMerkleTree, wlMultiMerkleTree}
