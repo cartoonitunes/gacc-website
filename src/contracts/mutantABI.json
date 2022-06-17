@@ -512,7 +512,13 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
+		"inputs": [
+			{
+				"internalType": "bytes32[]",
+				"name": "merkleProof",
+				"type": "bytes32[]"
+			}
+		],
 		"name": "mintFreeWhitelist",
 		"outputs": [],
 		"stateMutability": "payable",
@@ -537,6 +543,16 @@
 				"internalType": "uint256",
 				"name": "numMutants",
 				"type": "uint256"
+			},
+			{
+				"internalType": "bytes32[]",
+				"name": "wlMerkleProof",
+				"type": "bytes32[]"
+			},
+			{
+				"internalType": "bytes32[]",
+				"name": "wlMultiMerkleProof",
+				"type": "bytes32[]"
 			}
 		],
 		"name": "mintWhitelist",
@@ -873,6 +889,19 @@
 	{
 		"inputs": [
 			{
+				"internalType": "bytes32",
+				"name": "_freeWlMerkleRoot",
+				"type": "bytes32"
+			}
+		],
+		"name": "setFreeWlMerkleRoot",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "address[]",
 				"name": "MultiWhiteListAddresses",
 				"type": "address[]"
@@ -884,6 +913,19 @@
 			}
 		],
 		"name": "setMultiWhiteList",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "_multiWlMerkleRoot",
+				"type": "bytes32"
+			}
+		],
+		"name": "setMultiWlMerkleRoot",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -909,6 +951,19 @@
 			}
 		],
 		"name": "setWhiteList",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "_wlMerkleRoot",
+				"type": "bytes32"
+			}
+		],
+		"name": "setWlMerkleRoot",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -1120,6 +1175,45 @@
 		"name": "withdraw",
 		"outputs": [],
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "wlFreeMerkleRoot",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "wlMerkleRoot",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "wlMultiMerkleRoot",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	}
 ]

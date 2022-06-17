@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { connectMACC } from "../redux/blockchain/blockchainActions";
 import { fetchData } from "../redux/data/dataActions";
+import { wlMerkleTree, wlFreeMerkleTree, wlMultiMerkleTree } from "../redux/data/merkle"
 import '../styles/style.css'
+const keccak256 = require("keccak256")
+
 require('dotenv').config();
 
 
@@ -95,15 +98,18 @@ function Mutants() {
   const freeWhiteListMint = async () => {
     setFeedback(`Minting your MACC...`);
     setMintingNft(true);
+    let hashedAddress = keccak256(blockchain.account)
+    let proof = wlFreeMerkleTree.getHexProof(hashedAddress)
+    console.log(proof)
     blockchain.smartContract.methods
-      .mintFreeWhitelist()
+      .mintFreeWhitelist(proof)
       .call({
         to: process.env.REACT_APP_MACC_ADDRESS,
         from: blockchain.account
       })
       .then(() => {
         blockchain.smartContract.methods
-        .mintFreeWhitelist()
+        .mintFreeWhitelist(proof)
         .send({ 
           to: process.env.REACT_APP_MACC_ADDRESS,
           from: blockchain.account
@@ -129,13 +135,16 @@ function Mutants() {
   }
 
   const whiteListMint = async (numMints) => {
+    let hashedAddress = keccak256(blockchain.account)
+    let wlProof = wlMerkleTree.getHexProof(hashedAddress)
+    let wlMultiProof = wlMultiMerkleTree.getHexProof(hashedAddress)
     let cost = data.wlPrice;
     cost = cost * numMints
     let totalCostWei = String(cost);
     setFeedback(`Minting your MACC...`);
     setMintingNft(true);
     blockchain.smartContract.methods
-      .mintWhitelist(numMints)
+      .mintWhitelist(numMints, wlProof, wlMultiProof)
       .call({
         to: process.env.REACT_APP_MACC_ADDRESS,
         from: blockchain.account,
@@ -143,7 +152,7 @@ function Mutants() {
       })
       .then(() => {
         blockchain.smartContract.methods
-        .mintWhitelist(numMints)
+        .mintWhitelist(numMints, wlProof, wlMultiProof)
         .send({ 
           to: process.env.REACT_APP_MACC_ADDRESS,
           from: blockchain.account,
