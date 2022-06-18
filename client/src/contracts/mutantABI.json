@@ -514,8 +514,18 @@
 	{
 		"inputs": [
 			{
+				"internalType": "uint256",
+				"name": "numMutants",
+				"type": "uint256"
+			},
+			{
 				"internalType": "bytes32[]",
-				"name": "merkleProof",
+				"name": "wlFreeMerkleProof",
+				"type": "bytes32[]"
+			},
+			{
+				"internalType": "bytes32[]",
+				"name": "wlFreeMultiMerkleProof",
 				"type": "bytes32[]"
 			}
 		],
@@ -871,17 +881,12 @@
 	{
 		"inputs": [
 			{
-				"internalType": "address[]",
-				"name": "freeWhiteListAddress",
-				"type": "address[]"
-			},
-			{
-				"internalType": "bool",
-				"name": "bEnable",
-				"type": "bool"
+				"internalType": "bytes32",
+				"name": "_freeMultiWlMerkleRoot",
+				"type": "bytes32"
 			}
 		],
-		"name": "setFreeWhiteList",
+		"name": "setFreeMultiWlMerkleRoot",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -902,24 +907,6 @@
 	{
 		"inputs": [
 			{
-				"internalType": "address[]",
-				"name": "MultiWhiteListAddresses",
-				"type": "address[]"
-			},
-			{
-				"internalType": "bool",
-				"name": "bEnable",
-				"type": "bool"
-			}
-		],
-		"name": "setMultiWhiteList",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
 				"internalType": "bytes32",
 				"name": "_multiWlMerkleRoot",
 				"type": "bytes32"
@@ -933,24 +920,6 @@
 	{
 		"inputs": [],
 		"name": "setStartingIndices",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address[]",
-				"name": "whiteListAddress",
-				"type": "address[]"
-			},
-			{
-				"internalType": "bool",
-				"name": "bEnable",
-				"type": "bool"
-			}
-		],
-		"name": "setWhiteList",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -1180,6 +1149,19 @@
 	{
 		"inputs": [],
 		"name": "wlFreeMerkleRoot",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "wlFreeMultiMerkleRoot",
 		"outputs": [
 			{
 				"internalType": "bytes32",
