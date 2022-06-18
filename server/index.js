@@ -1,4 +1,4 @@
-const { wlMerkleTree, wlFreeMerkleTree, wlMultiMerkleTree } = require('./merkle.js')
+const { wlMerkleTree, wlFreeMerkleTree, wlFreeMultiMerkleTree, wlMultiMerkleTree } = require('./merkle.js')
 const keccak256 = require("keccak256")
 const path = require('path');
 const express = require("express");
@@ -38,6 +38,9 @@ app.post('/api/proof', (req, res) => {
         }
         if (wlType === 'FREE') {
             proof = wlFreeMerkleTree.getHexProof(hashedAddress)
+        }
+        if (wlType === 'FREE_MULTI') {
+            proof = wlFreeMultiMerkleTree.getHexProof(hashedAddress)
         }
         if (!proof) {
             res.status(422)

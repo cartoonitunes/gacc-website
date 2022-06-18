@@ -29,7 +29,7 @@ function Mutants() {
 
   const mintMutant = async (serumId=null, apeId=null, numMints=null) => {
     if (data.saleFreeWhitelistActive) {
-      freeWhiteListMint()
+      freeWhiteListMint(numMints)
     }
     else if (data.saleWhitelistActive) {
       whiteListMint(numMints)
@@ -103,19 +103,20 @@ function Mutants() {
     }
   }
 
-  const freeWhiteListMint = async () => {
+  const freeWhiteListMint = async (numMints) => {
     setFeedback(`Minting your MACC...`);
     setMintingNft(true);
-    let proof = await getProof(blockchain.account, 'FREE');
+    let wlFreeProof = await getProof(blockchain.account, 'FREE');
+    let wlFreeMultiProof = await getProof(blockchain.account, 'FREE_MULTI');
     blockchain.smartContract.methods
-      .mintFreeWhitelist(proof)
+      .mintFreeWhitelist(numMints, wlFreeProof, wlFreeMultiProof)
       .call({
         to: process.env.REACT_APP_MACC_ADDRESS,
         from: blockchain.account
       })
       .then(() => {
         blockchain.smartContract.methods
-        .mintFreeWhitelist(proof)
+        .mintFreeWhitelist(numMints, wlFreeProof, wlFreeMultiProof)
         .send({ 
           to: process.env.REACT_APP_MACC_ADDRESS,
           from: blockchain.account
@@ -363,18 +364,19 @@ function Mutants() {
     else if (data.saleFreeWhitelistActive) {
       return (
         <div className="d-flex justify-content-center">
-        <button 
-          className="bayc-button mint-button" 
-          type="button"
-          disabled={mintingNft ? 1 : 0}
-          onClick={(e) => {
-            e.preventDefault();
-            mintMutant();
-            getData();
-          }}
-          >
-            {mintingNft ? "Minting..." : "Mint 1 MACC"}
-        </button>
+        <form>
+          <div className="form-group">
+            <label htmlFor="formControlRange" className="form-label mint-subtitle">How many do you want to mint? (max either 1 or 5 depending on your WL)</label>
+            <input type="range" className="form-range" defaultValue="1" min="1" max="5" id="mintQuantity" onChange={(e) => updateTextInput(e.target.value)}/>
+            <input type="text" id="textLabel" defaultValue="1" readOnly></input>
+          </div>
+          <button type="submit" className="bayc-button mint-button" disabled={mintingNft ? 1 : 0}
+            onClick={(e) => {
+              e.preventDefault();
+              mintMutant(null, null, document.getElementById("mintQuantity").value);
+              getData();
+            }}>Mint</button>
+        </form>
       </div>
       )
     }
