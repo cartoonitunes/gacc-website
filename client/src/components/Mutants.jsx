@@ -47,8 +47,11 @@ function Mutants() {
       return (
         {
           'title': 'MINT A MUTANT',
+          'title_two': 'Free Whitelist Minting Status: ',
+          'status': 'Open',
           'subTitle': 'Connect your wallet to mint a MACC.',
-          'connectedSubTitle': `Free Whitelist Mint. ${5000 - data.apesMinted} left!`
+          'connectedSubTitle': `Mutant Grandpas remaining: ${5000 - data.apesMinted}`,
+          'connectedSubTitleTwo': ''
         }
       )
     }
@@ -56,8 +59,11 @@ function Mutants() {
      return (
       {
         'title': 'MINT A MUTANT',
+        'title_two': 'Whitelist Minting Status: ',
+        'status': 'Open',
         'subTitle': 'Connect your wallet to mint a MACC.',
-        'connectedSubTitle': `Whitelist Mint. ${5000 - data.apesMinted} left!`
+        'connectedSubTitle': `Mutant Grandpas remaining: ${5000 - data.apesMinted}`,
+        'connectedSubTitleTwo': ''
       }
      )
     }
@@ -66,8 +72,11 @@ function Mutants() {
       return (
         {
           'title': 'MINT A MUTANT',
+          'title_two': 'Public Dutch Auction Status: ',
+          'status': 'Open',
           'subTitle': 'Connect your wallet to mint a MACC.',
-          'connectedSubTitle': `Dutch Auction. ${5000 - data.apesMinted} left!\nPrice: ${((data.currentPrice/1000000000000000000)).toFixed(3)}Ξ\nTime remaining: ${remainingTime}.`
+          'connectedSubTitle': `Mutant Grandpas remaining: ${5000 - data.apesMinted}`,
+          'connectedSubTitleTwo': `Price: ${((data.currentPrice/1000000000000000000)).toFixed(3)}Ξ | Time remaining: ${remainingTime}`
         }
       )
     }
@@ -75,8 +84,11 @@ function Mutants() {
       return (
         {
           'title': `MUTATE A GRANDPA APE`,
+          'title_two': '',
+          'status': '',
           'subTitle': 'Connect your wallet to mutate a GACC.',
-          'connectedSubTitle': ''
+          'connectedSubTitle': '',
+          'connectedSubTitleTwo': ''
         }
       )
     }
@@ -347,9 +359,8 @@ function Mutants() {
         <div className="d-flex justify-content-center">
         <form>
           <div className="form-group">
-            <label htmlFor="formControlRange" className="form-label mint-subtitle">How many do you want to mint? (max either 1 or 5 depending on your WL)</label>
             <input type="range" className="form-range" defaultValue="1" min="1" max="5" id="mintQuantity" onChange={(e) => updateTextInput(e.target.value)}/>
-            <input type="text" id="textLabel" defaultValue="1" readOnly></input>
+            <input type="text" id="textLabel" defaultValue="1" className="mint-input-read" readOnly></input>
           </div>
           <button type="submit" className="bayc-button mint-button" disabled={mintingNft ? 1 : 0}
             onClick={(e) => {
@@ -366,9 +377,8 @@ function Mutants() {
         <div className="d-flex justify-content-center">
         <form>
           <div className="form-group">
-            <label htmlFor="formControlRange" className="form-label mint-subtitle">How many do you want to mint? (max either 1 or 5 depending on your WL)</label>
             <input type="range" className="form-range" defaultValue="1" min="1" max="5" id="mintQuantity" onChange={(e) => updateTextInput(e.target.value)}/>
-            <input type="text" id="textLabel" defaultValue="1" readOnly></input>
+            <input type="text" id="textLabel" defaultValue="1" className="mint-input-read" readOnly></input>
           </div>
           <button type="submit" className="bayc-button mint-button" disabled={mintingNft ? 1 : 0}
             onClick={(e) => {
@@ -385,9 +395,9 @@ function Mutants() {
       <div className="d-flex justify-content-center">
         <form>
           <div className="form-group">
-            <label htmlFor="formControlRange" className="form-label mint-subtitle">How many do you want to mint? (max 20)</label>
+            <div className="mint-subtitle">{maccLabels()['connectedSubTitleTwo']}</div>
             <input type="range" className="form-range mint-input" defaultValue="1" min="1" max="20" id="mintQuantity" onChange={(e) => updateTextInput(e.target.value)}/>
-            <input type="text" className="mint-input" id="textLabel" defaultValue="1" readOnly></input>
+            <input type="text"  className="mint-input-read" id="textLabel" defaultValue="1" readOnly></input>
           </div>
           <button type="submit" className="bayc-button mint-button" disabled={mintingNft ? 1 : 0}
             onClick={(e) => {
@@ -509,6 +519,7 @@ function Mutants() {
                               <div className="MuiCardContent-root">
                                 <h2 className="d-flex justify-content-center common-sub-title mint-title">{maccLabels()['title']}</h2>
                                 <hr className="black-line" /><center>
+                                <p className="d-flex justify-content-center common-p mint-subtitle">{maccLabels()['title_two']}&nbsp;<strong className="mint-subtitle">{maccLabels()['status']}</strong></p>
                                 {titleText()}
                                 {connectAndMintButton()}</center>
                                 <br></br>
