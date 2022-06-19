@@ -444,8 +444,8 @@ function Mutants() {
     }
     else {
       return (
-      <div className="d-flex justify-content-center">
-       No minting or mutating at the moment. Stay tuned.
+      <div className="d-flex justify-content-center mint-title">
+       MINT SOLD OUT!
       </div>
       )
     }
