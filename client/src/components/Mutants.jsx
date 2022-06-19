@@ -404,7 +404,7 @@ function Mutants() {
               e.preventDefault();
               mintMutant(null, null, document.getElementById("mintQuantity").value);
               getData();
-            }}>Mutate</button>
+            }}>Mint</button>
         </form>
       </div>
       )
