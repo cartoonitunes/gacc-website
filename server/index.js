@@ -8,7 +8,6 @@ const keccak256 = require("keccak256");
 const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
-const { get_metadata, claim_token} = require("./helpers.js")
 require("dotenv").config();
 const db = require("../models/index.js");
 const PORT = process.env.PORT || 3001;
@@ -27,7 +26,6 @@ app.use(function (req, res, next) {
   );
   next();
 });
-
 
 app.post("/api/proof", (req, res) => {
   try {
@@ -61,49 +59,52 @@ app.post("/api/proof", (req, res) => {
   }
 });
 
-
-
-app.get("/api/metadata/:id", function(req, res) {
-    let token = req.params.id
-    db.Tokens.findOne({ where: { token: token } }).then( (obj) => {
-        let ret = {};
-        if (obj) {
-          if (obj.claimed === true) {
-            db.RevealedMetadata.findOne({ where: { token: token } }).then((
-              md
-            ) => {
-                ret = md.dataValues.metadata
-                res.send(ret);
-                res.status(200);
-            });
-          } else {
-              db.HiddenMetadata.findOne({ where: { token: token } }).then((
-                md
-            ) => {
-                ret = md.dataValues.metadata
-                res.send(ret);
-                res.status(200);
-            });
-          }
-        }
-      });
-    
-    
+app.get("/api/metadata/:id", function (req, res) {
+  let token = req.params.id;
+  db.Tokens.findOne({ where: { token: token } }).then((obj) => {
+    let ret = {};
+    if (obj) {
+      if (obj.claimed === true) {
+        db.RevealedMetadata.findOne({ where: { token: token } }).then((md) => {
+          ret = md.dataValues.metadata;
+          res.send(ret);
+          res.status(200);
+        });
+      } else {
+        db.HiddenMetadata.findOne({ where: { token: token } }).then((md) => {
+          ret = md.dataValues.metadata;
+          res.send(ret);
+          res.status(200);
+        });
+      }
+    }
+  });
 });
 
 app.post("/api/claim_token", (req, res) => {
   try {
     const address = req.body.address;
-    const token = req.body.apeIds;
+    const token = req.body.token;
     try {
-      claim_token(address, token);
+      db.Tokens.findOne({ where: { token: token } }).then(function (obj) {
+        if (obj) {
+          if (obj.claimed === false) {
+            obj.claimed = true;
+            obj.address = address;
+            obj.save();
+            res.status(200);
+            res.send(`Token ${token} claimed by ${address}`);
+          } else {
+            res.status(200);
+            res.send(`Token was already claimed!`);
+          }
+        }
+      });
     } catch (err) {
       console.log(err);
       res.status(422);
       res.send("Something went wrong!");
     }
-    res.status(200);
-    res.send(`Token ${token} claimed by ${address}`);
   } catch (err) {
     console.log(err);
     res.status(422);
@@ -111,10 +112,9 @@ app.post("/api/claim_token", (req, res) => {
   }
 });
 
-
 app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "/client/build/index.html"));
-  });
+  res.sendFile(path.join(__dirname, "..", "/client/build/index.html"));
+});
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
