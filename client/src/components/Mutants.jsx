@@ -27,6 +27,17 @@ function Mutants() {
     return result;
   }
 
+  async function claimToken(address, token) {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ address: address, token: token.toString()})
+    };
+    const response = await fetch(process.env.REACT_APP_BASE_API_URL + '/api/claim_token', requestOptions);
+    const result = await response;
+    return result
+  }
+
   const mintMutant = async (serumId=null, apeId=null, numMints=null) => {
     if (data.saleFreeWhitelistActive) {
       freeWhiteListMint(numMints)
@@ -253,6 +264,7 @@ function Mutants() {
   const mutateGrandpa = async (serumId, apeId) => {
     setFeedback(`Mutating your GACC...`);
     setMintingNft(true);
+    let mutantId = (parseInt(apeId) * 2) + parseInt(serumId) + 4999
     blockchain.smartContract.methods
       .mutateApeWithSerum(serumId, apeId)
       .call({
@@ -268,6 +280,7 @@ function Mutants() {
         })
         .then((receipt) => {
           console.log(receipt);
+          claimToken(blockchain.account, mutantId);
           setFeedback(
             `Congratulations and welcome to the Mutant Ape Country Club!`
           );
@@ -289,6 +302,7 @@ function Mutants() {
   const mutateLegendary = async (apeId) => {
     setFeedback(`Mutating your Legendary GACC...`);
     setMintingNft(true);
+    let mutantId = (parseInt(apeId) * 2) + 1 + 4999
     blockchain.smartContract.methods
       .mutateApeWithoutSerum(apeId)
       .call({
@@ -304,6 +318,7 @@ function Mutants() {
         })
         .then((receipt) => {
           console.log(receipt);
+          claimToken(blockchain.account, mutantId);
           setFeedback(
             `Congratulations you legend!`
           );
