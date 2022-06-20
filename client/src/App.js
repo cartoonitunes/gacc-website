@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
  
 import Mutants from './components/Mutants';
 import Home from './components/Home';
@@ -18,7 +18,6 @@ class App extends Component {
              <Route path="/home" component={Home}/>
              <Route path="/macc" component={Mutants}/>
              <Route path="/thelab" component={Teaser}/>
-             <Redirect to="/" />
            </Switch>
         </div> 
       </BrowserRouter>

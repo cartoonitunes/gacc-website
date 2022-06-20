@@ -8,8 +8,8 @@ const keccak256 = require("keccak256");
 const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
+const { get_metadata, claim_token} = require("./helpers.js")
 require("dotenv").config();
-
 const db = require("../models/index.js");
 const PORT = process.env.PORT || 3001;
 
@@ -28,9 +28,6 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "/client/build/index.html"));
-});
 
 app.post("/api/proof", (req, res) => {
   try {
@@ -64,48 +61,34 @@ app.post("/api/proof", (req, res) => {
   }
 });
 
-function get_metadata(token) {
-  db.Token.findOne({ where: { token: token } }).then(function (obj) {
-    // update
-    if (obj) {
-      if (obj.claimed === true) {
-        db.RevealedMetadata.findOne({ where: { token: token } }).then(function (
-          obj
-        ) {
-          if (obj) return obj.metadata;
-        });
-      } else {
-        db.HiddendMetadata.findOne({ where: { token: token } }).then(function (
-          obj
-        ) {
-          if (obj) return obj.metadata;
-        });
-      }
-    }
-    return {};
-  });
-}
 
-function claim_token(address, token) {
-  db.Token.findOne({ where: { token: token } }).then(function (obj) {
-    if (obj) {
-      if (obj.claimed === false) {
-        obj.claimed = true;
-        obj.address = address;
-        obj.save();
-      }
-    }
-  });
-  return db.Claim.findOne({ where: condition }).then(function (obj) {
-    // update
-    if (obj) return obj.update(values);
-    // insert
-    return db.Claim.create(values);
-  });
-}
 
-app.get("/api/metadata/:id", function (req, res) {
-  return get_metadata(req.params.id);
+app.get("/api/metadata/:id", function(req, res) {
+    let token = req.params.id
+    db.Tokens.findOne({ where: { token: token } }).then( (obj) => {
+        let ret = {};
+        if (obj) {
+          if (obj.claimed === true) {
+            db.RevealedMetadata.findOne({ where: { token: token } }).then((
+              md
+            ) => {
+                ret = md.dataValues.metadata
+                res.send(ret);
+                res.status(200);
+            });
+          } else {
+              db.HiddenMetadata.findOne({ where: { token: token } }).then((
+                md
+            ) => {
+                ret = md.dataValues.metadata
+                res.send(ret);
+                res.status(200);
+            });
+          }
+        }
+      });
+    
+    
 });
 
 app.post("/api/claim_token", (req, res) => {
@@ -127,6 +110,11 @@ app.post("/api/claim_token", (req, res) => {
     res.send("Something went wrong!");
   }
 });
+
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "/client/build/index.html"));
+  });
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
