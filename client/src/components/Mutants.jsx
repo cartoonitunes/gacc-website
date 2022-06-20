@@ -534,7 +534,6 @@ function Mutants() {
                               <div className="MuiCardContent-root">
                                 <h2 className="d-flex justify-content-center common-sub-title mint-title">{maccLabels()['title']}</h2>
                                 <hr className="black-line" /><center>
-                                <p className="d-flex justify-content-center common-p mint-subtitle">{maccLabels()['title_two']}&nbsp;<strong className="mint-subtitle">{maccLabels()['status']}</strong></p>
                                 {titleText()}
                                 {connectAndMintButton()}</center>
                                 <br></br>
