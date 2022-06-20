@@ -5,9 +5,11 @@ const {
   wlMultiMerkleTree,
 } = require("./merkle.js");
 const keccak256 = require("keccak256");
+const Web3 = require('web3')
 const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
+const abi = require("./abi/mutantAbi.json");
 require("dotenv").config();
 const db = require("../models/index.js");
 const PORT = process.env.PORT || 3001;
@@ -86,29 +88,75 @@ app.post("/api/claim_token", (req, res) => {
     const address = req.body.address;
     const token = req.body.token;
     try {
+        let intToken = parseInt(token);
+        let isnum = /^\d+$/.test(token);
+        if (intToken > 15020 || intToken < 0 || !isnum) {
+            return res.status(404).send({
+                success: false,
+                msg: 'Invalid token id'
+              });
+        }
+    }
+    catch {
+        return res.status(404).send({
+            success: false,
+            msg: 'Invalid token id'
+          });
+    }
+    try {
       db.Tokens.findOne({ where: { token: token } }).then(function (obj) {
         if (obj) {
           if (obj.claimed === false) {
-            obj.claimed = true;
-            obj.address = address;
-            obj.save();
-            res.status(200);
-            res.send(`Token ${token} claimed by ${address}`);
+            const web3 = new Web3(
+                new Web3.providers.HttpProvider(
+                  process.env.INFURA_URL
+                )
+              )
+            const contract = new web3.eth.Contract(abi, process.env.REACT_APP_MACC_ADDRESS);
+            contract.methods.ownerOf(token).call().then( (owner) => {
+                if (owner !== '0x0000000000000000000000000000000000000000') {
+                    obj.claimed = true;
+                    obj.address = address;
+                    obj.save();
+                    return res.status(200).send({
+                        success: true,
+                        msg: `Token ${token} claimed by ${address}`
+                      });
+                }
+                else {
+                    return res.status(404).send({
+                        success: false,
+                        msg: 'This token does not exist yet!'
+                      });
+                }
+            })
+            .catch((err) => {
+                return res.status(404).send({
+                    success: false,
+                    msg: 'This token does not exist yet!'
+                  });
+            });
           } else {
-            res.status(200);
-            res.send(`Token was already claimed!`);
+            return res.status(200).send({
+                success: false,
+                msg: `Token was already claimed!`
+              });
           }
         }
       });
     } catch (err) {
       console.log(err);
-      res.status(422);
-      res.send("Something went wrong!");
+      return res.status(422).send({
+        success: false,
+        msg: "Something went wrong!"
+      });
     }
   } catch (err) {
     console.log(err);
-    res.status(422);
-    res.send("Something went wrong!");
+    return res.status(422).send({
+        success: false,
+        msg: "Something went wrong!"
+      });
   }
 });
 
