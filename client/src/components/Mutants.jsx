@@ -435,7 +435,7 @@ function Mutants() {
           {!legendaries.includes(apeSelection) && (
               <div className="form-group">
               <label htmlFor="exampleInputPassword1">Select Serum</label>
-              <select className="form-control bayc-button " id='serumId'>
+              <select className="form-control bayc-button serum-mutate-select" id='serumId'>
                 <option value="1" name='serumId'>M1 Serum</option>
                 <option value="2" name='serumId'>M2 Serum</option>
                 <option value="69" name='serumId'>M3 Serum</option>

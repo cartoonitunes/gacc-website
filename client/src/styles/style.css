@@ -339,6 +339,9 @@ input:focus{
     transition:.3s
 }
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,700&family=Nosifer&display=swap');
+.serum-mutate-select {
+    text-align: center;
+}
 .mint-input-read {
     background-color:black;
     text-align: center;
