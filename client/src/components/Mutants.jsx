@@ -282,7 +282,7 @@ function Mutants() {
           console.log(receipt);
           claimToken(blockchain.account, mutantId);
           setFeedback(
-            `Congratulations and welcome to the Mutant Ape Country Club!`
+            `Congratulations on mutating your Grandpa! Your Mutant ID is ${mutantId}.`
           );
           setMintingNft(false);
           dispatch(fetchData(blockchain.account));
@@ -320,7 +320,7 @@ function Mutants() {
           console.log(receipt);
           claimToken(blockchain.account, mutantId);
           setFeedback(
-            `Congratulations you legend!`
+            `Congratulations on mutating your legendary Grandpa! Your Mutant ID is ${mutantId}.`
           );
           setMintingNft(false);
           dispatch(fetchData(blockchain.account));
