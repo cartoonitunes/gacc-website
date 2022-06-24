@@ -86,7 +86,8 @@ app.get("/api/metadata/:id", function (req, res) {
 app.post("/api/claim_token", (req, res) => {
   try {
     const address = req.body.address;
-    const token = req.body.token;
+    let token = req.body.token;
+    token = token.toString();
     try {
         let intToken = parseInt(token);
         let isnum = /^\d+$/.test(token);
