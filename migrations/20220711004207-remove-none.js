@@ -4,7 +4,7 @@ var metadata = [{token: "0", createdAt: new Date(), updatedAt: new Date(), metad
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('RevealedMetadata', metadata, {}, { metadata: { type: new Sequelize.JSON() }} )
+    return await queryInterface.bulkInsert('RevealedMetadata', metadata, {}, { metadata: { type: new Sequelize.JSON() }} )
   },
 
   async down (queryInterface, Sequelize) {
