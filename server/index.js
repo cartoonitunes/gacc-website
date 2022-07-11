@@ -80,10 +80,14 @@ app.get("/api/metadata/:id", function (req, res) {
         });
       }
     }
+    else {
+      res.send('The token does not exist');
+      res.status(404);
+    }
   })
   .catch(err => {
     res.send('The token does not exist');
-    res.status(422);
+    res.status(404);
   });
 });
 
