@@ -31,7 +31,7 @@ function Home () {
                         <div className="mb-4 row">
                           <div className="mb-4 col-lg-7 col-12">
                             <h1 className="d-flex font-italic welcome-title mb-3" style={{color: 'black'}}>WELCOME TO THE<br />GRANDPA APE COUNTRY CLUB</h1>
-                            <p className="common-p mb-0" style={{color: 'black'}}>GACC is a collection of 5,000 Grandpa Ape NFTs—unique digital collectibles living on the Ethereum blockchain. Your Grandpa Ape doubles as your Country Club membership card, and grants access to members-only benefits, the first of which is access to THE GREENS, a place where you can just hang with the boys. Future areas and perks can be unlocked by the community through roadmap activation.</p>
+                            <p className="common-p mb-0" style={{color: 'black'}}>GACC is a collection of 5,000 Grandpa Ape NFTs—unique digital collectibles living on the Ethereum blockchain. Your Grandpa Ape doubles as your Country Club membership card, and grants access to members-only benefits, the first of which is access to THE GREENS, a place where you can just hang with friends. Future areas and perks can be unlocked by the community through roadmap activation.</p>
                           </div>
                           <div className="my-lg-auto col-lg-4 col-12 offset-lg-1">
                             <div className="common-container">
