@@ -196,10 +196,10 @@ function Home () {
                             <div className="mb-2 col-lg-7 col-12" style={{top: '-10px'}}>
                               <h2 className="common-title mb-3" style={{color: 'black'}}>THE TEAM</h2>
                               <p className="common-p" style={{color: 'black'}}>GACC is run by a team of hard-working collectors, focused on returning value and fun to the GACC NFT community.</p>
-                              <p className="common-p" style={{color: '#977039'}}><span className="bayc-color bold-text" style={{color: '#977039'}}>SWIRL</span> <span className="font-italic" style={{color: 'black', textAlign: 'left'}}>CEO AND CHIEF DJ</span></p>
-                              <p className="common-p" style={{color: '#977039'}}><span className="bayc-color bold-text" style={{color: '#977039'}}>CARTOON</span> <span className="font-italic" style={{color: 'black'}}>ALL THINGS CODE</span></p>
-                              <p className="common-p" style={{color: '#977039'}}><span className="bayc-color bold-text" style={{color: '#977039'}}>DIEF</span> <span className="font-italic" style={{color: 'black', textAlign: 'left'}}>ALL THINGS FINANCE AND COMMUNICATIONS</span></p>
-                              <p className="common-p" style={{color: '#977039'}}><span className="bayc-color bold-text" style={{color: '#977039'}}>DARK</span> <span className="font-italic" style={{color: 'black'}}>ALL THINGS DESIGN</span></p>
+                              <p className="common-p" style={{color: '#977039'}}><span className="bayc-color bold-text" style={{color: '#977039'}}>SWIRL</span> <span className="font-italic" style={{color: 'black', textAlign: 'left'}}>CEO AND CHIEF DJ&nbsp; <a href="https://twitter.com/SwirlOne"><i className="fa fa-twitter" style={{color: 'black'}} /></a></span></p>
+                              <p className="common-p" style={{color: '#977039'}}><span className="bayc-color bold-text" style={{color: '#977039'}}>CARTOON</span> <span className="font-italic" style={{color: 'black'}}>ALL THINGS CODE&nbsp; <a href="https://twitter.com/cartoonitunes"><i className="fa fa-twitter" style={{color: 'black'}} /></a></span></p>
+                              <p className="common-p" style={{color: '#977039'}}><span className="bayc-color bold-text" style={{color: '#977039'}}>DIEF</span> <span className="font-italic" style={{color: 'black', textAlign: 'left'}}>ALL THINGS FINANCE AND COMMUNICATIONS&nbsp; <a href="https://twitter.com/TheDiefCollect"><i className="fa fa-twitter" style={{color: 'black'}} /></a></span></p>
+                              <p className="common-p" style={{color: '#977039'}}><span className="bayc-color bold-text" style={{color: '#977039'}}>DARK</span> <span className="font-italic" style={{color: 'black'}}>ALL THINGS DESIGN&nbsp; <a href="https://twitter.com/StudioDarkk"><i className="fa fa-twitter" style={{color: 'black'}} /></a></span></p>
                             </div>
                             <div className="my-lg-auto col-lg-4 col-12 offset-lg-1">
                               <div className="common-container">
@@ -226,6 +226,21 @@ function Home () {
                       </div>
                     </div>
                   <div></div>
+                    <div className="mb-5 row">
+                      <div className="col">
+                        <div className="row">
+                          <div className="mb-4 mb-lg-0 col-lg-8 col-12">
+                            <h2 className="common-title mb-3" style={{color: 'black'}}>THE ARTIST</h2>
+                            <p className="common-p mb-0" style={{color: 'black'}}>Naro, a.k.a. Kuchuya, is the artist behind the immaculate GACC NFT ecosystem. Naro has been drawing for 25+ years and draws inpiration from films, video games, and Japanese anime. Naro has an amazing story and an even more amazing heart.</p>
+                          </div>
+                          <div className="m-lg-auto col-lg-3 col-12 offset-lg-1">
+                            <div className="d-flex row">
+                            <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/kuchuya.jpg'} alt="kuchuya" aria-label="kuchuya" style={{borderRadius: '5px'}} />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     <div className="mb-5 row">
                       <div className="col">
                         <div className="d-flex justify-content-center">
