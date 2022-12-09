@@ -191,6 +191,22 @@ function Home () {
                     <hr className="gray-line mb-5" />
                     <div className="mb-5 row">
                       <div className="col">
+                        <div className="row">
+                          <div className="mb-4 mb-lg-0 col-lg-8 col-12">
+                            <h2 className="common-title mb-3" style={{color: 'black'}}>GACC PRO SHOP (MERCH)</h2>
+                            <p className="common-p mb-0" style={{color: 'black'}}>The GACC NFT ecosystem brand looks incredible on merchandise. The GACC Pro Shop is always open but keep an eye out for weekly one-of-a-kind merch drops only avaiable for a short period.</p>
+                          </div>
+                          <div className="m-lg-auto col-lg-3 col-12 offset-lg-1">
+                            <div className="d-flex row">
+                              <div className="mx-auto col-lg-12 col-md-6 col-sm-12"><a href="https://gaccproshop.com/"><button className="bayc-button w-100" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>GACC PRO SHOP</button></a></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr className="gray-line mb-5" />
+                    <div className="mb-5 row">
+                      <div className="col">
                         <div id="team" className="common-container">
                           <div className="row">
                             <div className="mb-2 col-lg-7 col-12" style={{top: '-10px'}}>
