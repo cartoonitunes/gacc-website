@@ -557,9 +557,9 @@ function Mutants() {
                 <div className="px-4 mt-md-4 container">
                   <div className="mb-5  row">
                     <div className="mb-5 mb-lg-0 col-lg-7 col-12">
-                      <h1 className="common-title mb-3">THE MACC</h1>
-                      <p className="common-p  text-justify">The MUTANT APE COUNTRY CLUB is a collection of up to 10,000 Mutant Apes that can only be created by exposing an existing Grandpa Ape to a vial of MUTANT SERUM or by minting a Mutant Ape in the public sale.</p>
-                      <p className="common-p text-justify">The MACC is a way to reward our ape holders with an entirely new NFT—a “mutant” version of their ape—while also allowing newcomers into the GACC ecosystem at a lower tier of membership. Mutants represent the final tier of membership; everything going forward occurs with the intention of accruing utility and member’s-only benefits to Grandpa Apes foremost, but also Mutants, and to a lesser extent, Grandpa Apes with GAKC companions.</p>
+                      <h1 className="common-title mb-3">MACC NFTs</h1>
+                      <p className="common-p  text-justify">The MUTANT APE COUNTRY CLUB is a collection of up to 10,000 Mutant Ape NFTs that can only be created by exposing an existing Grandpa Ape to a vial of MUTANT SERUM or by minting a Mutant Ape in the public sale.</p>
+                      <p className="common-p text-justify">The MACC is a way to reward our ape holders with an entirely new NFT, a “mutant” version of their ape, while also allowing newcomers into the GACC NFT blockchain ecosystem at a lower tier of membership. Mutants represent the final tier of membership; everything going forward occurs with the intention of accruing utility and member’s-only benefits to Grandpa Apes foremost, but also Mutants, and to a lesser extent, Grandpa Apes with GAKC companions.</p>
                     </div>
                     <div className="my-lg-auto col-lg-4 col-12 offset-lg-1">
                       <div className="common-container">
@@ -585,14 +585,14 @@ function Mutants() {
                   <hr className="gray-line mb-5" />
                   <div className="mb-5  row">
                     <div className="col-12">
-                      <h1 className="common-title mb-3">SERUMS 
+                      <h2 className="common-title mb-3">SERUMS 
                         <span className="bayc-color"> (FOR GACC MEMBERS)</span>
-                      </h1>
+                      </h2>
                     </div>
                     <div className="mb-4 mb-lg-5 col-lg-7 col-12">
                       <p className="common-p">One way to create a MUTANT is when a Grandpa Ape ingests a vial of mutant serum. There are three tiers of mutant serum vials: M1, M2, and Mega Mutant (M3). A snapshot of all Grandpa Ape token holders was taken at 5pm PST on 2/28/22, and all mutant serums that will exist have been airdropped at a random distribution to corresponding wallets.</p>
                       <p className="common-p">If a Grandpa Ape ingests an M1 or M2 serum, the resulting MUTANT will retain traits of the original ape.</p>
-                      <p className="common-p mb-0">If a Grandpa Ape ingests an M3 serum? Who knows.</p>
+                      <p className="common-p mb-0">If a Grandpa Ape ingests an M3 serum? Who knows...</p>
                     </div>
                     <div className="mb-5 mb-lg-0 col-lg-4 col-12 offset-lg-1">
                       <p className="common-sub-p font-italic mb-0">
@@ -633,7 +633,7 @@ function Mutants() {
                   <hr className="gray-line mb-5" />
                   <div className="mb-5  row">
                     <div className="mb-5 mb-lg-0 col-lg-7 col-12 order-lg-last">
-                      <h1 className="common-title mb-3">DISTRIBUTION &amp; PRICING</h1>
+                      <h2 className="common-title mb-3">DISTRIBUTION &amp; PRICING</h2>
                       <p className="common-p text-justify">A total of 5,000 Mutant Serums have been airdropped to all GACC token holders.</p>
                       <p className="common-p text-justify">2,500 Mutant Apes will be reserved for Whitelist Wallets to be minted during the Whitelist Minting period, and it will cost 0.15 ETH to mint a Mutant. After the Whitelist Mint period closes, 2,500 more Mutant Apes will be available to mint in a public Dutch Auction. The price to mint a Mutant will start at 0.5 ETH, and gradually reduce to .01 ETH over the course of 6 hours. This is to allow the community to set a fair starting price and, hopefully, avoid any gas war.</p>
                       <p className="common-p text-justify">At the time of minting, Mutant Apes will be unrevealed. Once the public sale has concluded, all Mutant Apes will be revealed.</p>
@@ -661,9 +661,9 @@ function Mutants() {
                   <hr className="gray-line mb-5" />
                   <div className="mb-5  row">
                     <div>
-                      <h1 className="common-title mb-3">MUTATION 
+                      <h2 className="common-title mb-3">MUTATION 
                         <span className="bayc-color"> (FOR GACC MEMBERS)</span>
-                      </h1>
+                      </h2>
                       <p className="common-p text-justify">GACC token holders will be able to begin applying their airdropped serums to their Grandpa Apes upon completion of the public sale. The exact time will be announced on Twitter (
                         <a href="https://twitter.com/GrandpaApeCC" className="link">@GrandpaApeCC</a>) and in our&nbsp;
                         <a href="https://discord.com/invite/gacc" className="link">Discord</a>. Applying a serum to a Grandpa Ape will burn that serum, and result in a MUTANT NFT which may retain aspects of the original Grandpa Ape. The Grandpa Ape NFT will not be harmed.
