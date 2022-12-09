@@ -602,8 +602,8 @@ function Mutants() {
                     <div className="col-lg-6 col-12 order-lg-2">
                       <div className="row">
                         <div className="col-lg-6 col-6 order-lg-2 offset-lg-0 offset-3">
-                          <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/ASLAN.png'} alt="" style={{borderRadius: '5px'}} />
-                          <p className="mt-2 mb-0 text-center">Aslan</p>
+                          <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/KUCHUYA.jpg'} alt="" style={{borderRadius: '5px'}} />
+                          <p className="mt-2 mb-0 text-center">Kuchuya</p>
                         </div>
                         <div className="my-lg-3 d-lg-flex justify-content-center align-items-center col-lg-3 col-3 offset-lg-0 offset-2">
                           <div className="mb-4 m-lg-4 sw">
@@ -622,12 +622,12 @@ function Mutants() {
                       </div>
                     </div>
                     <div className="col-lg-3 col-6 order-lg-1">
-                      <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/M1_ASLAN.png'} alt="" style={{borderRadius: '5px'}} />
-                      <p className="mt-2 mb-0 text-center">M1 Aslan</p>
+                      <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/kuchuya_m1.png'} alt="" style={{borderRadius: '5px'}} />
+                      <p className="mt-2 mb-0 text-center">M1 Kuchuya</p>
                     </div>
                     <div className="col-lg-3 col-6 order-lg-3">
-                      <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/M2_ASLAN.png'} alt="" style={{borderRadius: '5px'}} />
-                      <p className="mt-2 mb-0 text-center">M2 Aslan</p>
+                      <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/kuchuya_m2.png'} alt="" style={{borderRadius: '5px'}} />
+                      <p className="mt-2 mb-0 text-center">M2 Kuchuya</p>
                     </div>
                   </div>
                   <hr className="gray-line mb-5" />
