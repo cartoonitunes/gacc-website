@@ -602,7 +602,7 @@ function Mutants() {
                     <div className="col-lg-6 col-12 order-lg-2">
                       <div className="row">
                         <div className="col-lg-6 col-6 order-lg-2 offset-lg-0 offset-3">
-                          <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/KUCHUYA.jpg'} alt="" style={{borderRadius: '5px'}} />
+                          <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/kuchuya.jpg'} alt="" style={{borderRadius: '5px'}} />
                           <p className="mt-2 mb-0 text-center">Kuchuya</p>
                         </div>
                         <div className="my-lg-3 d-lg-flex justify-content-center align-items-center col-lg-3 col-3 offset-lg-0 offset-2">
