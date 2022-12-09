@@ -195,15 +195,29 @@ function Home () {
                           <div className="row">
                             <div className="mb-2 col-lg-7 col-12" style={{top: '-10px'}}>
                               <h2 className="common-title mb-3" style={{color: 'black'}}>THE TEAM</h2>
-                              <p className="common-p" style={{color: 'black'}}>GACC was created by two friends who set out to make some spiffy apes, test our skills, and try to build something (very silly).</p>
-                              <p className="common-p" style={{color: '#977039'}}><span className="bayc-color bold-text" style={{color: '#977039'}}>ASLAN.</span> <span className="font-italic" style={{color: 'black', textAlign: 'left'}}>POKEMON MASTER. HARD DEGEN.</span></p>
-                              <p className="common-p" style={{color: '#977039'}}><span className="bayc-color bold-text" style={{color: '#977039'}}>KUCHUYA.</span> <span className="font-italic" style={{color: 'black'}}>FORCED TO BE BROUGHT ALONG, BUT EXTREMELY HANDSOME.</span></p>
+                              <p className="common-p" style={{color: 'black'}}>GACC is run by a team of hard-working collectors, focused on returning value and fun to the GACC NFT community.</p>
+                              <p className="common-p" style={{color: '#977039'}}><span className="bayc-color bold-text" style={{color: '#977039'}}>SWIRL</span> <span className="font-italic" style={{color: 'black', textAlign: 'left'}}>CEO AND CHIEF DJ</span></p>
+                              <p className="common-p" style={{color: '#977039'}}><span className="bayc-color bold-text" style={{color: '#977039'}}>CARTOON</span> <span className="font-italic" style={{color: 'black'}}>ALL THINGS CODE</span></p>
+                              <p className="common-p" style={{color: '#977039'}}><span className="bayc-color bold-text" style={{color: '#977039'}}>DIEF</span> <span className="font-italic" style={{color: 'black', textAlign: 'left'}}>ALL THINGS FINANCE AND COMMUNICATIONS</span></p>
+                              <p className="common-p" style={{color: '#977039'}}><span className="bayc-color bold-text" style={{color: '#977039'}}>DARK</span> <span className="font-italic" style={{color: 'black'}}>ALL THINGS DESIGN</span></p>
                             </div>
-                            <div className="col-lg-4 col-12 offset-lg-1">
+                            <div className="my-lg-auto col-lg-4 col-12 offset-lg-1">
                               <div className="common-container">
                                 <div className="row">
-                                  <div className="pb-2 pr-2 col-6"><img className="img-fluid" style={{borderRadius: '5px'}} src={process.env.PUBLIC_URL + '/assets/images/ASLAN.png'} alt="aslan" aria-label="aslan" /></div>
-                                  <div className="pb-2 pl-2 col-6"><img className="img-fluid" style={{borderRadius: '5px'}} src={process.env.PUBLIC_URL + '/assets/images/kuchuya.jpg'} alt="kuchuya" aria-label="kuchuya" /></div>
+                                  <div className="pb-2 pr-2 col-6">
+                                    <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/swirl.png'} alt="swirl" aria-label="swirl" style={{borderRadius: '5px'}} />
+                                  </div>
+                                  <div className="pb-2 pl-2 col-6">
+                                    <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/cartoon.png'} alt="cartoon" aria-label="cartoon" style={{borderRadius: '5px'}} />
+                                  </div>
+                                </div>
+                                <div className="row">
+                                  <div className="pt-2 pr-2 col-6">
+                                    <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/dief.png'} alt="dief" aria-label="dief" style={{borderRadius: '5px'}} />
+                                  </div>
+                                  <div className="pt-2 pl-2 col-6">
+                                    <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/dark.png'} alt="dark" aria-label="dark" style={{borderRadius: '5px'}} />
+                                  </div>
                                 </div>
                               </div>
                             </div>

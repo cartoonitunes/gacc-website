@@ -31,7 +31,7 @@ function Landing () {
                             <button className="bayc-button mb-4 w-100" style={{backgroundColor: '#83D8FC'}} type="button" onClick={() => history.push('/home')}>ENTER</button>
                           </div>
                           <div className="scroll m-auto pr-0 col-2">
-                            <div className="rotate my-auto" style={{color: 'black'}}>← SCROLL DOWN</div>
+                            <div className="rotate my-auto" style={{color: 'black'}}>↑ WELCOME</div>
                           </div>
                         </div>
                       </div>
