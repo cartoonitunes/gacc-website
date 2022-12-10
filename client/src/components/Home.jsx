@@ -31,7 +31,7 @@ function Home () {
                         <div className="mb-4 row">
                           <div className="mb-4 col-lg-7 col-12">
                             <h1 className="d-flex font-italic welcome-title mb-3" style={{color: 'black'}}>WELCOME TO THE<br />GRANDPA APE COUNTRY CLUB</h1>
-                            <p className="common-p mb-0" style={{color: 'black'}}>GACC is a collection of 5,000 Grandpa Ape NFTs—unique digital collectibles living on the Ethereum blockchain. Your Grandpa Ape doubles as your Country Club membership card, and grants access to members-only benefits, the first of which is access to THE GREENS, a place where you can just hang with friends. Future areas and perks can be unlocked by the community through roadmap activation.</p>
+                            <p className="common-p mb-0" style={{color: 'black'}}>Grandpa Ape Country Club ("GACC") is a collection of 5,000 Grandpa Ape NFTs, unique digital collectibles living on the Ethereum blockchain. Your Grandpa Ape doubles as your Country Club membership card, and grants access to members-only benefits, including airdrops and exclusive mints, in-person and virtual events, never ending games, and more. The GACC community is global and diverse, representing NFT investors of all shapes and forms. We welcome everyone to join us on this adventure!</p>
                           </div>
                           <div className="my-lg-auto col-lg-4 col-12 offset-lg-1">
                             <div className="common-container">
@@ -56,7 +56,7 @@ function Home () {
                               <h3 className="buy-ape-title">BUY AN APE</h3>
                             </div>
                             <div className="m-auto col-lg-4 col-12 offset-lg-1">
-                              <p className="common-p mb-lg-0">The initial sale has sold out. To get your Grandpa Ape, check out the collection on OpenSea.</p>
+                              <p className="common-p mb-lg-0">The initial sale has sold out. To get your Grandpa Ape, check out the collection on OpenSea, LooksRare, or any other major NFT marketplace.</p>
                             </div>
                             <div className="m-auto col-lg-2 col-12 offset-lg-1">
                               <a href="https://opensea.io/collection/grandpaapecountryclub"><button className="bayc-button mint" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>BUY ON OPENSEA</button></a>                              </div>
@@ -75,7 +75,7 @@ function Home () {
                           <div className="row">
                             <div className="mb-3 col-lg-7 col-12">
                               <h2 className="common-title mb-3" style={{color: 'black'}}>THE SPECS</h2>
-                              <p className="common-p" style={{color: 'black'}}>Each Grandpa Ape is unique and programmatically generated from over 200 possible traits, including expression, headwear, clothing, and more. All apes are spiffy, but some are rarer than others.<br /><br />The apes are stored as ERC-721 tokens on the Ethereum blockchain and hosted on IPFS.</p>
+                              <p className="common-p" style={{color: 'black'}}>Each Grandpa Ape is unique and programmatically generated from over 200 possible traits, including expression, headwear, clothing, and more. All apes are spiffy, but some are rarer than others. To check out "official" rarity, please use <a href="https://rarity.tools/grandpaapecountryclub">this link.</a> Please note that these are unofficial in nature. Every assignment of an ape's overall value or rarity is inherently subjective.<br /><br />The apes are stored as ERC-721 tokens on the Ethereum blockchain and hosted on IPFS.</p>
                             </div>
                             <div className="my-auto col-lg-4 col-12 offset-lg-1"><img className="img-fluid w-100" style={{borderRadius: '5px'}} src={process.env.PUBLIC_URL + '/assets/images/Sneak_Peek_Preview.gif'} alt="mystery token" /></div>
                           </div>
@@ -177,12 +177,12 @@ function Home () {
                       <div className="col">
                         <div className="row">
                           <div className="mb-4 mb-lg-0 col-lg-8 col-12">
-                            <h2 className="common-title mb-3" style={{color: 'black'}}>COMMUNITY TOOLS</h2>
-                            <p className="common-p mb-0" style={{color: 'black'}}>Here are some helpful tools created by the Grandpa Ape Country Club community. Please note that these are unofficial in nature. Every assignment of an ape's overall value or rarity is inherently subjective.</p>
+                            <h2 className="common-title mb-3" style={{color: 'black'}}>THE GREENS</h2>
+                            <p className="common-p mb-0" style={{color: 'black'}}>The Greens is the main Discord channel, where the community voice lives and breathes. In the Discord is where we collaborate, earn Grandpa Points ("GP") for games and prizes, share our love for the NFT art, and hang out with friends. Join us anytime! New members get 250 GP just for joining!</p>
                           </div>
                           <div className="m-lg-auto col-lg-3 col-12 offset-lg-1">
                             <div className="d-flex row">
-                              <div className="mx-auto col-lg-12 col-md-6 col-sm-12"><a href="https://rarity.tools/grandpaapecountryclub"><button className="bayc-button w-100" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>RARITY.TOOLS</button></a></div>
+                              <div className="mx-auto col-lg-12 col-md-6 col-sm-12"><a href="https://discord.com/invite/gacc"><button className="bayc-button w-100" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>DISCORD</button></a></div>
                             </div>
                           </div>
                         </div>
