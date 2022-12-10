@@ -499,17 +499,14 @@ function Mutants() {
                 <a id="nav-link" title="TEAM" href="/home#team" className="nav-link">TEAM</a>
               </div>
               <div className="navbar-nav" id="nav-social">
-                <a href="https://www.youtube.com/channel/UCkiX36fFF4xekyRVTWDKIXg">
-                  <i className="fa fa-youtube-play social-icon pr-lg-0" />
-                </a>
-                <a href="https://www.instagram.com/grandpaapecountryclubofficial">
-                  <i className="fa fa-instagram social-icon pr-lg-0" />
-                </a>
                 <a href="https://discord.com/invite/gacc">
                   <i className="fa fa-discord-alt social-icon pr-lg-0" />
                 </a>
                 <a href="https://twitter.com/GrandpaApeCC">
                   <i className="fa fa-twitter social-icon pr-lg-0" />
+                </a>
+                <a href="https://www.instagram.com/grandpaapecountryclubofficial">
+                  <i className="fa fa-instagram social-icon pr-lg-0" />
                 </a>
               </div>
             </div>
@@ -688,17 +685,14 @@ function Mutants() {
                 <div className="order-last my-auto text-center col-lg-4 col-sm-12 col-12">
                   <div className="row">
                     <div className="text-lg-right col-sm-12 col-12">
-                      <a href="https://www.youtube.com/channel/UCkiX36fFF4xekyRVTWDKIXg">
-                        <i className="fa fa-youtube-play social-icon pr-lg-0" />
-                      </a>
-                      <a href="https://www.instagram.com/grandpaapecountryclubofficial">
-                        <i className="fa fa-instagram social-icon pr-lg-0" />
-                      </a>
                       <a href="https://discord.com/invite/gacc">
                         <i className="fa fa-discord-alt social-icon pr-lg-0" />
                       </a>
                       <a href="https://twitter.com/GrandpaApeCC">
                         <i className="fa fa-twitter social-icon pr-lg-0" />
+                      </a>
+                      <a href="https://www.instagram.com/grandpaapecountryclubofficial">
+                        <i className="fa fa-instagram social-icon pr-lg-0" />
                       </a>
                     </div>
                     <div className="col-lg-12 col-sm-6 col-6">
