@@ -543,13 +543,6 @@ function Mutants() {
                     </div>
                   </div>
                   <div></div>
-                    {/* <div className="mb-5 row">
-                      <div className="col">
-                        <div className="d-flex justify-content-center">
-                          <p className="common-p text-center text-break mb-0"><span className="bold-text">VERIFIED SMART CONTRACT ADDRESS: </span><a title="0x4B103d07C18798365946E76845EDC6b565779402" href="https://etherscan.io/address/0x4B103d07C18798365946E76845EDC6b565779402" className="link" style={{color: '#977039'}}>0x4B103d07C18798365946E76845EDC6b565779402</a></p>
-                        </div>
-                      </div>
-                    </div> */}
                 <hr className="gray-line mb-5" />
                 <div className="px-4 mt-md-4 container">
                   <div className="mb-5  row">
@@ -667,6 +660,13 @@ function Mutants() {
                       <p className="common-p text-justify mb-0">Remember, a Grandpa Ape can only be mutated via a vial of a certain type once. We will introduce a method for checking whether a Grandpa Ape has been exposed to a given vial type.</p>
                     </div>
                   </div>
+                  <div className="mb-5 row">
+                      <div className="col">
+                        <div className="d-flex justify-content-center">
+                          <p className="common-p text-center text-break mb-0"><span className="bold-text">VERIFIED SMART CONTRACT ADDRESS: </span><a title="0xAD0db7368CDFbd3153F7dfaCA51A78Eeb39F6d71" href="https://etherscan.io/address/0xAD0db7368CDFbd3153F7dfaCA51A78Eeb39F6d71" className="link" style={{color: '#bfc500'}}>0xAD0db7368CDFbd3153F7dfaCA51A78Eeb39F6d71</a></p>
+                        </div>
+                      </div>
+                    </div>
                 </div>
               </div>
             </div>
