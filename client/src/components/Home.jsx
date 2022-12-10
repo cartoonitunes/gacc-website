@@ -14,7 +14,7 @@ function Home () {
                 <div className="navbar-nav" id="nav-bar">
                   <a id="nav-link" title="BUY AN APE" href="/home#buy-an-ape" style={{color: 'black'}} className="nav-link">BUY AN APE</a><a id="nav-link" title="ROADMAP" href="/home#roadmap" style={{color: 'black'}} className="nav-link">ROADMAP</a><a id="nav-link" style={{color: 'black'}} title="TEAM" href="/home#team" className="nav-link">TEAM</a><a id="nav-link" style={{color: 'black'}} title="MACC" href="/macc" data-rb-event-key="/macc" className="nav-link">MACC</a>
                 </div>
-                <div className="navbar-nav" id="nav-social"><a href="https://www.youtube.com/channel/UCkiX36fFF4xekyRVTWDKIXg"><i className="fa fa-youtube-play black-social-icon pr-lg-0" /></a><a href="https://www.instagram.com/grandpaapecountryclubofficial"><i className="fa fa-instagram black-social-icon pr-lg-0" /></a><a href="https://discord.com/invite/gacc"><i className="fa fa-discord-alt black-social-icon pr-lg-0" /></a><a href="https://twitter.com/GrandpaApeCC"><i className="fa fa-twitter black-social-icon pr-lg-0" /></a></div>
+                <div className="navbar-nav" id="nav-social"><a href="https://discord.com/invite/gacc"><i className="fa fa-discord-alt black-social-icon pr-lg-0" /></a><a href="https://twitter.com/GrandpaApeCC"><i className="fa fa-twitter black-social-icon pr-lg-0" /></a><a href="https://www.instagram.com/grandpaapecountryclubofficial"><i className="fa fa-instagram black-social-icon pr-lg-0" /></a></div>
               </div>
             </nav>
             <div>
@@ -278,7 +278,7 @@ function Home () {
                   <div className="col-12 col-lg-4 order-first"><img className="img-fluid footer-logo" src="https://lh3.googleusercontent.com/n9HKrkgouw_PsI79-XDrbfeomqcpVDXwDuJTKykWQjxVIOitQeDongPHwap1SbsFb_X0mVyoNGzztJPIV776N0kmnFkApZa-JBxyMA=s0" alt="logo" /></div>
                   <div className="order-last my-auto text-center col-lg-4 col-sm-12 col-12">
                     <div className="row">
-                    <div className="text-lg-right col-sm-12 col-12"><a href="https://www.youtube.com/channel/UCkiX36fFF4xekyRVTWDKIXg"><i className="fa fa-youtube-play black-social-icon pr-lg-0" /></a><a href="https://www.instagram.com/grandpaapecountryclubofficial"><i className="fa fa-instagram black-social-icon pr-lg-0" /></a><a href="https://discord.com/invite/gacc"><i className="fa fa-discord-alt black-social-icon pr-lg-0" /></a><a href="https://twitter.com/GrandpaApeCC"><i className="fa fa-twitter black-social-icon pr-lg-0" /></a></div>
+                    <div className="text-lg-right col-sm-12 col-12"><a href="https://discord.com/invite/gacc"><i className="fa fa-discord-alt black-social-icon pr-lg-0" /></a><a href="https://twitter.com/GrandpaApeCC"><i className="fa fa-twitter black-social-icon pr-lg-0" /></a><a href="https://www.instagram.com/grandpaapecountryclubofficial"><i className="fa fa-instagram black-social-icon pr-lg-0" /></a></div>
                       <div className="col-lg-12 col-sm-6 col-6">
                         <p className="copyright text-right"><span className="copy-left" style={{color: 'black'}}>© 2022 Grandpa Ape Country Club</span></p>
                       </div>
