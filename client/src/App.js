@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
  
 import Mutants from './components/Mutants';
 import Home from './components/Home';
+import KittenClub from './components/KittenClub';
 import Teaser from './components/Teaser';
 import Navigation from './components/Navigation';
  
@@ -16,6 +17,7 @@ class App extends Component {
              <Route path="/" component={Home} exact/>
              <Route path="/home" component={Home}/>
              <Route path="/macc" component={Mutants}/>
+             <Route path="/kitten-club" component={KittenClub}/>
              <Route path="/thelab" component={Teaser}/>
            </Switch>
         </div> 
