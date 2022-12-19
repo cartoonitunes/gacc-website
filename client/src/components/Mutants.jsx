@@ -484,33 +484,36 @@ function Mutants() {
     <div>
       <div id="root">
         <div className="app">
-          <nav id="nav" className="navbar navbar-expand navbar-light sticky-top">
-            <a href="/home" id="bayc-brand" className="navbar-brand">
-              <img src={process.env.PUBLIC_URL + '/assets/images/MACC_LOGO.png'} className="d-inline-block align-top" alt="bored ape logo" width="auto" height="75px" />
-            </a>
-            <button aria-controls="responsive-navbar-nav" id="nav-toggle" type="button" aria-label="Toggle navigation" className="navbar-dark navbar-toggler collapsed">
-              <span className="navbar-toggler-icon" />
-            </button>
-            <div className="navbar-collapse">
-              <div className="navbar-nav" id="nav-bar">
-                <a id="nav-link" title="BUY AN APE" href="/home#buy-an-ape" className="nav-link">BUY AN APE</a>
-                <a id="nav-link" title="BUY A SERUM" href="/macc#buy-a-serum" className="nav-link">BUY A SERUM</a>
-                <a id="nav-link" title="ROADMAP" href="/home#roadmap" className="nav-link">ROADMAP</a>
-                <a id="nav-link" title="TEAM" href="/home#team" className="nav-link">TEAM</a>
-              </div>
-              <div className="navbar-nav" id="nav-social">
-                <a href="https://discord.com/invite/gacc">
-                  <i className="fa fa-discord-alt social-icon pr-lg-0" />
-                </a>
-                <a href="https://twitter.com/GrandpaApeCC">
-                  <i className="fa fa-twitter social-icon pr-lg-0" />
-                </a>
-                <a href="https://www.instagram.com/grandpaapecountryclubofficial">
-                  <i className="fa fa-instagram social-icon pr-lg-0" />
-                </a>
-              </div>
-            </div>
-          </nav>
+          <nav id="nav" className="navbar navbar-expand-md navbar-light">
+                <a href="/" id="bayc-brand" className="navbar-brand"><img src={process.env.PUBLIC_URL + '/assets/images/GACC_WHITE_2.png'} className="d-inline-block align-top" alt="bored ape logo" width="auto" height="70px" /></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="" role="button" ><i class="fa fa-bars" aria-hidden="true" style={{color:"#ffffff"}}></i></span></button>
+                <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div className="navbar-nav" id="nav-bar">
+                    <a id="nav-link" title="BUY AN APE" href="/#buy-an-ape" className="nav-link">BUY AN APE</a>
+                    <a id="nav-link" title="ROADMAP" href="/#roadmap" className="nav-link">ROADMAP</a>
+                    <a id="nav-link" title="TEAM" href="/#team" className="nav-link">TEAM</a>
+                    <div className="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">MEMBERS</a>
+                        <div aria-labelledby="nav-dropdown" className="dropdown-menu" style={{margin: '0px'}}>
+                            <a id="nav-link-active" title="MACC" href="/macc" className="dropdown-item active">MACC</a>
+                            <a id="nav-link" title="Kitten Club" href="/kitten-club" className="dropdown-item">KITTEN CLUB</a>
+                            <a id="nav-link" title="MERCH" href="/#merch" className="dropdown-item">MERCH</a>
+                        </div>
+                    </div>
+                    </div>
+                    <div className="navbar-nav" id="nav-social">
+                    <a href="https://discord.com/invite/gacc">
+                    <i className="fa fa-discord-alt social-icon pr-lg-0" />
+                    </a>
+                    <a href="https://twitter.com/GrandpaApeCC">
+                    <i className="fa fa-twitter social-icon pr-lg-0" />
+                    </a>
+                    <a href="https://www.instagram.com/grandpaapecountryclubofficial">
+                    <i className="fa fa-instagram social-icon pr-lg-0" />
+                    </a>
+                </div>
+                </div>
+            </nav>
           <div>
             <div style={{transition: 'opacity 400ms ease 0s, transform 400ms ease 0s', transform: 'none', opacity: 1}}>
               <div className="common-container">
@@ -695,7 +698,7 @@ function Mutants() {
                     </div>
                     <div className="col-lg-12 col-sm-6 col-6">
                       <p className="copyright text-right">
-                        <span className="copy-left">© 2022 Grandpa Ape Country Club</span>
+                        <span className="copy-left">© 2023 Grandpa Ape Country Club</span>
                       </p>
                     </div>
                   </div>
