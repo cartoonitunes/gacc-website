@@ -486,14 +486,14 @@ function Mutants() {
         <div className="app">
           <nav id="nav" className="navbar navbar-expand-md navbar-light">
                 <a href="/" id="bayc-brand" className="navbar-brand"><img src={process.env.PUBLIC_URL + '/assets/images/GACC_WHITE_2.png'} className="d-inline-block align-top" alt="bored ape logo" width="auto" height="70px" /></a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="" role="button" ><i class="fa fa-bars" aria-hidden="true" style={{color:"#ffffff"}}></i></span></button>
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="" role="button" ><i className="fa fa-bars" aria-hidden="true" style={{color:"#ffffff"}}></i></span></button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <div className="navbar-nav" id="nav-bar">
                     <a id="nav-link" title="BUY AN APE" href="/#buy-an-ape" className="nav-link">BUY AN APE</a>
                     <a id="nav-link" title="ROADMAP" href="/#roadmap" className="nav-link">ROADMAP</a>
                     <a id="nav-link" title="TEAM" href="/#team" className="nav-link">TEAM</a>
                     <div className="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">MEMBERS</a>
+                    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">MEMBERS</a>
                         <div aria-labelledby="nav-dropdown" className="dropdown-menu" style={{margin: '0px'}}>
                             <a id="nav-link-active" title="MACC" href="/macc" className="dropdown-item active">MACC</a>
                             <a id="nav-link" title="Kitten Club" href="/kitten-club" className="dropdown-item">KITTEN CLUB</a>

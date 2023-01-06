@@ -9,7 +9,7 @@ function Home () {
           <div className="app" style={{backgroundColor: '#f9edcd'}}>
             <nav id="nav" className="navbar navbar-expand-md navbar-light" style={{backgroundColor: '#f9edcd'}}>
               <a href="/home" id="bayc-brand" className="navbar-brand"><img src={process.env.PUBLIC_URL + '/assets/images/GACC-Banner-Black-V6.png'} className="d-inline-block align-top" alt="bored ape logo" width="auto" height="70px" /></a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon" /></button>
+              <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon" /></button>
               <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <div className="navbar-nav" id="nav-bar">
                   <a id="nav-link" title="BUY AN APE" href="/home#buy-an-ape" style={{color: 'black'}} className="nav-link">BUY AN APE</a>

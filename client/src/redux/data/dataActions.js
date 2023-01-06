@@ -91,3 +91,29 @@ export const fetchData = () => {
     }
   };
 };
+
+export const fetchKittenData = () => {
+  return async (dispatch) => {
+    dispatch(fetchDataRequest());
+    try {
+      let kittenMintActive = await store
+        .getState()
+        .blockchain.smartContract.methods.saleIsActive()
+        .call();
+      let kittenAdoptionActive = await store
+        .getState()
+        .blockchain.smartContract.methods.adoptionIsActive()
+        .call();
+
+      dispatch(
+        fetchDataSuccess({
+          kittenMintActive,
+          kittenAdoptionActive,
+        })
+      );
+    } catch (err) {
+      console.log(err);
+      dispatch(fetchDataFailed("Could not load data from contract."));
+    }
+  };
+};
