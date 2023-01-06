@@ -10,6 +10,8 @@ const initialState = {
   saleWhitelistActive: false,
   publicSaleActive: false,
   serumMutationActive: false,
+  kittenMintActive: false,
+  kittenAdoptionActive: false,
   error: false,
   errorMsg: "",
 };
@@ -37,6 +39,8 @@ const dataReducer = (state = initialState, action) => {
         saleWhitelistActive: action.payload.saleWhitelistActive,
         publicSaleActive: action.payload.publicSaleActive,
         serumMutationActive: action.payload.serumMutationActive,
+        kittenMintActive: action.payload.kittenMintActive,
+        kittenAdoptionActive: action.payload.kittenAdoptionActive,
         error: false,
         errorMsg: "",
       };
