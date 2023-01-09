@@ -85,85 +85,85 @@ function Home () {
                     <hr className="gray-line mb-5" />
                     <div className="mb-5 row">
                       <div className="col">
-                        <div id="roadmap" className="common-container">
+                      <div id="roadmap" className="common-container">
                           <div className="row">
                             <div className="mb-3 col-lg-9 col-12">
-                              <h2 className="common-title mb-3" style={{color: 'black'}}>ROADMAP ACTIVATIONS</h2>
-                              <p className="common-p" style={{color: 'black'}}>We’re in this for the long haul.</p>
-                              <p className="common-p" style={{color: 'black'}}>We’ve set up some goalposts for ourselves. Once we hit a target sell through percentage, we will begin to work on realizing the stated goal.</p>
+                              <h2 className="common-title mb-3" style={{color: 'black'}}>THE FRONT NINE</h2>
+                              <p className="common-p" style={{color: 'black'}}>We're in this for the long haul.</p>
+                              <p className="common-p" style={{color: 'black'}}>Just like the front nine of a golf course, our roadmap is a set of holes were working to complete and achieve together. Where the back nine takes us, only time will tell!</p>
                             </div>
                             <div className="mb-3 mb-md-0 col-lg-8 col-12">
                               <div className="mb-3 mb-lg-1 row">
                                 <div className="m-auto col-lg-1 col-2 offset-lg-1 offset-1">
-                                  <p className="goal">10%</p>
+                                  <p className="goal">1</p>
                                 </div>
                                 <div className="m-auto col-lg-10 col-9">
-                                  <p className="text-decoration-line-through common-sub-p" style={{color: 'black'}}>We pay back our Grandpas.</p>
+                                  <p className="text-decoration-line-through common-sub-p" style={{color: 'black'}}>The Grandpa Ape Country Club ("GACC") is minted.</p>
                                 </div>
                               </div>
                               <div className="mb-3 mb-lg-1 row">
                                 <div className="m-auto col-lg-1 col-2 offset-lg-1 offset-1">
-                                  <p className="goal">20%</p>
+                                  <p className="goal">2</p>
                                 </div>
                                 <div className="m-auto col-lg-10 col-9">
-                                  <p className="text-decoration-line-through common-sub-p" style={{color: 'black'}}>We mint 10 Grandpa Apes and airdrop them to random GACC holders.</p>
+                                  <p className="text-decoration-line-through common-sub-p" style={{color: 'black'}}>Holders only GACC Merchandise is available for a limited time.</p>
                                 </div>
                               </div>
                               <div className="mb-3 mb-lg-1 row">
                                 <div className="m-auto col-lg-1 col-2 offset-lg-1 offset-1">
-                                  <p className="goal">30%</p>
+                                  <p className="goal">3</p>
                                 </div>
                                 <div className="m-auto col-lg-10 col-9">
-                                  <p className="text-decoration-line-through common-sub-p" style={{color: 'black'}}>We airdrop 1 ETH to three random GACC holders.</p>
+                                  <p className="text-decoration-line-through common-sub-p" style={{color: 'black'}}>GACC Laboratory will open and begin airdropping Mutant Serums to GACC holders.</p>
                                 </div>
                               </div>
 
                               <div className="mb-3 mb-lg-1 row">
                                 <div className="m-auto col-lg-1 col-2 offset-lg-1 offset-1">
-                                  <p className="goal">40%</p>
+                                  <p className="goal">4</p>
                                 </div>
                                 <div className="m-auto col-lg-10 col-9">
-                                  <p className="text-decoration-line-through common-sub-p" style={{color: 'black'}}>We create a community wallet and fill it with 3 ETH.</p>
-                                </div>
-                              </div>
-                              <div className="mb-3 mb-lg-1 row">
-                                <div className="m-auto col-lg-1 col-2 offset-lg-1 offset-1">
-                                  <p className="goal">60%</p>
-                                </div>
-                                <div className="m-auto col-lg-10 col-9">
-                                  <p className="text-decoration-line-through common-sub-p" style={{color: 'black'}}>GACC Merch Store will launch and offer limited edition clothing and accessories.</p>
-                                </div>
-                              </div>
-                              <div className="mb-3 mb-lg-1 row">
-                                <div className="m-auto col-lg-1 col-2 offset-lg-1 offset-1">
-                                  <p className="goal">70%</p>
-                                </div>
-                                <div className="m-auto col-lg-10 col-9">
-                                  <p className="text-decoration-line-through common-sub-p" style={{color: 'black'}}>We add 3 more ETH to the Community Wallet.</p>
-                                </div>
-                              </div>
-                              <div className="mb-3 mb-lg-1 row">
-                                <div className="m-auto col-lg-1 col-2 offset-lg-1 offset-1">
-                                  <p className="goal">80%</p>
-                                </div>
-                                <div className="m-auto col-lg-10 col-9">
-                                  <p className="text-decoration-line-through common-sub-p" style={{color: 'black'}}>GACC Laboratory will open and begin testing Mutant Serums to be ready for an airdrop.</p>
-                                </div>
-                              </div>
-                              <div className="mb-3 mb-lg-1 row">
-                                <div className="m-auto col-lg-1 col-2 offset-lg-1 offset-1">
-                                  <p className="goal">90%</p>
-                                </div>
-                                <div className="m-auto col-lg-10 col-9">
-                                  <p className="text-decoration-line-through common-sub-p" style={{color: 'black'}}>We add 3 more ETH to the Community Wallet and GACC holders will decide on use and distribution amongst holders.</p>
+                                  <p className="text-decoration-line-through common-sub-p" style={{color: 'black'}}>The Mutant Ape Country Club ("MACC") is minted and the mutation laboratory opens.</p>
                                 </div>
                               </div>
                               <div className="row">
                                 <div className="m-auto col-lg-1 col-2 offset-lg-1 offset-1">
-                                  <p className="goal">100%</p>
+                                  <p className="goal">5</p>
                                 </div>
                                 <div className="m-auto col-lg-10 col-9">
-                                  <p className="common-sub-p" style={{color: 'black'}}>The Grandpa Ape Kitten Club opens its doors for adoption.</p>
+                                  <p className="text-decoration-line-through common-sub-p" style={{color: 'black'}}>Holders begin accruing Grandpa Points ("GP") for buying and holding NFTs. Join the Discord to enroll!</p>
+                                </div>
+                              </div>
+                              <div className="mb-3 mb-lg-1 row">
+                                <div className="m-auto col-lg-1 col-2 offset-lg-1 offset-1">
+                                  <p className="goal">6</p>
+                                </div>
+                                <div className="m-auto col-lg-10 col-9">
+                                  <p className="text-decoration-line-through common-sub-p" style={{color: 'black'}}>The GACC Pro Shop will open, offering MACC merch, limited-edition drops, and GACC classics.</p>
+                                </div>
+                              </div>
+                              <div className="mb-3 mb-lg-1 row">
+                                <div className="m-auto col-lg-1 col-2 offset-lg-1 offset-1">
+                                  <p className="goal">7</p>
+                                </div>
+                                <div className="m-auto col-lg-10 col-9">
+                                  <p className="text-decoration-line-through common-sub-p" style={{color: 'black'}}>The Grandpa Ape Country Club V1 Toys collection is launched and the top 50 holders receive one for free.</p>
+                                </div>
+                              </div>
+                              <div className="mb-3 mb-lg-1 row">
+                                <div className="m-auto col-lg-1 col-2 offset-lg-1 offset-1">
+                                  <p className="goal">8</p>
+                                </div>
+                                <div className="m-auto col-lg-10 col-9">
+                                  <p className="common-sub-p" style={{color: 'black'}}>The Grandpa Ape Kitten Club ("GAKC") opens its doors for adoption.</p>
+                                </div>
+                              </div>
+                              <div className="mb-3 mb-lg-1 row">
+                                <div className="m-auto col-lg-1 col-2 offset-lg-1 offset-1">
+                                  <p className="goal">9</p>
+                                </div>
+                                <div className="m-auto col-lg-10 col-9">
+                                  <p className="common-sub-p" style={{color: 'black'}}>GACC Laboratory will open for Kitten experimentation.</p>
                                 </div>
                               </div>
                             </div>
@@ -199,6 +199,22 @@ function Home () {
                           <div className="m-lg-auto col-lg-3 col-12 offset-lg-1">
                             <div className="d-flex row">
                               <div className="mx-auto col-lg-12 col-md-6 col-sm-12"><a href="https://gaccproshop.com/"><button className="bayc-button w-100" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>GACC PRO SHOP</button></a></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr className="gray-line mb-5" />
+                    <div className="mb-5 row">
+                      <div className="col">
+                        <div className="row">
+                          <div className="mb-4 mb-lg-0 col-lg-8 col-12">
+                            <h2 className="common-title mb-3" style={{color: 'black'}}>GACC LOUNGE ALPHA BOT</h2>
+                            <p className="common-p mb-0" style={{color: 'black'}}>GACC holders with five or more grandpas get access to an exclusive Discord channel with a bot that pulls down and analyzes code from any ERC271 and ERC1155 contract. The bot allows holders to gain deep insights into an NFT contract before investing at the touch of a button.</p>
+                          </div>
+                          <div className="m-lg-auto col-lg-3 col-12 offset-lg-1">
+                            <div className="d-flex row">
+                            <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/lightspeed_gacc_2561.gif'} alt="robot" aria-label="robot" style={{borderRadius: '5px'}} />
                             </div>
                           </div>
                         </div>
