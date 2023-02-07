@@ -56,15 +56,19 @@ function Home () {
                               <h3 className="buy-ape-title">BUY AN APE</h3>
                             </div>
                             <div className="m-auto col-lg-4 col-12 offset-lg-1">
-                              <p className="common-p mb-lg-0">The initial sale has sold out. To get your Grandpa Ape, check out the collection on OpenSea, LooksRare, or any other major NFT marketplace.</p>
+                              <p className="common-p mb-lg-0">The initial sale has sold out. To get your Grandpa Ape, check out the collection on OpenSea, or any other major NFT marketplace.</p>
                             </div>
                             <div className="m-auto col-lg-2 col-12 offset-lg-1">
-                              <a href="https://opensea.io/collection/grandpaapecountryclub"><button className="bayc-button mint" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>BUY ON OPENSEA</button></a>                              </div>
-
-                            <div className="m-auto col-lg-2 col-12 offset-lg-1">
-                              <a href="https://looksrare.org/collections/0x4b103d07c18798365946e76845edc6b565779402"><button className="bayc-button mint" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>BUY ON LOOKSRARE</button></a>
-                              </div>
+                              <a href="https://opensea.io/collection/grandpaapecountryclub"><button className="bayc-button mint" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>BUY ON OPENSEA</button></a>
+                            </div>
                           </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mb-5 row">
+                      <div className="col">
+                        <div id="superbowl-contest" className="super-bowl-container">
+                          <img className="img-fluid" style={{borderRadius: '5px'}} src={process.env.PUBLIC_URL + '/assets/images/gacc_superbowl_2023.jpg'} aria-label="superbowl" />
                         </div>
                       </div>
                     </div>
