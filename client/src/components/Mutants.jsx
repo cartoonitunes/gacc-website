@@ -485,21 +485,21 @@ function Mutants() {
       <div id="root">
         <div className="app">
         <nav id="nav" className="navbar navbar-expand-md navbar-light">
-          <a href="/" id="bayc-brand" className="navbar-brand"><img src={process.env.PUBLIC_URL + '/assets/images/GACC_WHITE_2.png'} className="d-inline-block align-top" alt="bored ape logo" width="auto" height="70px" /></a>
+          <a href="/" id="bayc-brand" className="navbar-brand"><img src={process.env.PUBLIC_URL + '/assets/images/GACC_WHITE_2.png'} className="d-inline-block align-top" alt="gacc logo" width="auto" height="70px" /></a>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="" role="button" ><i className="fa fa-bars" aria-hidden="true" style={{color:"#ffffff"}}></i></span></button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
               <div className="navbar-nav" id="nav-bar">
-              <a id="nav-link" title="BUY AN APE" href="/#buy-an-ape" className="nav-link">BUY AN APE</a>
+              <a id="nav-link" title="BUY A MACC" href="/macc#buy-a-macc" className="nav-link">BUY A MACC</a>
               <a id="nav-link" title="ROADMAP" href="/#roadmap" className="nav-link">ROADMAP</a>
               <a id="nav-link" title="TEAM" href="/#team" className="nav-link">TEAM</a>
-              <div className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style={{color: 'white'}}>MEMBERS</a>
-                  <div aria-labelledby="nav-dropdown" className="dropdown-menu" style={{margin: '0px'}}>
-                      <a id="nav-link-active" title="MACC" href="/macc" className="dropdown-item active">MACC</a>
-                      <a id="nav-link" title="Kitten Club" href="/kitten-club" className="dropdown-item">KITTEN CLUB</a>
-                      <a id="nav-link" title="MERCH" href="/#merch" className="dropdown-item">MERCH</a>
-                  </div>
-              </div>
+              <div className="nav-item dropdown" style={{color: '#f9edcd'}}>
+                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style={{color: 'white'}}>MARKETPLACES</a>
+                    <div aria-labelledby="nav-dropdown" className="dropdown-menu home-dropdown" style={{margin: '0px', color: 'white', backgroundColor: 'black'}}>
+                        <a id="nav-link" title="GACC" href="/gacc-marketplace" className="dropdown-item" style={{color: 'white', backgroundColor: 'black'}}>GACC</a>
+                        <a id="nav-link" title="SERUMS" href="/serum-marketplace" className="dropdown-item" style={{color: 'white', backgroundColor: 'black'}}>SERUMS</a>
+                        <a id="nav-link" title="MACC" href="/macc-marketplace" className="dropdown-item" style={{color: 'white', backgroundColor: 'black'}}>MACC</a>
+                    </div>
+                </div>
               </div>
               <div className="navbar-nav" id="nav-social">
               <a href="https://discord.com/invite/gacc">
@@ -575,6 +575,23 @@ function Mutants() {
                       </div>
                     </div>
                   </div>
+                  <div className="mb-5 row">
+                      <div className="col">
+                        <div id="buy-a-macc" className="buy-token-container">
+                          <div className="bayc-bg p-4 m-auto row">
+                            <div className="m-auto col-lg-3 col-12">
+                              <h3 className="buy-ape-title">BUY A MACC</h3>
+                            </div>
+                            <div className="m-auto col-lg-4 col-12 offset-lg-1">
+                              <p className="common-p mb-lg-0">To get your Mutant Grandpa Ape, check out the collection on our marketplace, or mutate a GACC using a serum.</p>
+                            </div>
+                            <div className="m-auto col-lg-2 col-12 offset-lg-1">
+                              <a href="/macc-marketplace"><button className="bayc-button mint" type="button">VISIT THE MARKETPLACE</button></a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   <hr className="gray-line mb-5" />
                   <div className="mb-5  row">
                     <div className="col-12">
