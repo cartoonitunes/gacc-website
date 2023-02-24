@@ -352,7 +352,6 @@ input:focus{
 .mint-input-read {
     background-color:black;
     text-align: center;
-    color:#bfc500;
     font-weight:700;
 }
 .mint-title {
@@ -1640,8 +1639,11 @@ div.qr-code-border{
 .MuiInput-underline:hover:not(.Mui-disabled,.Mui-error)::before{
     border-bottom:2px solid rgba(255,255,255,.87) !important
 }
+.black-toggle{
+    color: black;
+}
 .dropdown-toggle{
-    color:#fff !important;
+    color:#fff ;
     font-size:8px !important;
     font-style:italic !important;
     font-weight:500 !important;
