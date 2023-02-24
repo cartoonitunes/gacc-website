@@ -661,9 +661,9 @@ function Mutants() {
                               <h3 className="buy-ape-title">BUY A SERUM</h3>
                             </div>
                             <div className="m-auto col-lg-4 col-12 offset-lg-1">
-                              <p className="common-p mb-lg-0">The serum snapshot and airdrop has ended. To get your M1, M2, or Mega Serum, check out the collection on OpenSea.</p>
+                              <p className="common-p mb-lg-0">The serum snapshot and airdrop has ended. To get your M1, M2, or Mega Serum, check out the collection on our marketplace.</p>
                             </div>
-                            <div className="m-auto col-lg-3 col-12 offset-lg-1"><a href="https://opensea.io/collection/grandpaapechemistryclub"><button className="bayc-button mint" type="button">BUY A SERUM ON OPENSEA</button></a></div>
+                            <div className="m-auto col-lg-3 col-12 offset-lg-1"><a href="/serum-marketplace"><button className="bayc-button mint" type="button">VISIT THE MARKETPLACE</button></a></div>
                           </div>
                         </div>
                       </div>
