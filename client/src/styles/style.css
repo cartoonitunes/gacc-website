@@ -1668,14 +1668,17 @@ div.qr-code-border{
     padding-bottom:0px;
     padding-right:20px
 }
+.home-dropdown{
+    background-color:#F9EDCD 
+}
 .dropdown-menu,.dropdown-item:hover{
-    background-color:#000 !important
+    background-color:#000;
 }
 .dropdown-item{
     padding:8px !important
 }
 .dropdown-item.active,.dropdown-item:active{
-    background-color:#000 !important
+    background-color:#000
 }
 #nav-link-active{
     color:#bfc500;

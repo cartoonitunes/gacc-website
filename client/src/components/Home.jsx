@@ -12,16 +12,16 @@ function Home () {
               <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="" role="button" ><i className="fa fa-bars" aria-hidden="true" style={{color:"black"}}></i></span></button>
               <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <div className="navbar-nav" id="nav-bar">
-                  <a id="nav-link" title="BUY AN APE" href="/home#buy-an-ape" style={{color: 'black'}} className="nav-link">BUY AN APE</a>
+                  <a id="nav-link" title="BUY A GACC" href="/home#buy-a-gacc" style={{color: 'black'}} className="nav-link">BUY A GACC</a>
                   <a id="nav-link" title="ROADMAP" href="/home#roadmap" style={{color: 'black'}} className="nav-link">ROADMAP</a>
                   <a id="nav-link" style={{color: 'black'}} title="TEAM" href="/home#team" className="nav-link">TEAM</a>
                   <a id="nav-link" style={{color: 'black'}} title="MACC" href="/macc" data-rb-event-key="/macc" className="nav-link">MACC</a>
                   <div className="nav-item dropdown" style={{color: '#f9edcd'}}>
-                    <a className="nav-link dropdown-toggle black-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style={{color: 'black'}}>MEMBERS</a>
-                        <div aria-labelledby="nav-dropdown" className="dropdown-menu" style={{margin: '0px', color: 'black'}}>
-                            <a id="nav-link-active" title="MACC" href="/macc" className="dropdown-item active">MACC</a>
-                            <a id="nav-link" title="Kitten Club" href="/kitten-club" className="dropdown-item">KITTEN CLUB</a>
-                            <a id="nav-link" title="MERCH" href="/#merch" className="dropdown-item">MERCH</a>
+                    <a className="nav-link dropdown-toggle black-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style={{color: 'black'}}>MARKETPLACES</a>
+                        <div aria-labelledby="nav-dropdown" className="dropdown-menu home-dropdown" style={{margin: '0px', color: 'black', backgroundColor: '#F9EDCD'}}>
+                            <a id="nav-link" title="GACC" href="/gacc-marketplace" className="dropdown-item" style={{color: 'black'}}>GACC</a>
+                            <a id="nav-link" title="SERUMS" href="/serum-marketplace" className="dropdown-item" style={{color: 'black'}}>SERUMS</a>
+                            <a id="nav-link" title="MACC" href="/macc-marketplace" className="dropdown-item" style={{color: 'black'}}>MACC</a>
                         </div>
                     </div>
                 </div>
@@ -61,25 +61,18 @@ function Home () {
                     </div>
                     <div className="mb-5 row">
                       <div className="col">
-                        <div id="buy-an-ape" className="buy-token-container">
+                        <div id="buy-a-gacc" className="buy-token-container">
                           <div className="bayc-bg p-4 m-auto row" style={{backgroundColor: 'white'}}>
                             <div className="m-auto col-lg-3 col-12">
-                              <h3 className="buy-ape-title">BUY AN APE</h3>
+                              <h3 className="buy-ape-title">BUY A GACC</h3>
                             </div>
                             <div className="m-auto col-lg-4 col-12 offset-lg-1">
-                              <p className="common-p mb-lg-0">The initial sale has sold out. To get your Grandpa Ape, check out the collection on OpenSea, or any other major NFT marketplace.</p>
+                              <p className="common-p mb-lg-0">The initial sale has sold out. To get your Grandpa Ape, check out the collection on our marketplace, or any other major NFT marketplace.</p>
                             </div>
                             <div className="m-auto col-lg-2 col-12 offset-lg-1">
-                              <a href="https://opensea.io/collection/grandpaapecountryclub"><button className="bayc-button mint" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>BUY ON OPENSEA</button></a>
+                              <a href="/gacc-marketplace"><button className="bayc-button mint" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>VISIT THE MARKETPLACE</button></a>
                             </div>
                           </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mb-5 row">
-                      <div className="col">
-                        <div id="superbowl-contest" className="super-bowl-container">
-                          <img className="img-fluid" style={{borderRadius: '5px'}} src={process.env.PUBLIC_URL + '/assets/images/gacc_superbowl_2023.jpg'} aria-label="superbowl" />
                         </div>
                       </div>
                     </div>
