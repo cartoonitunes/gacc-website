@@ -7,12 +7,23 @@ function Home () {
         <div>
         <div id="root">
           <div className="app" style={{backgroundColor: '#f9edcd'}}>
-            <nav id="nav" className="navbar navbar-expand-md navbar-light" style={{backgroundColor: '#f9edcd'}}>
+          <nav id="nav" className="navbar navbar-expand-md navbar-light" style={{backgroundColor: '#f9edcd'}}>
               <a href="/home" id="bayc-brand" className="navbar-brand"><img src={process.env.PUBLIC_URL + '/assets/images/GACC-Banner-Black-V6.png'} className="d-inline-block align-top" alt="bored ape logo" width="auto" height="70px" /></a>
-              <button aria-controls="responsive-navbar-nav" id="nav-toggle" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" className="navbar-light navbar-toggler collapsed"><span className="navbar-toggler-icon" /></button>
+              <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon" /></button>
               <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <div className="navbar-nav" id="nav-bar">
-                  <a id="nav-link" title="BUY AN APE" href="/home#buy-an-ape" style={{color: 'black'}} className="nav-link">BUY AN APE</a><a id="nav-link" title="ROADMAP" href="/home#roadmap" style={{color: 'black'}} className="nav-link">ROADMAP</a><a id="nav-link" style={{color: 'black'}} title="TEAM" href="/home#team" className="nav-link">TEAM</a><a id="nav-link" style={{color: 'black'}} title="MACC" href="/macc" data-rb-event-key="/macc" className="nav-link">MACC</a>
+                  <a id="nav-link" title="BUY AN APE" href="/home#buy-an-ape" style={{color: 'black'}} className="nav-link">BUY AN APE</a>
+                  <a id="nav-link" title="ROADMAP" href="/home#roadmap" style={{color: 'black'}} className="nav-link">ROADMAP</a>
+                  <a id="nav-link" style={{color: 'black'}} title="TEAM" href="/home#team" className="nav-link">TEAM</a>
+                  <a id="nav-link" style={{color: 'black'}} title="MACC" href="/macc" data-rb-event-key="/macc" className="nav-link">MACC</a>
+                  <div className="nav-item dropdown" style={{color: '#f9edcd'}}>
+                    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style={{color: '#f9edcd'}}>MEMBERS</a>
+                        <div aria-labelledby="nav-dropdown" className="dropdown-menu" style={{margin: '0px', color: 'black'}}>
+                            <a id="nav-link-active" title="MACC" href="/macc" className="dropdown-item active">MACC</a>
+                            <a id="nav-link" title="Kitten Club" href="/kitten-club" className="dropdown-item">KITTEN CLUB</a>
+                            <a id="nav-link" title="MERCH" href="/#merch" className="dropdown-item">MERCH</a>
+                        </div>
+                    </div>
                 </div>
                 <div className="navbar-nav" id="nav-social"><a href="https://discord.com/invite/gacc"><i className="fa fa-discord-alt black-social-icon pr-lg-0" /></a><a href="https://twitter.com/GrandpaApeCC"><i className="fa fa-twitter black-social-icon pr-lg-0" /></a><a href="https://www.instagram.com/grandpaapecountryclubofficial"><i className="fa fa-instagram black-social-icon pr-lg-0" /></a></div>
               </div>
