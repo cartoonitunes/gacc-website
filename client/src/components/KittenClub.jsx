@@ -270,7 +270,7 @@ function KittenClub() {
             <div id="root">
                 <div className="app">
                 <nav id="nav" className="navbar navbar-expand-md navbar-light">
-                    <a href="/" id="bayc-brand" className="navbar-brand"><img src={process.env.PUBLIC_URL + '/assets/images/GACC_WHITE_2.png'} className="d-inline-block align-top" alt="bored ape logo" width="auto" height="70px" /></a>
+                    <a href="/" id="bayc-brand" className="navbar-brand"><img src={process.env.PUBLIC_URL + '/assets/images/gakc_banner_white.png'} className="d-inline-block align-top" alt="bored ape logo" width="auto" height="70px" /></a>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="" role="button" ><i className="fa fa-bars" aria-hidden="true" style={{color:"#ffffff"}}></i></span></button>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <div className="navbar-nav" id="nav-bar">
@@ -312,8 +312,8 @@ function KittenClub() {
                         <div className="row">
                             <div className="px-0 col-12">
                             <img
-                                src="https://ik.imagekit.io/bayc/assets/pets-welcome.png"
-                                className="img-fluid d-flex w-50 mx-auto my-5"
+                                src='https://cdn.discordapp.com/attachments/937225793602474005/1097800393964146728/IMG_2832.png'
+                                className="img-fluid px-0"
                                 useMap="#mutant"
                                 alt=""
                             />
@@ -324,10 +324,10 @@ function KittenClub() {
                         <div className="mb-5 row">
                             <div className="mb-4 mb-lg-0 col-lg-7 col-12">
                             <h1 className="common-title mb-3">
-                            WELCOME TO THE<br />GRANDPA APE KITTEN CLUB
+                            THE<br />GRANDPA APE KITTEN CLUB
                             </h1>
                             <p className="common-p">
-                                The curiosity of the original Grandpa Ape travelers never waned. On their third year of adventuring through the depths of the unexplored world, the apes discovered an alien utopia of wonders. A world filled with adorable kittens of all shapes and colors, with magical powers and hearts that instantly filled their longing souls with warmth.
+                            On their third year of adventuring through the depths of the unexplored world, the apes discovered an alien utopia of wonders. A world filled with adorable kittens of all shapes and colors, with magical powers and hearts that instantly filled their longing souls with warmth.
                             </p>
                             <p className="common-p">
                             The kittens proved to be kind and generous, immediately taking to the wandering apes. The apes shared their stories to thousands of perked up ears. Word traveled fast through the land of the kittens, reaching areas even seldom visited by their own kind.
@@ -347,34 +347,62 @@ function KittenClub() {
                         <div className="mb-5 row">
                             <div className="mb-4 mb-lg-0 col-lg-7 col-12">
                             <h2 className="d-flex common-sub-title font-italic mb-2 bayc-color">
-                            DISTRIBUTION &amp; PRICING
+                            LÜNAGEMS
                             </h2>
                             <p className="common-p">
-                                For a limited time, each and every club member will be able to
-                                adopt a Club Kitten NFT from the Grandpa Ape Kitten Club.
-                                Claiming the token is free; you'll only have to pay gas.
+                            Upon returning to the ape country, the adventurers and kittens inspired apes to explore the unknown. However, it turned out that happening upon the Land of Kittens was not so simple.
                             </p>
                             <p className="common-p">
-                                The only way to adopt one is to
-                                claim it by having a Grandpa Ape in your wallet. You can claim
-                                one random Club Kitten for each Grandpa Ape you own. Once a kitten
-                                has been claimed by a Grandpa Ape, that token cannot be used
-                                to claim another feline again.
+                            It was then when the kittens taught the apes how to summon a kitten from the land. An ancient call, an enchantment of sorts, which seems unworldly to the apes, would summon a kitten to their side. To work, a unique resource, found deep within the mountains, was needed: a Lünagem.
                             </p>
                             <p className="common-p">
-                                At the time of minting, the kittens will be unrevealed. Once the adoption 
-                                window is closed, there will be a public sale for the remaining kittens. 
-                                The mint price for a Grandpa Ape Kitten will be 0.03 ETH. The public sale 
-                                will last for a X hours before it is closed forever.
+                            It was this day, when apes and kittens were forever bounded — their worlds united and the future looked bright. Magic filled the air as kittens brought unseen beauty and discovery with their abilities.
+                            </p>
+                            <p className="common-p">
+                            The joy was, however, not shared by all. The companionship that Mutant apes felt for their kin had begun to wane. A longing for a kitten companion had filled their ever-waking thoughts.
                             </p>
                             <p className="common-p mb-0">
-                                The unclaimed kittens? They'll return to the kitten realm,
-                                never to be seen again.
+                            The laboratory on Mount Naro heard their calls…
                             </p>
                             </div>
                             <div className="my-auto my-lg-0 col-lg-5 col-12 order-lg-first">
                                     <img
-                                        src={process.env.PUBLIC_URL + '/assets/images/kitten_promo_2.jpg'}
+                                        src='https://cdn.discordapp.com/attachments/935552546158817331/1098049698159398994/image.png'
+                                        className="img-fluid"
+                                        alt=""
+                                        />
+                            </div>
+                        </div>
+                        <div className="mb-5 row">
+                            <div className="mb-4 mb-lg-0 col-lg-7 col-12">
+                            <h2 className="d-flex common-sub-title font-italic mb-2 bayc-color">
+                            LÜNAGEM DISTRIBUTION &amp; PRICING
+                            </h2>
+                            <p className="common-p">
+                                For a limited time, each and every club member will be able to
+                                mine a Lünagem NFT from the Grandpa Ape Kitten Club.
+                                Mining the token is free; you'll only have to pay gas.
+                            </p>
+                            <p className="common-p">
+                                In order to mine a Lünagem, one must
+                                have a Grandpa Ape in their wallet. You can mine
+                                one Lünagem NFT for each Grandpa Ape that you own. Once a Lünagem
+                                has been mined by a Grandpa Ape, that Grandpa Ape cannot be used
+                                to mine again.
+                            </p>
+                            <p className="common-p">
+                                Once the mining window is closed, there will be a public sale
+                                for the remaining Lünagems. This mining phase will require owning a Grandpa Ape. 
+                                The mint price for a Lünagem will be 0.03 ETH. The public sale 
+                                will last for a X hours before it is closed forever.
+                            </p>
+                            <p className="common-p mb-0">
+                                The ending supply of Lünagems, with a maximum of 5,000, will determine the maximum supply of Grandpa Ape Kittens.
+                            </p>
+                            </div>
+                            <div className="col-lg-5 col-12">
+                                    <img
+                                        src='https://cdn.discordapp.com/attachments/937225793602474005/1097640752139481210/image0.gif'
                                         className="img-fluid"
                                         alt=""
                                         />
@@ -384,20 +412,22 @@ function KittenClub() {
                             <div className="mb-4 mb-lg-0 col-lg-7 col-12">
                             <div className="mb-0">
                                 <h2 className="d-flex common-sub-title font-italic mb-2 bayc-color">
-                                SPECS
+                                THE GRANDPA APE KITTEN CLUB SPECS
                                 </h2>
+                                <p className="common-p">
+                                There are up to 5,000 total Grandpa Ape Kitten Club (GAKC) NFTs. The total supply will depend on the supply of Lünagems. After the Lünagem mining phase, 
+                                the kitten calling phase will commence. During this never-ending phase, a Lünagem can be used 
+                                to call a random kitten from the land of the kittens. Using a Lünagem will destroy the Lünagem, 
+                                burning it from the collection and removing it from your wallet.
+                                </p>
                                 <p className="common-p mb-0">
-                                There are up to 5,000 total Grandpa Ape Kitten Club NFTs. Each
-                                GAKC dog is stored as an ERC-721 token on the Ethereum
-                                blockchain and hosted on IPFS. Every kitten in the kitten
-                                club is unique and programmatically-generated from over
-                                200 possible traits. Some traits are rarer than others.
+                                There are X possible kitten traits, some rarer than others. A few lucky Lünagem callers will make contact with a legendary kitten, mystical and ancient.
                                 </p>
                             </div>
                             </div>
-                            <div className="col-lg-5 col-12">
+                            <div className="my-auto my-lg-0 col-lg-5 col-12 order-lg-first">
                             <img
-                                src="https://ik.imagekit.io/bayc/assets/mystery-shiba.gif"
+                                src={process.env.PUBLIC_URL + '/assets/images/kitten_promo_2.jpg'}
                                 className="img-fluid rounded"
                                 alt="shiba"
                             />
@@ -435,14 +465,14 @@ function KittenClub() {
                             <div className="d-flex justify-content-center">
                                 <p className="common-p text-center text-break mb-0">
                                 <span className="bold-text">
-                                    VERIFIED SMART CONTRACT ADDRESS:{" "}
+                                    VERIFIED LÜNAGEM SMART CONTRACT ADDRESS:{" "}
                                 </span>
                                 <a
-                                    title="0xba30E5F9Bb24caa003E9f2f0497Ad287FDF95623"
-                                    href="https://etherscan.io/address/0xba30E5F9Bb24caa003E9f2f0497Ad287FDF95623"
+                                    title="THE ADDRESS"
+                                    href="https://etherscan.io/address/THE ADDRESS"
                                     className="link"
                                 >
-                                    0xba30E5F9Bb24caa003E9f2f0497Ad287FDF95623
+                                    THE ADDRESS
                                 </a>
                                 </p>
                             </div>
