@@ -265,7 +265,20 @@
 	},
 	{
 		"inputs": [],
-		"name": "GAKC_MAX",
+		"name": "LUNAGEM_MAX",
+		"outputs": [
+			{
+				"internalType": "uint16",
+				"name": "",
+				"type": "uint16"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "SALE_PRICE",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -274,6 +287,13 @@
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "apeCommunityMine",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -314,27 +334,14 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "callIsActive",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
-				"internalType": "uint256[]",
-				"name": "lunagemTokenIds",
-				"type": "uint256[]"
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
 			}
 		],
-		"name": "callKitten",
+		"name": "callLunagem",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -361,11 +368,24 @@
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "lunagemAddress",
-				"type": "address"
+				"internalType": "uint256",
+				"name": "grandpaId",
+				"type": "uint256"
 			}
 		],
+		"name": "hasGrandpaMined",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "initialize",
 		"outputs": [],
 		"stateMutability": "nonpayable",
@@ -396,14 +416,8 @@
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "lunagemId",
-				"type": "uint256"
-			}
-		],
-		"name": "isLunagemUsed",
+		"inputs": [],
+		"name": "mineIsActive",
 		"outputs": [
 			{
 				"internalType": "bool",
@@ -415,6 +429,19 @@
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "grandpaTokenIds",
+				"type": "uint256[]"
+			}
+		],
+		"name": "mineLunagem",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "name",
 		"outputs": [
@@ -422,6 +449,19 @@
 				"internalType": "string",
 				"name": "",
 				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "numCommunityMines",
+		"outputs": [
+			{
+				"internalType": "uint8",
+				"name": "",
+				"type": "uint8"
 			}
 		],
 		"stateMutability": "view",
@@ -470,6 +510,24 @@
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "numLunagems",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "grandpaTokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "purchaseLunagem",
+		"outputs": [],
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -531,6 +589,19 @@
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "saleIsActive",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -557,6 +628,32 @@
 			}
 		],
 		"name": "setBaseURI",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "gakcContractAddress",
+				"type": "address"
+			}
+		],
+		"name": "setGakcContractAddress",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "mysteriousContractAddress",
+				"type": "address"
+			}
+		],
+		"name": "setMysteriousContractAddress",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -608,7 +705,14 @@
 	},
 	{
 		"inputs": [],
-		"name": "toggleCallActive",
+		"name": "toggleMineActive",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "toggleSaleActive",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
