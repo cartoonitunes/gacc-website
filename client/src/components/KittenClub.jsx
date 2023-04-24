@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { connectGAKC } from "../redux/blockchain/blockchainActions";
-import { fetchKittenData } from "../redux/data/dataActions";
+import { connectLunagem, connectGAKC } from "../redux/blockchain/blockchainActions";
+import { fetchLunagemData } from "../redux/data/dataActions";
 import '../styles/style.css'
 
 require('dotenv').config();
@@ -14,38 +14,38 @@ function KittenClub() {
   const data = useSelector((state) => state.data);
   const [feedback, setFeedback] = useState("");
   const [apeSelection, setApeSelection] = useState(null);
-  const [mintingKittenNft, setMintingKittenNft] = useState(false);
+  const [miningLunagemNft, setMiningLunagemNft] = useState(false);
 
 
-  const kittenActionCaller = async (numKittens=null, apeIds=null) => {
-    if (data.kittenAdoptionActive) {
-        adoptKittens(apeIds)
+  const lunagemActionCaller = async (numLunagems=null, apeIds=null) => {
+    if (data.lunagemSaleActive) {
+      mintLunagems(numLunagems, apeIds)
     }
-    else if (data.kittenMintActive) {
-        mintKittens(numKittens)
+    else if (data.lunagemMineActive) {
+        mineLunagems(apeIds)
     }
   };
 
-  const kittenLabels = () => {
-    if (data.kittenMintActive) {
+  const lunagemLabels = () => {
+    if (data.lunagemSaleActive) {
       return (
         {
-          'title': 'MINT A KITTEN',
-          'title_two': 'Public Dutch Auction Status: ',
+          'title': 'Buy A LÜNAGEM',
+          'title_two': '',
           'status': 'Open',
-          'subTitle': 'Connect your wallet to mint a Kitten.',
+          'subTitle': 'Connect your wallet to buy a Lünagem.',
           'connectedSubTitle': ``,
           'connectedSubTitleTwo': ``
         }
       )
     }
-    else if (data.kittenAdoptionActive) {
+    else if (data.lunagemMineActive) {
       return (
         {
-          'title': `ADOPT A KITTEN`,
+          'title': `MINE A LÜNAGEM`,
           'title_two': '',
           'status': '',
-          'subTitle': 'Connect your wallet to adopt a Kitten.',
+          'subTitle': 'Connect your wallet to mine a Lünagem.',
           'connectedSubTitle': '',
           'connectedSubTitleTwo': ''
         }
@@ -65,96 +65,97 @@ function KittenClub() {
       let execution = 'execution reverted: '
       let executionIndex = errorMessage.message.indexOf(execution)
       if (executionIndex === -1) {
-        return(err_message);
+        let cleaned_error = err_message.replace('Internal JSON-RPC error.','')
+        return(cleaned_error);
       }
       else {
-        let cleaned_error = errorMessage.message.slice(executionIndex + execution.length).replace('"', '').replace('}', '')
+        let cleaned_error = errorMessage.message.slice(executionIndex + execution.length).replace('Internal JSON-RPC error.','').replace('"', '').replace('}', '')
         return(cleaned_error);
       }
     }
   }
 
-  const mintKittens = async (numKittens) => {
+  const mintLunagems = async (numLunagems, apeId) => {
     let cost = 30000000000000000;
-    cost = cost * numKittens
+    cost = cost * numLunagems
     let totalCostWei = String(cost);
-    setFeedback(`Minting your Kitten(s)...`);
-    setMintingKittenNft(true);
+    setFeedback(`Minting your Lünagem(s)...`);
+    setMiningLunagemNft(true);
     blockchain.smartContract.methods
-      .purchaseKittens(numKittens)
+      .purchaseLunagem(numLunagems, apeId)
       .call({
-        to: process.env.REACT_APP_KITTEN_ADDRESS,
+        to: process.env.REACT_APP_LUNAGEM_ADDRESS,
         from: blockchain.account,
         value: totalCostWei
       })
       .then(() => {
         blockchain.smartContract.methods
-        .purchaseKittens(numKittens)
+        .purchaseLunagem(numLunagems, apeId)
         .send({ 
-          to: process.env.REACT_APP_KITTEN_ADDRESS,
+          to: process.env.REACT_APP_LUNAGEM_ADDRESS,
           from: blockchain.account,
           value: totalCostWei,
         })
         .then((receipt) => {
           setFeedback(
-            `Congratulations and welcome to the Grandpa Ape Kitten Club!`
+            `Congratulations, you have successfully purchased ${numLunagems} lünagem(s)!`
           );
-          setMintingKittenNft(false);
-          dispatch(fetchKittenData(blockchain.account));
+          setMiningLunagemNft(false);
+          dispatch(fetchLunagemData(blockchain.account));
         })
         .catch(err => {
           const endIndex = err.message.search('{')
           setFeedback(err.message.substring(0, endIndex));
-          setMintingKittenNft(false);
+          setMiningLunagemNft(false);
         });
       })
       .catch(err => {
         let prettyCost = ((cost/1000000000000000000)).toFixed(3);
-        let priceInfo = ` The price to mint ${numKittens} kittens is ${prettyCost}ETH.`
+        let priceInfo = ` The price to purchase ${numLunagems} lünagem(s) is ${prettyCost}ETH.`
         setFeedback(processErrorMessage(err)+priceInfo)
-        setMintingKittenNft(false);
+        setMiningLunagemNft(false);
       });
   }
 
 
-  const adoptKittens = async (apeIds) => {
-    setFeedback(`Kitten adoption vetting in progress...`);
-    setMintingKittenNft(true);
+  const mineLunagems = async (apeIds) => {
+    setFeedback(`Lünagem mine vetting in progress...`);
+    setMiningLunagemNft(true);
     apeIds = apeIds.split(',').map(Number);
     if (apeIds.some((e) => e < 0) || apeIds.some((e) => e > 4999)) {
         setFeedback(`GACC IDs need to be between 0 and 4999`);
-        setMintingKittenNft(false);
+        setMiningLunagemNft(false);
     }
     else {
         blockchain.smartContract.methods
-      .adoptKitten(apeIds)
+      .mineLunagem(apeIds)
       .call({
-        to: process.env.REACT_APP_KITTEN_ADDRESS,
+        to: process.env.REACT_APP_LUNAGEM_ADDRESS,
         from: blockchain.account
       })
       .then(() => {
         blockchain.smartContract.methods
-        .adoptKitten(apeIds)
+        .mineLunagem(apeIds)
         .send({ 
-          to: process.env.REACT_APP_KITTEN_ADDRESS,
+          to: process.env.REACT_APP_LUNAGEM_ADDRESS,
           from: blockchain.account
         })
         .then((receipt) => {
           setFeedback(
-            `Congratulations, you have successfully adopted ${apeIds.length} kittens!`
+            `Congratulations, you have successfully mined ${apeIds.length} lünagem(s)!`
           );
-          setMintingKittenNft(false);
-          dispatch(fetchKittenData(blockchain.account));
+          setMiningLunagemNft(false);
+          dispatch(fetchLunagemData(blockchain.account));
         })
         .catch(err => {
           const endIndex = err.message.search('{')
           setFeedback(err.message.substring(0, endIndex));
-          setMintingKittenNft(false);
+          setMiningLunagemNft(false);
         });
       })
       .catch(err => {
         setFeedback(processErrorMessage(err))
-        setMintingKittenNft(false);
+        setMiningLunagemNft(false);
       });
     }
   }
@@ -164,8 +165,8 @@ function KittenClub() {
     return (
       <div className="d-flex justify-content-center">
         {(blockchain.account === "" || blockchain.smartContract === null) ? (
-        <p className="common-p mint-subtitle">{kittenLabels()['subTitle']}</p>): (
-          <p className="common-p mint-subtitle">{kittenLabels()['connectedSubTitle']}</p>
+        <p className="common-p mint-subtitle">{lunagemLabels()['subTitle']}</p>): (
+          <p className="common-p mint-subtitle">{lunagemLabels()['connectedSubTitle']}</p>
         )}
         </div>
     )
@@ -183,7 +184,7 @@ function KittenClub() {
         type="button"
         onClick={(e) => {
           e.preventDefault();
-          dispatch(connectGAKC());
+          dispatch(connectLunagem());
           setFeedback(data.errorMsg);
           getData();
         }}
@@ -192,41 +193,44 @@ function KittenClub() {
         </button></div>
       )
     }
-    else if (data.kittenMintActive) {
+    else if (data.lunagemSaleActive) {
       return (
       <div className="d-flex justify-content-center">
         <form>
           <div className="form-group">
-            <div>{kittenLabels()['connectedSubTitleTwo']}</div>
-            <input type="range" className="form-range" defaultValue="1" min="1" max="20" id="mintQuantity" onChange={(e) => updateTextInput(e.target.value)}/>
-            <input type="text"  className="mint-input-read" id="textLabel" defaultValue="1" readOnly></input>
+            <div>{lunagemLabels()['connectedSubTitleTwo']}</div>
+            <label htmlFor="exampleInputEmail1">Enter a GACC ID to Purchase Lünagems</label>
+            <input className="form-control bayc-button" name='apeId' id='apeId' type="number" step="1" placeholder="1" onChange={(e) => setApeSelection(e.target.value)}></input>
+            <br></br>
+            <label htmlFor="exampleInputEmail1">Number of Lünagems</label>
+            <input className="form-control bayc-button" name='mintQuantity' id='mintQuantity' type="number" step="1" placeholder="1" onChange={(e) => setApeSelection(e.target.value)}></input>
           </div>
-          <button type="submit" className="bayc-button mint-button" disabled={mintingKittenNft ? 1 : 0}
+          <button type="submit" className="bayc-button mint-button" disabled={miningLunagemNft ? 1 : 0}
             onClick={(e) => {
               e.preventDefault();
-              kittenActionCaller(document.getElementById("mintQuantity").value, null);
+              lunagemActionCaller(document.getElementById("mintQuantity").value, document.getElementById("apeId").value);
               getData();
-            }}>Mint</button>
+            }}>Mine</button>
         </form>
       </div>
       )
     }
-    else if (data.kittenAdoptionActive) {
+    else if (data.lunagemMineActive) {
       return (
       <div className="d-flex justify-content-center">
         <form>
           <div className="form-group">
-            <label htmlFor="exampleInputEmail1">Enter GACC IDs to Adopt Kittens</label>
+            <label htmlFor="exampleInputEmail1">Enter GACC IDs to Mine Lünagems</label>
             <input className="form-control bayc-button" name='apeId' id='apeId' placeholder="1, 2, 3" onChange={(e) => setApeSelection(e.target.value)}></input>
           </div>
-          <button type="submit" className="btn btn-primary bayc-button " disabled={mintingKittenNft ? 1 : 0}
+          <button type="submit" className="btn btn-primary bayc-button " disabled={miningLunagemNft ? 1 : 0}
             onClick={(e) => {
               e.preventDefault();
               if (document.getElementById("apeId").value) {
-                kittenActionCaller(null, document.getElementById("apeId").value);
+                lunagemActionCaller(null, document.getElementById("apeId").value);
               }
               getData();
-            }}>Adopt</button>
+            }}>Mine</button>
         </form>
       </div>
       )
@@ -236,13 +240,13 @@ function KittenClub() {
       <div>
         <div>
             <p className="common-p text-break mb-3">
-            The adoption drive has come to a close. To get your Kitten Club, check out the collection on OpenSea
+            The Lünagem mine event has come to a close. To get a Lünagem, check out the collection on OpenSea.
             </p>
             </div>
             <div className="d-flex justify-content-center">
-            <a href="https://opensea.io/collection/grandpaapecountryclub">
+            <a href="https://opensea.io/collection/lunagems">
                 <button className="bayc-button " type="button">
-                BUY A KITTEN ON OPENSEA
+                BUY A LÜNAGEM ON OPENSEA
                 </button>
             </a>
             </div>
@@ -253,7 +257,7 @@ function KittenClub() {
 
   const getData = () => {
     if (blockchain.account !== "" && blockchain.smartContract !== null) {
-      dispatch(fetchKittenData());
+      dispatch(fetchLunagemData());
     }
   };
 
@@ -268,8 +272,8 @@ function KittenClub() {
     return (
         <div>
             <div id="root">
-                <div className="app">
-                <nav id="nav" className="navbar navbar-expand-md navbar-light">
+                <div className="app"  style={{backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/images/starry.jpg'})`}}>
+                <nav id="nav" className="navbar navbar-expand-md navbar-light" >
                     <a href="/" id="bayc-brand" className="navbar-brand"><img src={process.env.PUBLIC_URL + '/assets/images/gakc_banner_white.png'} className="d-inline-block align-top" alt="bored ape logo" width="auto" height="70px" /></a>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="" role="button" ><i className="fa fa-bars" aria-hidden="true" style={{color:"#ffffff"}}></i></span></button>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -437,14 +441,13 @@ function KittenClub() {
                         <div className="mb-5 row">
                             <div className="col-12">
                             <div className="d-flex justify-content-center col">
-                            <div>
                                 <div style={{transition: 'opacity 400ms ease 0s, transform 400ms ease 0s', transform: 'none', opacity: 1}}>
                                 <div className="mb-5  row">
                                     <div className="col">
                                     <div className="d-flex justify-content-center w-100 col-12">
                                         <div className="MuiPaper-root MuiCard-root jss12 MuiPaper-outlined MuiPaper-rounded" style={{opacity: 1, transform: 'none', transition: 'opacity 291ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 194ms cubic-bezier(0.4, 0, 0.2, 1) 0ms'}}>
                                         <div className="MuiCardContent-root">
-                                            <h2 className="d-flex justify-content-center common-sub-title">{kittenLabels()['title']}</h2>
+                                            <h2 className="d-flex justify-content-center common-sub-title">{lunagemLabels()['title']}</h2>
                                             <hr className="black-line" /><center>
                                             {titleText()}
                                             {connectAndMintButton()}</center>
@@ -454,7 +457,6 @@ function KittenClub() {
                                         </div>
                                     </div>
                                     </div>
-                                </div>
                                 </div>
                             </div>
                             </div>

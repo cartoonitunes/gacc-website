@@ -96,19 +96,40 @@ export const fetchKittenData = () => {
   return async (dispatch) => {
     dispatch(fetchDataRequest());
     try {
-      let kittenMintActive = await store
+      let kittenCallActive = await store
         .getState()
-        .blockchain.smartContract.methods.saleIsActive()
-        .call();
-      let kittenAdoptionActive = await store
-        .getState()
-        .blockchain.smartContract.methods.adoptionIsActive()
+        .blockchain.smartContract.methods.callIsActive()
         .call();
 
       dispatch(
         fetchDataSuccess({
-          kittenMintActive,
-          kittenAdoptionActive,
+          kittenCallActive
+        })
+      );
+    } catch (err) {
+      console.log(err);
+      dispatch(fetchDataFailed("Could not load data from contract."));
+    }
+  };
+};
+
+export const fetchLunagemData = () => {
+  return async (dispatch) => {
+    dispatch(fetchDataRequest());
+    try {
+      let lunagemMineActive = await store
+        .getState()
+        .blockchain.smartContract.methods.mineIsActive()
+        .call();
+      let lunagemSaleActive = await store
+        .getState()
+        .blockchain.smartContract.methods.saleIsActive()
+        .call();
+
+      dispatch(
+        fetchDataSuccess({
+          lunagemMineActive,
+          lunagemSaleActive,
         })
       );
     } catch (err) {
