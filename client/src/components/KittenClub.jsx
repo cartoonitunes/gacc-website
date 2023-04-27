@@ -281,7 +281,7 @@ function KittenClub() {
     return (
         <div>
             <div id="root">
-                <div className="app"  style={{backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/images/starry.jpg'})`}}>
+                <div className="app"  style={{backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/images/starry.jpg'})`, backgroundColor: 'black'}}>
                 <nav id="nav" className="navbar navbar-expand-md navbar-light" >
                     <a href="/" id="bayc-brand" className="navbar-brand"><img src={process.env.PUBLIC_URL + '/assets/images/gakc_banner_white.png'} className="d-inline-block align-top" alt="bored ape logo" width="auto" height="70px" /></a>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="" role="button" ><i className="fa fa-bars" aria-hidden="true" style={{color:"#ffffff"}}></i></span></button>
