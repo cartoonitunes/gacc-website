@@ -407,7 +407,7 @@ function KittenClub() {
                                 Once the mining window is closed, there will be a public sale
                                 for the remaining Lünagems. This mining phase will require owning a Grandpa Ape. 
                                 The mint price for a Lünagem will be 0.03 ETH. The public sale 
-                                will last for a X hours before it is closed forever.
+                                will last for a 8 hours before it is closed forever.
                             </p>
                             <p className="common-p mb-0">
                                 The ending supply of Lünagems, with a maximum of 5,000, will determine the maximum supply of Grandpa Ape Kittens.
