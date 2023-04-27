@@ -287,17 +287,17 @@ function KittenClub() {
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="" role="button" ><i className="fa fa-bars" aria-hidden="true" style={{color:"#ffffff"}}></i></span></button>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <div className="navbar-nav" id="nav-bar">
-                        <a id="nav-link" title="BUY AN APE" href="/#buy-an-ape" className="nav-link">BUY AN APE</a>
+                        <a id="nav-link" title="BUY A GACC" href="/#buy-a-gacc" className="nav-link">BUY A GACC</a>
                         <a id="nav-link" title="ROADMAP" href="/#roadmap" className="nav-link">ROADMAP</a>
                         <a id="nav-link" title="TEAM" href="/#team" className="nav-link">TEAM</a>
-                        <div className="nav-item dropdown">
-                        <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">MEMBERS</a>
-                            <div aria-labelledby="nav-dropdown" className="dropdown-menu" style={{margin: '0px'}}>
-                                <a id="nav-link" title="MACC" href="/macc" className="dropdown-item">MACC</a>
-                                <a id="nav-link-active" title="Kitten Club" href="/kitten-club" className="dropdown-item active">KITTEN CLUB</a>
-                                <a id="nav-link" title="MERCH" href="/#merch" className="dropdown-item">MERCH</a>
+                        <div className="nav-item dropdown" style={{color: '#f9edcd'}}>
+                          <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style={{color: 'white'}}>MEMBERS</a>
+                            <div aria-labelledby="nav-dropdown" className="dropdown-menu home-dropdown" style={{margin: '0px', color: 'white', backgroundColor: 'black'}}>
+                                <a id="nav-link" title="MACC" href="/macc" className="dropdown-item active"  style={{color: 'white', backgroundColor: 'black'}}>MACC</a>
+                                <a id="nav-link-active" title="Kitten Club" href="/kitten-club" className="dropdown-item"  style={{color: 'white', backgroundColor: 'black'}}>KITTEN CLUB</a>
+                                <a id="nav-link" title="MERCH" href="/#merch" className="dropdown-item"  style={{color: 'white', backgroundColor: 'black'}}>MERCH</a>
                             </div>
-                        </div>
+                          </div>
                         </div>
                         <div className="navbar-nav" id="nav-social">
                         <a href="https://discord.com/invite/gacc">
@@ -456,7 +456,7 @@ function KittenClub() {
                                     <div className="d-flex justify-content-center w-100 col-12">
                                         <div className="MuiPaper-root MuiCard-root jss12 MuiPaper-outlined MuiPaper-rounded" style={{opacity: 1, transform: 'none', transition: 'opacity 291ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 194ms cubic-bezier(0.4, 0, 0.2, 1) 0ms'}}>
                                         <div className="MuiCardContent-root">
-                                            <h2 className="d-flex justify-content-center common-sub-title">{lunagemLabels()['title']}</h2>
+                                            <h2 className="d-flex justify-content-center common-sub-title"><center>{lunagemLabels()['title']}</center></h2>
                                             <hr className="black-line" /><center>
                                             {titleText()}
                                             {connectAndMintButton()}</center>

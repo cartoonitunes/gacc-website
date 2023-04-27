@@ -7,16 +7,24 @@ function Home () {
         <div>
         <div id="root">
           <div className="app" style={{backgroundColor: '#f9edcd'}}>
-            <nav id="nav" className="navbar navbar-expand-md navbar-light" style={{backgroundColor: '#f9edcd'}}>
+          <nav id="nav" className="navbar navbar-expand-md navbar-light" style={{backgroundColor: '#f9edcd'}}>
               <a href="/home" id="bayc-brand" className="navbar-brand"><img src={process.env.PUBLIC_URL + '/assets/images/GACC-Banner-Black-V6.png'} className="d-inline-block align-top" alt="bored ape logo" width="auto" height="70px" /></a>
               <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon" /></button>
               <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <div className="navbar-nav" id="nav-bar">
-                  <a id="nav-link" title="BUY AN APE" href="/home#buy-an-ape" style={{color: 'black'}} className="nav-link">BUY AN APE</a>
+                  <a id="nav-link" title="BUY A GACC" href="/home#buy-a-gacc" style={{color: 'black'}} className="nav-link">BUY A GACC</a>
                   <a id="nav-link" title="ROADMAP" href="/home#roadmap" style={{color: 'black'}} className="nav-link">ROADMAP</a>
                   <a id="nav-link" style={{color: 'black'}} title="TEAM" href="/home#team" className="nav-link">TEAM</a>
                   <a id="nav-link" style={{color: 'black'}} title="MACC" href="/macc" data-rb-event-key="/macc" className="nav-link">MACC</a>
                   <a id="nav-link" style={{color: 'black'}} title="GAKC" href="/kitten-club" data-rb-event-key="/kitten-club" className="nav-link">KITTENS</a>
+                  <div className="nav-item dropdown" style={{color: '#f9edcd'}}>
+                    <a className="nav-link dropdown-toggle black-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style={{color: 'black'}}>MARKETPLACES</a>
+                        <div aria-labelledby="nav-dropdown" className="dropdown-menu home-dropdown" style={{margin: '0px', color: 'black', backgroundColor: '#F9EDCD'}}>
+                            <a id="nav-link" title="GACC" href="/gacc-marketplace" className="dropdown-item" style={{color: 'black'}}>GACC</a>
+                            <a id="nav-link" title="SERUMS" href="/serum-marketplace" className="dropdown-item" style={{color: 'black'}}>SERUMS</a>
+                            <a id="nav-link" title="MACC" href="/macc-marketplace" className="dropdown-item" style={{color: 'black'}}>MACC</a>
+                        </div>
+                        </div>
                 </div>
                 <div className="navbar-nav" id="nav-social"><a href="https://discord.com/invite/gacc"><i className="fa fa-discord-alt black-social-icon pr-lg-0" /></a><a href="https://twitter.com/GrandpaApeCC"><i className="fa fa-twitter black-social-icon pr-lg-0" /></a><a href="https://www.instagram.com/grandpaapecountryclubofficial"><i className="fa fa-instagram black-social-icon pr-lg-0" /></a></div>
               </div>
@@ -54,20 +62,17 @@ function Home () {
                     </div>
                     <div className="mb-5 row">
                       <div className="col">
-                        <div id="buy-an-ape" className="buy-token-container">
+                        <div id="buy-a-gacc" className="buy-token-container">
                           <div className="bayc-bg p-4 m-auto row" style={{backgroundColor: 'white'}}>
                             <div className="m-auto col-lg-3 col-12">
-                              <h3 className="buy-ape-title">BUY AN APE</h3>
+                              <h3 className="buy-ape-title">BUY A GACC</h3>
                             </div>
                             <div className="m-auto col-lg-4 col-12 offset-lg-1">
-                              <p className="common-p mb-lg-0">The initial sale has sold out. To get your Grandpa Ape, check out the collection on OpenSea, LooksRare, or any other major NFT marketplace.</p>
+                              <p className="common-p mb-lg-0">The initial sale has sold out. To get your Grandpa Ape, check out the collection on our marketplace, or any other major NFT marketplace.</p>
                             </div>
                             <div className="m-auto col-lg-2 col-12 offset-lg-1">
-                              <a href="https://opensea.io/collection/grandpaapecountryclub"><button className="bayc-button mint" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>BUY ON OPENSEA</button></a>                              </div>
-
-                            <div className="m-auto col-lg-2 col-12 offset-lg-1">
-                              <a href="https://looksrare.org/collections/0x4b103d07c18798365946e76845edc6b565779402"><button className="bayc-button mint" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>BUY ON LOOKSRARE</button></a>
-                              </div>
+                              <a href="/gacc-marketplace"><button className="bayc-button mint" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>VISIT THE MARKETPLACE</button></a>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -89,7 +94,7 @@ function Home () {
                     <hr className="gray-line mb-5" />
                     <div className="mb-5 row">
                       <div className="col">
-                        <div id="roadmap" className="common-container">
+                      <div id="roadmap" className="common-container">
                           <div className="row">
                             <div className="mb-3 col-lg-9 col-12">
                               <h2 className="common-title mb-3" style={{color: 'black'}}>THE FRONT NINE</h2>
@@ -151,7 +156,7 @@ function Home () {
                                   <p className="goal">7</p>
                                 </div>
                                 <div className="m-auto col-lg-10 col-9">
-                                  <p className="common-sub-p" style={{color: 'black'}}>The Grandpa Ape Kitten Club ("GAKC") opens its doors for adoption.</p>
+                                  <p className="text-decoration-line-through common-sub-p" style={{color: 'black'}}>The Grandpa Ape Country Club V1 Toys collection is launched and the top 50 holders receive one for free.</p>
                                 </div>
                               </div>
                               <div className="mb-3 mb-lg-1 row">
@@ -159,7 +164,7 @@ function Home () {
                                   <p className="goal">8</p>
                                 </div>
                                 <div className="m-auto col-lg-10 col-9">
-                                  <p className="common-sub-p" style={{color: 'black'}}>The Mutant Ape Kitten Club ("MAKC") is born and mutant kittens roam the country club.</p>
+                                  <p className="common-sub-p" style={{color: 'black'}}>Lünagems are mined and the Grandpa Ape Kitten Club ("GAKC") is born.</p>
                                 </div>
                               </div>
                               <div className="mb-3 mb-lg-1 row">
@@ -167,7 +172,7 @@ function Home () {
                                   <p className="goal">9</p>
                                 </div>
                                 <div className="m-auto col-lg-10 col-9">
-                                  <p className="common-sub-p" style={{color: 'black'}}>?????</p>
+                                  <p className="common-sub-p" style={{color: 'black'}}>The GACC Laboratory experimentations reveal something spectacular...</p>
                                 </div>
                               </div>
                             </div>
@@ -203,6 +208,22 @@ function Home () {
                           <div className="m-lg-auto col-lg-3 col-12 offset-lg-1">
                             <div className="d-flex row">
                               <div className="mx-auto col-lg-12 col-md-6 col-sm-12"><a href="https://gaccproshop.com/"><button className="bayc-button w-100" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>GACC PRO SHOP</button></a></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr className="gray-line mb-5" />
+                    <div className="mb-5 row">
+                      <div className="col">
+                        <div className="row">
+                          <div className="mb-4 mb-lg-0 col-lg-8 col-12">
+                            <h2 className="common-title mb-3" style={{color: 'black'}}>GACC LOUNGE ALPHA BOT</h2>
+                            <p className="common-p mb-0" style={{color: 'black'}}>GACC holders with five or more grandpas get access to an exclusive Discord channel with a bot that pulls down and analyzes code from any ERC271 and ERC1155 contract. The bot allows holders to gain deep insights into an NFT contract before investing at the touch of a button.</p>
+                          </div>
+                          <div className="m-lg-auto col-lg-3 col-12 offset-lg-1">
+                            <div className="d-flex row">
+                            <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/lightspeed_gacc_2561.gif'} alt="robot" aria-label="robot" style={{borderRadius: '5px'}} />
                             </div>
                           </div>
                         </div>

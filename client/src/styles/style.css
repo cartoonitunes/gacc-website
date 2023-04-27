@@ -1,3 +1,10 @@
+iframe {
+    display: block;       /* iframes are inline by default */
+    background: #000;
+    border: none;         /* Reset default border */
+    height: 100vh;        /* Viewport-relative units */
+    width: 100vw;
+}
 .welcome-title{
     font-size:1.8em;
     font-weight:900;
@@ -1632,8 +1639,11 @@ div.qr-code-border{
 .MuiInput-underline:hover:not(.Mui-disabled,.Mui-error)::before{
     border-bottom:2px solid rgba(255,255,255,.87) !important
 }
+.black-toggle{
+    color: black;
+}
 .dropdown-toggle{
-    color:#fff !important;
+    color:#fff ;
     font-size:8px !important;
     font-style:italic !important;
     font-weight:500 !important;
@@ -1658,14 +1668,17 @@ div.qr-code-border{
     padding-bottom:0px;
     padding-right:20px
 }
+.home-dropdown{
+    background-color:#F9EDCD 
+}
 .dropdown-menu,.dropdown-item:hover{
-    background-color:#000 !important
+    background-color:#000;
 }
 .dropdown-item{
     padding:8px !important
 }
 .dropdown-item.active,.dropdown-item:active{
-    background-color:#000 !important
+    background-color:#000
 }
 #nav-link-active{
     color:#bfc500;
@@ -4378,7 +4391,7 @@ input[type=submit].btn-block,input[type=reset].btn-block,input[type=button].btn-
     list-style:none;
     background-color:#fff;
     background-clip:padding-box;
-    border:1px solid rgba(0,0,0,.15);
+    border:1px solid rgba(0,0,0,0);
     border-radius:.25rem
 }
 .dropdown-menu-left{
