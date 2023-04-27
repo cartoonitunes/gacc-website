@@ -52,7 +52,7 @@ function KittenClub() {
       )
     }
     else {
-      return({})
+      return({'title': 'LÜNAGEMS COMING SOON',})
     }
   };
 
@@ -177,6 +177,15 @@ function KittenClub() {
   }
 
   const connectAndMintButton = () => {
+    return (
+      <div className="d-flex justify-content-center"><button 
+      className="bayc-button mint-button" 
+      type="button"
+      disabled
+      >
+        COMING SOON
+      </button></div>
+    )
     if (blockchain.account === "" || blockchain.smartContract === null) {
       return (
         <div className="d-flex justify-content-center"><button 
@@ -467,15 +476,15 @@ function KittenClub() {
                             <div className="d-flex justify-content-center">
                                 <p className="common-p text-center text-break mb-0">
                                 <span className="bold-text">
-                                    VERIFIED LÜNAGEM SMART CONTRACT ADDRESS:{" "}
+                                    VERIFIED LÜNAGEM SMART CONTRACT ADDRESS COMING SOON
                                 </span>
-                                <a
+                                {/* <a
                                     title="THE ADDRESS"
                                     href="https://etherscan.io/address/THE ADDRESS"
                                     className="link"
                                 >
                                     THE ADDRESS
-                                </a>
+                                </a> */}
                                 </p>
                             </div>
                             </div>
