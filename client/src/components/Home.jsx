@@ -9,13 +9,14 @@ function Home () {
           <div className="app" style={{backgroundColor: '#f9edcd'}}>
           <nav id="nav" className="navbar navbar-expand-md navbar-light" style={{backgroundColor: '#f9edcd'}}>
               <a href="/home" id="bayc-brand" className="navbar-brand"><img src={process.env.PUBLIC_URL + '/assets/images/GACC-Banner-Black-V6.png'} className="d-inline-block align-top" alt="bored ape logo" width="auto" height="70px" /></a>
-              <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="" role="button" ><i className="fa fa-bars" aria-hidden="true" style={{color:"black"}}></i></span></button>
+              <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon" /></button>
               <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <div className="navbar-nav" id="nav-bar">
                   <a id="nav-link" title="BUY A GACC" href="/home#buy-a-gacc" style={{color: 'black'}} className="nav-link">BUY A GACC</a>
                   <a id="nav-link" title="ROADMAP" href="/home#roadmap" style={{color: 'black'}} className="nav-link">ROADMAP</a>
                   <a id="nav-link" style={{color: 'black'}} title="TEAM" href="/home#team" className="nav-link">TEAM</a>
                   <a id="nav-link" style={{color: 'black'}} title="MACC" href="/macc" data-rb-event-key="/macc" className="nav-link">MACC</a>
+                  <a id="nav-link" style={{color: 'black'}} title="GAKC" href="/kitten-club" data-rb-event-key="/kitten-club" className="nav-link">KITTENS</a>
                   <div className="nav-item dropdown" style={{color: '#f9edcd'}}>
                     <a className="nav-link dropdown-toggle black-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style={{color: 'black'}}>MARKETPLACES</a>
                         <div aria-labelledby="nav-dropdown" className="dropdown-menu home-dropdown" style={{margin: '0px', color: 'black', backgroundColor: '#F9EDCD'}}>
@@ -23,7 +24,7 @@ function Home () {
                             <a id="nav-link" title="SERUMS" href="/serum-marketplace" className="dropdown-item" style={{color: 'black'}}>SERUMS</a>
                             <a id="nav-link" title="MACC" href="/macc-marketplace" className="dropdown-item" style={{color: 'black'}}>MACC</a>
                         </div>
-                    </div>
+                        </div>
                 </div>
                 <div className="navbar-nav" id="nav-social"><a href="https://discord.com/invite/gacc"><i className="fa fa-discord-alt black-social-icon pr-lg-0" /></a><a href="https://twitter.com/GrandpaApeCC"><i className="fa fa-twitter black-social-icon pr-lg-0" /></a><a href="https://www.instagram.com/grandpaapecountryclubofficial"><i className="fa fa-instagram black-social-icon pr-lg-0" /></a></div>
               </div>
@@ -163,7 +164,7 @@ function Home () {
                                   <p className="goal">8</p>
                                 </div>
                                 <div className="m-auto col-lg-10 col-9">
-                                  <p className="common-sub-p" style={{color: 'black'}}>The Grandpa Ape Kitten Club ("GAKC") opens its doors for adoption.</p>
+                                  <p className="common-sub-p" style={{color: 'black'}}>Lünagems are mined and the Grandpa Ape Kitten Club ("GAKC") is born.</p>
                                 </div>
                               </div>
                               <div className="mb-3 mb-lg-1 row">
@@ -171,7 +172,7 @@ function Home () {
                                   <p className="goal">9</p>
                                 </div>
                                 <div className="m-auto col-lg-10 col-9">
-                                  <p className="common-sub-p" style={{color: 'black'}}>GACC Laboratory will open for Kitten experimentation.</p>
+                                  <p className="common-sub-p" style={{color: 'black'}}>The GACC Laboratory experimentations reveal something spectacular...</p>
                                 </div>
                               </div>
                             </div>
@@ -201,7 +202,7 @@ function Home () {
                       <div className="col">
                         <div className="row">
                           <div className="mb-4 mb-lg-0 col-lg-8 col-12">
-                            <h2 className="common-title mb-3" style={{color: 'black'}}>GACC PRO SHOP (MERCH)</h2>
+                            <h2 className="common-title mb-3" id="merch" style={{color: 'black'}}>GACC PRO SHOP (MERCH)</h2>
                             <p className="common-p mb-0" style={{color: 'black'}}>The GACC NFT ecosystem brand looks incredible on merchandise. The GACC Pro Shop is always open but keep an eye out for weekly one-of-a-kind merch drops only avaiable for a short period.</p>
                           </div>
                           <div className="m-lg-auto col-lg-3 col-12 offset-lg-1">
@@ -304,7 +305,7 @@ function Home () {
                     <div className="row">
                     <div className="text-lg-right col-sm-12 col-12"><a href="https://discord.com/invite/gacc"><i className="fa fa-discord-alt black-social-icon pr-lg-0" /></a><a href="https://twitter.com/GrandpaApeCC"><i className="fa fa-twitter black-social-icon pr-lg-0" /></a><a href="https://www.instagram.com/grandpaapecountryclubofficial"><i className="fa fa-instagram black-social-icon pr-lg-0" /></a></div>
                       <div className="col-lg-12 col-sm-6 col-6">
-                        <p className="copyright text-right"><span className="copy-left" style={{color: 'black'}}>© 2022 Grandpa Ape Country Club</span></p>
+                        <p className="copyright text-right"><span className="copy-left" style={{color: 'black'}}>© 2023 Grandpa Ape Country Club</span></p>
                       </div>
                     </div>
                   </div>
