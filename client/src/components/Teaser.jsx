@@ -126,7 +126,7 @@ function Teaser() {
                 <div className="col-lg-12 col-sm-6 col-8">
                   <p className="copyright text-right">
                     <span className="copy-left">
-                      © 2022 Grandpa Ape Country Club
+                      © 2023 Grandpa Ape Country Club
                     </span>
                   </p>
                 </div>

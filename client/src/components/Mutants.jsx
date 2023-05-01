@@ -493,11 +493,20 @@ function Mutants() {
               <a id="nav-link" title="ROADMAP" href="/#roadmap" className="nav-link">ROADMAP</a>
               <a id="nav-link" title="TEAM" href="/#team" className="nav-link">TEAM</a>
               <div className="nav-item dropdown" style={{color: '#f9edcd'}}>
+              <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style={{color: 'white'}}>MEMBERS</a>
+                <div aria-labelledby="nav-dropdown" className="dropdown-menu home-dropdown" style={{margin: '0px', color: 'white', backgroundColor: 'black'}}>
+                    <a id="nav-link-active" title="MACC" href="/macc" className="dropdown-item active"  style={{color: 'white', backgroundColor: 'black'}}>MACC</a>
+                    <a id="nav-link" title="Kitten Club" href="/kitten-club" className="dropdown-item"  style={{color: 'white', backgroundColor: 'black'}}>KITTEN CLUB</a>
+                    <a id="nav-link" title="MERCH" href="/#merch" className="dropdown-item"  style={{color: 'white', backgroundColor: 'black'}}>MERCH</a>
+                </div>
+                </div>
+              <div className="nav-item dropdown" style={{color: '#f9edcd'}}>
                 <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style={{color: 'white'}}>MARKETPLACES</a>
                     <div aria-labelledby="nav-dropdown" className="dropdown-menu home-dropdown" style={{margin: '0px', color: 'white', backgroundColor: 'black'}}>
                         <a id="nav-link" title="GACC" href="/gacc-marketplace" className="dropdown-item" style={{color: 'white', backgroundColor: 'black'}}>GACC</a>
                         <a id="nav-link" title="SERUMS" href="/serum-marketplace" className="dropdown-item" style={{color: 'white', backgroundColor: 'black'}}>SERUMS</a>
                         <a id="nav-link" title="MACC" href="/macc-marketplace" className="dropdown-item" style={{color: 'white', backgroundColor: 'black'}}>MACC</a>
+                        
                     </div>
                 </div>
               </div>
@@ -715,7 +724,7 @@ function Mutants() {
                     </div>
                     <div className="col-lg-12 col-sm-6 col-6">
                       <p className="copyright text-right">
-                        <span className="copy-left">© 2022 Grandpa Ape Country Club</span>
+                        <span className="copy-left">© 2023 Grandpa Ape Country Club</span>
                       </p>
                     </div>
                   </div>

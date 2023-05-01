@@ -91,3 +91,50 @@ export const fetchData = () => {
     }
   };
 };
+
+export const fetchKittenData = () => {
+  return async (dispatch) => {
+    dispatch(fetchDataRequest());
+    try {
+      let kittenCallActive = await store
+        .getState()
+        .blockchain.smartContract.methods.callIsActive()
+        .call();
+
+      dispatch(
+        fetchDataSuccess({
+          kittenCallActive
+        })
+      );
+    } catch (err) {
+      console.log(err);
+      dispatch(fetchDataFailed("Could not load data from contract."));
+    }
+  };
+};
+
+export const fetchLunagemData = () => {
+  return async (dispatch) => {
+    dispatch(fetchDataRequest());
+    try {
+      let lunagemMineActive = await store
+        .getState()
+        .blockchain.smartContract.methods.mineIsActive()
+        .call();
+      let lunagemSaleActive = await store
+        .getState()
+        .blockchain.smartContract.methods.saleIsActive()
+        .call();
+
+      dispatch(
+        fetchDataSuccess({
+          lunagemMineActive,
+          lunagemSaleActive,
+        })
+      );
+    } catch (err) {
+      console.log(err);
+      dispatch(fetchDataFailed("Could not load data from contract."));
+    }
+  };
+};

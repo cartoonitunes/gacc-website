@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
  
 import Mutants from './components/Mutants';
 import Home from './components/Home';
+import KittenClub from './components/KittenClub';
 import GaccMarketplace from './components/GaccMarketplace';
 import SerumMarketplace from './components/SerumMarketplace';
 import MaccMarketplace from './components/MaccMarketplace';
@@ -22,6 +23,7 @@ class App extends Component {
              <Route path="/serum-marketplace" component={SerumMarketplace}/>
              <Route path="/macc-marketplace" component={MaccMarketplace}/>
              <Route path="/macc" component={Mutants}/>
+             <Route path="/kitten-club" component={KittenClub}/>
              <Route path="/thelab" component={Teaser}/>
            </Switch>
         </div> 
