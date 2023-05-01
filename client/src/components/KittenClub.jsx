@@ -434,7 +434,7 @@ function KittenClub() {
                                 burning it from the collection and removing it from your wallet.
                                 </p>
                                 <p className="common-p mb-0">
-                                There are X possible kitten traits, some rarer than others. A few lucky Lünagem callers will make contact with a legendary kitten, mystical and ancient.
+                                Kittens come with a variety of traits, some rarer than others. A few lucky Lünagem callers will make contact with a legendary kitten, mystical and ancient.
                                 </p>
                             </div>
                             </div>
@@ -442,7 +442,7 @@ function KittenClub() {
                             <img
                                 src={process.env.PUBLIC_URL + '/assets/images/kitten_promo_2.jpg'}
                                 className="img-fluid rounded"
-                                alt="shiba"
+                                alt="kitten_promo"
                             />
                             </div>
                         </div>
