@@ -116,7 +116,7 @@ export const connectLunagem = () => {
           dispatch(
             connectSuccess({
               account: accounts[0],
-              smartContract: SmartContractObj,
+              lunagemSmartContract: SmartContractObj,
               web3: web3,
             })
           );
@@ -168,7 +168,7 @@ export const connectGAKC = () => {
           dispatch(
             connectSuccess({
               account: accounts[0],
-              smartContract: SmartContractObj,
+              kittenSmartContract: SmartContractObj,
               web3: web3,
             })
           );
