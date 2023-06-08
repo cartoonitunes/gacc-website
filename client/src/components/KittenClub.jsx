@@ -355,16 +355,7 @@ function KittenClub() {
 
 
   const connectAndMintButton = () => {
-    if (blockchain.account !== "" && blockchain.lunagemSmartContract !== null) {
-      blockchain.lunagemSmartContract.methods.mineIsActive().call({to: process.env.REACT_APP_LUNAGEM_ADDRESS,
-        from: blockchain.account}).then((isActive) => {
-        console.log('hi')
-        console.log(isActive)
-      }
-
-      )
-    }
-    if (blockchain.account === "" || blockchain.lunagemSmartContract === null || blockchain.kittenSmartContract === null) {
+    if (blockchain.account === "" || blockchain.lunagemSmartContract === null) {
       return (
         <div className="d-flex justify-content-center"><button 
         className="bayc-button mint-button" 
@@ -477,7 +468,8 @@ function KittenClub() {
 
   const getData = () => {
     if (blockchain.account !== "" && blockchain.lunagemSmartContract !== null) {
-      dispatch(fetchLunagemData(blockchain.account));
+      dispatch(fetchLunagemData());
+      console.log(data)
       //dispatch(fetchKittenData(blockchain.account));
     }
   };
