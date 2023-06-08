@@ -98,7 +98,7 @@ export const fetchKittenData = () => {
     try {
       let kittenCallActive = await store
         .getState()
-        .blockchain.smartContract.methods.callIsActive()
+        .blockchain.kittenSmartContract.methods.callIsActive()
         .call();
 
       dispatch(
@@ -119,11 +119,11 @@ export const fetchLunagemData = () => {
     try {
       let lunagemMineActive = await store
         .getState()
-        .blockchain.smartContract.methods.mineIsActive()
+        .blockchain.lunagemSmartContract.methods.mineIsActive()
         .call();
       let lunagemSaleActive = await store
         .getState()
-        .blockchain.smartContract.methods.saleIsActive()
+        .blockchain.lunagemSmartContract.methods.saleIsActive()
         .call();
 
       dispatch(
