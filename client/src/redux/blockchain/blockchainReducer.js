@@ -2,6 +2,8 @@ const initialState = {
   loading: false,
   account: null,
   smartContract: null,
+  lunagemSmartContract: null,
+  kittenSmartContract: null,
   web3: null,
   errorMsg: ""
 };
@@ -22,6 +24,12 @@ const blockchainReducer = (state = initialState, action) => {
       }
       if (action.payload.smartContract !== null) {
         data['smartContract'] = action.payload.smartContract;
+      }
+      if (action.payload.lunagemSmartContract !== null) {
+        data['lunagemSmartContract'] = action.payload.lunagemSmartContract;
+      }
+      if (action.payload.kittenSmartContract !== null) {
+        data['kittenSmartContract'] = action.payload.kittenSmartContract;
       }
       return data;
     case "CONNECTION_FAILED":

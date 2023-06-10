@@ -369,11 +369,11 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "grandpaId",
+				"name": "",
 				"type": "uint256"
 			}
 		],
-		"name": "hasGrandpaMined",
+		"name": "grandpaMines",
 		"outputs": [
 			{
 				"internalType": "bool",
@@ -385,7 +385,13 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "gaccAddress",
+				"type": "address"
+			}
+		],
 		"name": "initialize",
 		"outputs": [],
 		"stateMutability": "nonpayable",
@@ -430,6 +436,11 @@
 	},
 	{
 		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_vault",
+				"type": "address"
+			},
 			{
 				"internalType": "uint256[]",
 				"name": "grandpaTokenIds",
