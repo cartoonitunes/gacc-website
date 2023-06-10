@@ -78,7 +78,7 @@ function KittenClub() {
       )
     }
     else {
-      return({'title': 'LÜNAGEMS COMING SOON',})
+      return({'title': 'LÜNAGEMS',})
     }
   };
 
@@ -104,7 +104,7 @@ function KittenClub() {
   async function getOwnedNfts(addresses, contractAddress) {
     const settings = {
       apiKey: process.env.REACT_APP_ALCHEMY_API_KEY,
-      network: Network.ETH_GOERLI
+      network: Network.ETH_MAINNET
     };
     const alchemy = new Alchemy(settings);
     let res = [];
@@ -207,10 +207,11 @@ function KittenClub() {
     }
     vaults.push(blockchain.account);
     if (pullIds) {
+      setFeedback(`Looking up mineable GACCs you own...`);
       apeIds = await getOwnedNfts(vaults, process.env.REACT_APP_GACC_ADDRESS);
       apeIds = apeIds.map(Number);
       apeIds = apeIds.filter(onlyUnique);
-      setFeedback(`Found ${apeIds.length} GACCs to mine Lünagems with...`);
+      setFeedback(`Found ${apeIds.length} GACCs to mine Lünagems. If this number is lower than expected, please reject and try again.`);
     }
     else {
       apeIds = apeIds.split(',').map(Number);
@@ -220,7 +221,7 @@ function KittenClub() {
     setMiningLunagemNft(true);
     if (apeIds.length === 0) {
       if (pullIds) {
-        setFeedback(`All of your GACCs have been used!`);
+        setFeedback(`No mineable GACCs found!`);
         setMiningLunagemNft(false);
         return
       }
@@ -682,13 +683,13 @@ function KittenClub() {
                                 <span className="bold-text">
                                     VERIFIED LÜNAGEM SMART CONTRACT ADDRESS
                                 </span>
-                                {/* <a
+                                <a
                                     title="THE ADDRESS"
-                                    href="https://etherscan.io/address/THE ADDRESS"
+                                    href="https://etherscan.io/address/0xAAb6E53554e56513FE5825738C950Bd3812B38c6"
                                     className="link"
                                 >
                                     THE ADDRESS
-                                </a> */}
+                                </a>
                                 </p>
                             </div>
                             </div>
