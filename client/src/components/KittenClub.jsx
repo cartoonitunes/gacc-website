@@ -12,7 +12,7 @@ require('dotenv').config();
 function KittenClub() {
 
   const dispatch = useDispatch();
-  const p = new ethers.providers.JsonRpcProvider(process.env.REACT_APP_ALCHEMY_URL, 5);
+  const p = new ethers.providers.JsonRpcProvider(process.env.REACT_APP_ALCHEMY_URL, 'any');
   const dc = new DelegateCash(p);
   const blockchain = useSelector((state) => state.blockchain);
   // eslint-disable-next-line
