@@ -681,10 +681,10 @@ function KittenClub() {
                             <div className="d-flex justify-content-center">
                                 <p className="common-p text-center text-break mb-0">
                                 <span className="bold-text">
-                                    VERIFIED LÜNAGEM SMART CONTRACT ADDRESS
+                                    VERIFIED LÜNAGEM SMART CONTRACT ADDRESS:&nbsp;
                                 </span>
                                 <a
-                                    title="THE ADDRESS"
+                                    title="0xAAb6E53554e56513FE5825738C950Bd3812B38c6"
                                     href="https://etherscan.io/address/0xAAb6E53554e56513FE5825738C950Bd3812B38c6"
                                     className="link"
                                 >
