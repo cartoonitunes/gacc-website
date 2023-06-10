@@ -40,9 +40,9 @@ const dataReducer = (state = initialState, action) => {
         saleWhitelistActive: action.payload.saleWhitelistActive,
         publicSaleActive: action.payload.publicSaleActive,
         serumMutationActive: action.payload.serumMutationActive,
-        kittenCallActive: action.payload.kittenCallActive,
         lunagemMineActive: action.payload.lunagemMineActive,
         lunagemSaleActive: action.payload.lunagemSaleActive,
+        kittenCallActive: action.payload.kittenCallActive,
         error: false,
         errorMsg: "",
       };
