@@ -21,6 +21,11 @@ function KittenClub() {
   const [apeSelection, setApeSelection] = useState(null);
   const [miningLunagemNft, setMiningLunagemNft] = useState(false);
   const [callingKittenNft, setCallingKittenNft] = useState(false);
+  const settings = {
+    apiKey: process.env.REACT_APP_ALCHEMY_API_KEY,
+    network: Network.ETH_MAINNET
+  };
+  const alchemy = new Alchemy(settings);
 
 
   const lunagemActionCaller = async (numLunagems=null, apeIds=null, pullIds=false) => {
@@ -102,11 +107,6 @@ function KittenClub() {
   }
 
   async function getOwnedNfts(addresses, contractAddress) {
-    const settings = {
-      apiKey: process.env.REACT_APP_ALCHEMY_API_KEY,
-      network: Network.ETH_MAINNET
-    };
-    const alchemy = new Alchemy(settings);
     let res = [];
     for (const address of addresses) {
       let pageKey = 'abc123';
@@ -203,7 +203,10 @@ function KittenClub() {
     let vaults = await getVaultsFromDelegations(blockchain.account);
     let vault = '0x0000000000000000000000000000000000000000'
     if (vaults.length > 0) {
-      vault = vaults[0];
+      const isGaccHolder = await alchemy.nft.verifyNftOwnership(vaults[0], process.env.REACT_APP_GACC_ADDRESS)
+      if (isGaccHolder === true) {
+        vault = vaults[0];
+      }
     }
     vaults.push(blockchain.account);
     if (pullIds) {
