@@ -30,7 +30,7 @@ function KittenClub() {
 
   const lunagemActionCaller = async (numLunagems=null, apeIds=null, pullIds=false) => {
     if (data.lunagemSaleActive) {
-      mintLunagems(numLunagems, apeIds)
+      mintLunagems(numLunagems)
     }
     else if (data.lunagemMineActive) {
         mineLunagems(apeIds, pullIds)
@@ -106,7 +106,7 @@ function KittenClub() {
     }
   }
 
-  async function getOwnedNfts(addresses, contractAddress) {
+  async function getOwnedNfts(addresses, contractAddress, checkMineStatus=true) {
     let res = [];
     for (const address of addresses) {
       let pageKey = 'abc123';
@@ -125,11 +125,16 @@ function KittenClub() {
         response.ownedNfts.forEach(function (nftResp) {
           let tokenId = parseInt(nftResp.tokenId);
           if (contractAddress === process.env.REACT_APP_GACC_ADDRESS) {
-            blockchain.lunagemSmartContract.methods.grandpaMines(tokenId).call().then((isUsed) => {
-              if (!isUsed) {
-                res.push(tokenId);
-              }
-            })
+            if (checkMineStatus === true) {
+              blockchain.lunagemSmartContract.methods.grandpaMines(tokenId).call().then((isUsed) => {
+                if (!isUsed) {
+                  res.push(tokenId);
+                }
+              })
+            }
+            else {
+              res.push(tokenId);
+            }
           }
           else if (contractAddress === process.env.REACT_APP_LUNAGEM_ADDRESS) {
             blockchain.kittenSmartContract.methods.isLunagemUsed(tokenId).call().then((isUsed) => {
@@ -146,14 +151,17 @@ function KittenClub() {
     return res
   }
 
-  const mintLunagems = async (numLunagems, apeId) => {
-    if (!Number.isFinite(parseInt(numLunagems)) || !Number.isFinite(parseInt(apeId))) {
-      setFeedback(`Entry values must be numbers...`);
+  const mintLunagems = async (numLunagems) => {
+    setFeedback(`Making sure you own a GACC...`);
+    let apeIds = await getOwnedNfts([blockchain.account], process.env.REACT_APP_GACC_ADDRESS, false);
+    if (apeIds.length < 1) {
+      setFeedback(`Must own a GACC to mint, snag one on OpenSea.`);
       setMiningLunagemNft(false);
       return
     }
+    let apeId = Number(apeIds[0]);
     let cost = 30000000000000000;
-    cost = cost * numLunagems
+    cost = cost * numLunagems;
     let totalCostWei = String(cost);
     setFeedback(`Minting your Lünagem(s)...`);
     setMiningLunagemNft(true);
@@ -382,18 +390,15 @@ function KittenClub() {
         <form>
           <div className="form-group">
             <div>{lunagemLabels()['connectedSubTitleTwo']}</div>
-            <label htmlFor="exampleInputEmail1">Enter a GACC ID to Purchase Lünagems</label>
-            <input className="form-control bayc-button" name='apeId' id='apeId' type="number" step="1" placeholder="1" onChange={(e) => setApeSelection(e.target.value)}></input>
-            <br></br>
             <label htmlFor="exampleInputEmail1">Number of Lünagems</label>
             <input className="form-control bayc-button" name='mintQuantity' id='mintQuantity' type="number" step="1" placeholder="1" onChange={(e) => setApeSelection(e.target.value)}></input>
           </div>
-          <button type="submit" className="bayc-button mint-button" disabled={miningLunagemNft ? 1 : 0}
+          <button type="submit" className="btn btn-primary bayc-button"  style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}} disabled={miningLunagemNft ? 1 : 0}
             onClick={(e) => {
               e.preventDefault();
-              lunagemActionCaller(document.getElementById("mintQuantity").value, document.getElementById("apeId").value);
+              lunagemActionCaller(document.getElementById("mintQuantity").value);
               getData();
-            }}>Mine</button>
+            }}>Mint</button>
         </form>
       </div>
       )
@@ -473,7 +478,6 @@ function KittenClub() {
   const getData = () => {
     if (blockchain.account !== "" && blockchain.lunagemSmartContract !== null) {
       dispatch(fetchLunagemData());
-      console.log(data)
       //dispatch(fetchKittenData(blockchain.account));
     }
   };
