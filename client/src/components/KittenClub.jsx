@@ -151,8 +151,21 @@ function KittenClub() {
     return res
   }
 
+  function isInt(value) {
+    if (isNaN(value)) {
+      return false;
+    }
+    var x = parseFloat(value);
+    return (x | 1) === x;
+  }
+
   const mintLunagems = async (numLunagems) => {
     setFeedback(`Making sure you own a GACC...`);
+    if ( !(isInt(numLunagems))) {
+      setFeedback(`Enter a number greater than zero.`);
+      setMiningLunagemNft(false);
+      return
+  }
     let apeIds = await getOwnedNfts([blockchain.account], process.env.REACT_APP_GACC_ADDRESS, false);
     if (apeIds.length < 1) {
       setFeedback(`Must own a GACC to mint, snag one on OpenSea.`);
@@ -391,12 +404,12 @@ function KittenClub() {
           <div className="form-group">
             <div>{lunagemLabels()['connectedSubTitleTwo']}</div>
             <label htmlFor="exampleInputEmail1">Number of Lünagems</label>
-            <input className="form-control bayc-button" name='mintQuantity' id='mintQuantity' type="number" step="1" placeholder="1" onChange={(e) => setApeSelection(e.target.value)}></input>
+            <input className="form-control bayc-button" name='mintQuantity' id='mintQuantity' pattern="\d*" step="1" placeholder="1" onChange={(e) => setApeSelection(e.target.value)}></input>
           </div>
           <button type="submit" className="btn btn-primary bayc-button"  style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}} disabled={miningLunagemNft ? 1 : 0}
             onClick={(e) => {
               e.preventDefault();
-              lunagemActionCaller(document.getElementById("mintQuantity").value);
+              lunagemActionCaller(document.getElementById("mintQuantity").value.replace(/\s/g, ""));
               getData();
             }}>Mint</button>
         </form>
@@ -695,7 +708,7 @@ function KittenClub() {
                                     href="https://etherscan.io/address/0xAAb6E53554e56513FE5825738C950Bd3812B38c6"
                                     className="link"
                                 >
-                                    THE ADDRESS
+                                    0xAAb6E53554e56513FE5825738C950Bd3812B38c6
                                 </a>
                                 </p>
                             </div>
