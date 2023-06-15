@@ -122,6 +122,7 @@ function KittenClub() {
             omitMetadata: true
           }
         );
+        await new Promise(r => setTimeout(r, 1000));
         response.ownedNfts.forEach(function (nftResp) {
           let tokenId = parseInt(nftResp.tokenId);
           if (contractAddress === process.env.REACT_APP_GACC_ADDRESS) {
