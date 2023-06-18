@@ -162,6 +162,14 @@ function KittenClub() {
 
   const mintLunagems = async (numLunagems) => {
     setFeedback(`Making sure you own a GACC...`);
+    try {
+      numLunagems = parseInt(numLunagems);
+    }
+    catch {
+      setFeedback(`Enter a number greater than zero.`);
+      setMiningLunagemNft(false);
+      return
+    }
     if ( !(isInt(numLunagems))) {
       setFeedback(`Enter a number greater than zero.`);
       setMiningLunagemNft(false);
@@ -406,7 +414,7 @@ function KittenClub() {
           <div className="form-group">
             <div>{lunagemLabels()['connectedSubTitleTwo']}</div>
             <label htmlFor="exampleInputEmail1">Number of Lünagems</label>
-            <input className="form-control bayc-button" name='mintQuantity' id='mintQuantity' step="1" placeholder="1" onChange={(e) => setApeSelection(e.target.value)}></input>
+            <input className="form-control bayc-button" name='mintQuantity' id='mintQuantity' pattern="\d*" step="1" placeholder="1" onChange={(e) => setApeSelection(e.target.value)}></input>
           </div>
           <button type="submit" className="btn btn-primary bayc-button"  style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}} disabled={miningLunagemNft ? 1 : 0}
             onClick={(e) => {
