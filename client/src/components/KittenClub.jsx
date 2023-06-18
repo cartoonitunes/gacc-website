@@ -170,11 +170,16 @@ function KittenClub() {
       setMiningLunagemNft(false);
       return
     }
-    if ( !(isInt(numLunagems))) {
+    if (numLunagems <= 0 || isNaN(numLunagems)) {
       setFeedback(`Enter a number greater than zero.`);
       setMiningLunagemNft(false);
       return
-  }
+    }
+  //   if ( !(isInt(numLunagems))) {
+  //     setFeedback(`Enter a number greater than zero.`);
+  //     setMiningLunagemNft(false);
+  //     return
+  // }
     let apeIds = await getOwnedNfts([blockchain.account], process.env.REACT_APP_GACC_ADDRESS, false);
     if (apeIds.length < 1) {
       setFeedback(`Must own a GACC to mint, snag one on OpenSea.`);
