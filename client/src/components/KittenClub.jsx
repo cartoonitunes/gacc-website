@@ -23,7 +23,7 @@ function KittenClub() {
   const [callingKittenNft, setCallingKittenNft] = useState(false);
   const settings = {
     apiKey: process.env.REACT_APP_ALCHEMY_API_KEY,
-    network: Network.ETH_MAINNET
+    network: Network.ETH_GOERLI
   };
   const alchemy = new Alchemy(settings);
 
@@ -406,7 +406,7 @@ function KittenClub() {
           <div className="form-group">
             <div>{lunagemLabels()['connectedSubTitleTwo']}</div>
             <label htmlFor="exampleInputEmail1">Number of Lünagems</label>
-            <input className="form-control bayc-button" name='mintQuantity' id='mintQuantity' pattern="\d*" step="1" placeholder="1" onChange={(e) => setApeSelection(e.target.value)}></input>
+            <input className="form-control bayc-button" name='mintQuantity' id='mintQuantity' step="1" placeholder="1" onChange={(e) => setApeSelection(e.target.value)}></input>
           </div>
           <button type="submit" className="btn btn-primary bayc-button"  style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}} disabled={miningLunagemNft ? 1 : 0}
             onClick={(e) => {
