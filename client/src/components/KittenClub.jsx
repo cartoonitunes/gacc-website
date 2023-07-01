@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { connectLunagem, connectGAKC } from "../redux/blockchain/blockchainActions";
-import { fetchKittenData, fetchLunagemData } from "../redux/data/dataActions";
+import { connectGAKC } from "../redux/blockchain/blockchainActions";
+import { fetchKittenData } from "../redux/data/dataActions";
 import { Network, Alchemy } from "alchemy-sdk";
 import { ethers } from "ethers";
 import { DelegateCash } from "delegatecash";
@@ -23,28 +23,19 @@ function KittenClub() {
   const [callingKittenNft, setCallingKittenNft] = useState(false);
   const settings = {
     apiKey: process.env.REACT_APP_ALCHEMY_API_KEY,
-    network: Network.ETH_MAINNET
+    network: Network.ETH_GOERLI
   };
   const alchemy = new Alchemy(settings);
 
 
   const lunagemActionCaller = async (numLunagems=null, apeIds=null, pullIds=false) => {
-    if (data.lunagemSaleActive) {
-      mintLunagems(numLunagems)
-    }
-    else if (data.lunagemMineActive) {
-        mineLunagems(apeIds, pullIds)
-    }
-    else if (data.kittenCallActive) {
+    if (data.kittenCallActive) {
       callKittens(apeIds, pullIds)
   }
   };
 
   const fetchData = async (account) => {
-    if (data.lunagemMineActive || data.lunagemSaleActive) {
-      dispatch(fetchLunagemData(account));
-    }
-    else if (data.kittenCallActive) {
+    if (data.kittenCallActive) {
       dispatch(fetchKittenData(account));
     }
   }
@@ -58,32 +49,20 @@ function KittenClub() {
   }
 
   const lunagemLabels = () => {
-    if (data.lunagemSaleActive) {
+    if (data.kittenCallActive) {
       return (
         {
-          'title': 'BUY A LÜNAGEM',
+          'title': 'CALL A KITTEN',
           'title_two': '',
           'status': 'Open',
-          'subTitle': 'Connect your wallet to buy a Lünagem.',
+          'subTitle': 'Connect your wallet to call a Kitten using a Lünagem.',
           'connectedSubTitle': ``,
           'connectedSubTitleTwo': ``
         }
       )
     }
-    else if (data.lunagemMineActive) {
-      return (
-        {
-          'title': `MINE A LÜNAGEM`,
-          'title_two': '',
-          'status': '',
-          'subTitle': 'Connect your wallet to mine a Lünagem.',
-          'connectedSubTitle': '',
-          'connectedSubTitleTwo': ''
-        }
-      )
-    }
     else {
-      return({'title': 'LÜNAGEMS',})
+      return({'title': 'GRANDPA APE KITTEN CLUB',})
     }
   };
 
@@ -138,7 +117,7 @@ function KittenClub() {
             }
           }
           else if (contractAddress === process.env.REACT_APP_LUNAGEM_ADDRESS) {
-            blockchain.kittenSmartContract.methods.isLunagemUsed(tokenId).call().then((isUsed) => {
+            blockchain.kittenSmartContract.methods.lunagemCalls(tokenId).call().then((isUsed) => {
               if (!isUsed) {
                 res.push(tokenId);
               }
@@ -152,161 +131,31 @@ function KittenClub() {
     return res
   }
 
-  function isInt(value) {
-    if (isNaN(value)) {
-      return false;
-    }
-    var x = parseFloat(value);
-    return (x | 1) === x;
-  }
-
-  const mintLunagems = async (numLunagems) => {
-    setFeedback(`Making sure you own a GACC...`);
-    try {
-      numLunagems = parseInt(numLunagems);
-    }
-    catch {
-      setFeedback(`Enter a number greater than zero.`);
-      setMiningLunagemNft(false);
-      return
-    }
-    if (numLunagems <= 0 || isNaN(numLunagems)) {
-      setFeedback(`Enter a number greater than zero.`);
-      setMiningLunagemNft(false);
-      return
-    }
-  //   if ( !(isInt(numLunagems))) {
-  //     setFeedback(`Enter a number greater than zero.`);
-  //     setMiningLunagemNft(false);
-  //     return
-  // }
-    let apeIds = await getOwnedNfts([blockchain.account], process.env.REACT_APP_GACC_ADDRESS, false);
-    if (apeIds.length < 1) {
-      setFeedback(`Must own a GACC to mint, snag one on OpenSea.`);
-      setMiningLunagemNft(false);
-      return
-    }
-    let apeId = Number(apeIds[0]);
-    let cost = 30000000000000000;
-    cost = cost * numLunagems;
-    let totalCostWei = String(cost);
-    setFeedback(`Minting your Lünagem(s)...`);
-    setMiningLunagemNft(true);
-    blockchain.lunagemSmartContract.methods
-      .purchaseLunagem(numLunagems, apeId)
-      .call({
-        to: process.env.REACT_APP_LUNAGEM_ADDRESS,
-        from: blockchain.account,
-        value: totalCostWei
-      })
-      .then(() => {
-        blockchain.lunagemSmartContract.methods
-        .purchaseLunagem(numLunagems, apeId)
-        .send({ 
-          to: process.env.REACT_APP_LUNAGEM_ADDRESS,
-          from: blockchain.account,
-          value: totalCostWei,
-        })
-        .then((receipt) => {
-          setFeedback(
-            `Congratulations, you have successfully purchased ${numLunagems} lünagem(s)!`
-          );
-          setMiningLunagemNft(false);
-          fetchData(blockchain.account);
-        })
-        .catch(err => {
-          const endIndex = err.message.search('{')
-          setFeedback(err.message.substring(0, endIndex));
-          setMiningLunagemNft(false);
-        });
-      })
-      .catch(err => {
-        let prettyCost = ((cost/1000000000000000000)).toFixed(3);
-        let priceInfo = ` The price to purchase ${numLunagems} lünagem(s) is ${prettyCost}ETH.`
-        setFeedback(processErrorMessage(err)+priceInfo)
-        setMiningLunagemNft(false);
-      });
-  }
-
   function onlyUnique(value, index, array) {
     return array.indexOf(value) === index;
   }
 
+  async function getKittensToReveal(receipt) {
+    let transferEvents = receipt.events.Transfer;
+    let kittensIDs = []
+    transferEvents.forEach(function (e) {
+      if (e.address === process.env.REACT_APP_KITTEN_ADDRESS) {
+        kittensIDs.push(e.returnValues.tokenId);
+      }
+    });
+    return kittensIDs
+  }
 
-  const mineLunagems = async (apeIds, pullIds) => {
-    setFeedback(`Lünagem mine vetting in progress...`);
-    let vaults = await getVaultsFromDelegations(blockchain.account);
-    let vault = '0x0000000000000000000000000000000000000000'
-    if (vaults.length > 0) {
-      const isGaccHolder = await alchemy.nft.verifyNftOwnership(vaults[0], process.env.REACT_APP_GACC_ADDRESS)
-      if (isGaccHolder === true) {
-        vault = vaults[0];
-      }
-    }
-    vaults.push(blockchain.account);
-    if (pullIds) {
-      setFeedback(`Looking up mineable GACCs you own...`);
-      apeIds = await getOwnedNfts(vaults, process.env.REACT_APP_GACC_ADDRESS);
-      apeIds = apeIds.map(Number);
-      apeIds = apeIds.filter(onlyUnique);
-      setFeedback(`Found ${apeIds.length} GACCs to mine Lünagems. If this number is lower than expected, please reject and try again.`);
-    }
-    else {
-      apeIds = apeIds.split(',').map(Number);
-      apeIds = apeIds.filter(onlyUnique);
-    }
-    
-    setMiningLunagemNft(true);
-    if (apeIds.length === 0) {
-      if (pullIds) {
-        setFeedback(`No mineable GACCs found!`);
-        setMiningLunagemNft(false);
-        return
-      }
-      else {
-        setFeedback(`GACC IDs are required...`);
-        setMiningLunagemNft(false);
-        return
-      }
-    }
-    if (apeIds.some((e) => e < 0) || apeIds.some((e) => e > 4999)) {
-        setFeedback(`GACC IDs need to be between 0 and 4999`);
-        setMiningLunagemNft(false);
-        return
-    }
-    else {
-        blockchain.lunagemSmartContract.methods
-      .mineLunagem(vault, apeIds)
-      .call({
-        to: process.env.REACT_APP_LUNAGEM_ADDRESS,
-        from: blockchain.account
-      })
-      .then(() => {
-        blockchain.lunagemSmartContract.methods
-        .mineLunagem(vault, apeIds)
-        .send({ 
-          to: process.env.REACT_APP_LUNAGEM_ADDRESS,
-          from: blockchain.account
-        })
-        .then((receipt) => {
-          setFeedback(
-            `Congratulations, you have successfully mined ${apeIds.length} lünagem(s)!`
-          );
-          setMiningLunagemNft(false);
-          fetchData(blockchain.account);
-        })
-        .catch(err => {
-          const endIndex = err.message.search('{')
-          setFeedback(err.message.substring(0, endIndex));
-          setMiningLunagemNft(false);
-        });
-      })
-      .catch(err => {
-        console.log(err)
-        setFeedback(processErrorMessage(err))
-        setMiningLunagemNft(false);
-      });
-    }
+  async function revealKittenMetadata(address, receipt) {
+    let kittenIds = await getKittensToReveal(receipt);
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ address: address, tokens: kittenIds})
+    };
+    const response = await fetch(process.env.REACT_APP_BASE_API_URL + '/api/kittens/claim_tokens', requestOptions);
+    const result = await response;
+    return result
   }
 
   const callKittens = async (lunagemIds, pullIds) => {
@@ -330,7 +179,7 @@ function KittenClub() {
     setCallingKittenNft(true);
     if (lunagemIds.length === 0) {
       if (pullIds) {
-        setFeedback(`All of your Lüngems have been used!`);
+        setFeedback(`All of your Lünagems have been used!`);
         setCallingKittenNft(false);
         return
       }
@@ -340,12 +189,13 @@ function KittenClub() {
         return
       }
     }
-    if (lunagemIds.some((e) => e < 0) || lunagemIds.some((e) => e > 4999)) {
-        setFeedback(`Lüngem IDs need to be between 0 and 4999`);
+    if (lunagemIds.some((e) => e < 0) || lunagemIds.some((e) => e > 2221)) {
+        setFeedback(`Lüngem IDs need to be between 0 and 2221`);
         setCallingKittenNft(false);
         return
     }
     else {
+      setFeedback(`Performing the ancient Kitten Call...`);
         blockchain.kittenSmartContract.methods
       .callKitten(vault, lunagemIds)
       .call({
@@ -361,10 +211,31 @@ function KittenClub() {
         })
         .then((receipt) => {
           setFeedback(
-            `Congratulations, you have successfully called ${lunagemIds.length} GAKC kitten(s)!`
+            `Flipping your new kitten metadata!...`
           );
-          setCallingKittenNft(false);
-          fetchData(blockchain.account);
+          let transactionHash = receipt.transactionHash;
+          revealKittenMetadata(blockchain.account, receipt).then((response) => {
+            console.log(response);
+            if (response.status === 200) {
+              setFeedback(
+                `Congratulations, you have successfully called ${lunagemIds.length} GAKC kitten(s)!`
+              );
+            }
+            else {
+              setFeedback(
+                `Congratulations, you have successfully called ${lunagemIds.length} GAKC kitten(s)! We had an issue flipping metadata. Can you please reach out to Discord support with the following transaction hash: ${transactionHash}.`
+              );
+            }
+            setCallingKittenNft(false);
+            fetchData(blockchain.account);
+          })
+          .catch(err => {
+            setFeedback(
+              `Congratulations, you have successfully called ${lunagemIds.length} GAKC kitten(s)! We had an issue flipping metadata. Can you please reach out to Discord support with the following transaction hash: ${transactionHash}.`
+            );
+            setCallingKittenNft(false);
+            fetchData(blockchain.account);
+          })
         })
         .catch(err => {
           const endIndex = err.message.search('{')
@@ -384,7 +255,7 @@ function KittenClub() {
   const titleText = () => {
     return (
       <div className="d-flex justify-content-center">
-        {(blockchain.account === "" || blockchain.lunagemSmartContract === null) ? (
+        {(blockchain.account === "" || blockchain.kittenSmartContract === null) ? (
         <p className="common-p mint-subtitle">{lunagemLabels()['subTitle']}</p>): (
           <p className="common-p mint-subtitle">{lunagemLabels()['connectedSubTitle']}</p>
         )}
@@ -394,101 +265,11 @@ function KittenClub() {
 
 
   const connectAndMintButton = () => {
-    if (blockchain.account === "" || blockchain.lunagemSmartContract === null) {
-      return (
-        <div className="d-flex justify-content-center"><button 
-        className="btn btn-primary bayc-button" 
-        type="button"
-        style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}}
-        onClick={(e) => {
-          e.preventDefault();
-          dispatch(connectLunagem());
-          //dispatch(connectGAKC());
-          setFeedback(data.errorMsg);
-          getData();
-        }}
-        >
-          CONNECT WALLET
-        </button></div>
-      )
-    }
-    else if (data.lunagemSaleActive) {
-      return (
-      <div className="d-flex justify-content-center">
-        <form>
-          <div className="form-group">
-            <div>{lunagemLabels()['connectedSubTitleTwo']}</div>
-            <label htmlFor="exampleInputEmail1">Number of Lünagems</label>
-            <input className="form-control bayc-button" name='mintQuantity' id='mintQuantity' pattern="\d*" step="1" placeholder="1" onChange={(e) => setApeSelection(e.target.value)}></input>
-          </div>
-          <button type="submit" className="btn btn-primary bayc-button"  style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}} disabled={miningLunagemNft ? 1 : 0}
-            onClick={(e) => {
-              e.preventDefault();
-              lunagemActionCaller(document.getElementById("mintQuantity").value.replace(/\s/g, ""));
-              getData();
-            }}>Mint</button>
-        </form>
-      </div>
-      )
-    }
-    else if (data.lunagemMineActive) {
-      return (
-      <div className="d-flex justify-content-center">
-        <form>
-          <div className="form-group">
-            <label htmlFor="exampleInputEmail1">Enter GACC IDs to Mine Lünagems</label>
-            <input className="form-control bayc-button" name='apeId' id='apeId' placeholder="1, 2, 3" onChange={(e) => setApeSelection(e.target.value)}></input>
-          </div>
-          <button type="submit" className="btn btn-primary bayc-button " style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}} disabled={miningLunagemNft ? 1 : 0}
-            onClick={(e) => {
-              e.preventDefault();
-              if (document.getElementById("apeId").value) {
-                lunagemActionCaller(null, document.getElementById("apeId").value, false);
-              }
-              getData();
-            }}>Mine Selected</button>
-          <button type="submit" className="btn btn-primary bayc-button " style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}} disabled={miningLunagemNft ? 1 : 0}
-            onClick={(e) => {
-              e.preventDefault();
-              lunagemActionCaller(null, [], true);
-              getData();
-            }}>Mine All In Wallet</button>
-        </form>
-      </div>
-      )
-    }
-    else if (data.kittenCallActive) {
-      return (
-      <div className="d-flex justify-content-center">
-        <form>
-          <div className="form-group">
-            <label htmlFor="exampleInputEmail1">Enter Lünagem IDs to Call a Kitten</label>
-            <input className="form-control bayc-button" name='apeId' id='apeId' placeholder="1, 2, 3" onChange={(e) => setApeSelection(e.target.value)}></input>
-          </div>
-          <button type="submit" className="btn btn-primary bayc-button " style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}} disabled={miningLunagemNft ? 1 : 0}
-            onClick={(e) => {
-              e.preventDefault();
-              if (document.getElementById("apeId").value) {
-                lunagemActionCaller(null, document.getElementById("apeId").value, false);
-              }
-              getData();
-            }}>Call</button>
-            <button type="submit" className="btn btn-primary bayc-button " style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}} disabled={callingKittenNft ? 1 : 0}
-              onClick={(e) => {
-                e.preventDefault();
-                lunagemActionCaller(null, [], true);
-                getData();
-              }}>Call All In Wallet</button>
-        </form>
-      </div>
-      )
-    }
-    else {
-      return (
+    return (
       <div>
         <div>
             <p className="common-p text-break mb-3">
-            Lünagem mining is currently closed. Check out the collection on OpenSea.
+            Kitten calling has not yet commenced. Check out the Lünagem collection on OpenSea, you'll need one to call a Kitten.
             </p>
             </div>
             <div className="d-flex justify-content-center">
@@ -500,13 +281,73 @@ function KittenClub() {
             </div>
         </div>
       )
-    }
+    // if (blockchain.account === "" || blockchain.kittenSmartContract === null) {
+    //   return (
+    //     <div className="d-flex justify-content-center"><button 
+    //     className="btn btn-primary bayc-button" 
+    //     type="button"
+    //     style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}}
+    //     onClick={(e) => {
+    //       e.preventDefault();
+    //       dispatch(connectGAKC());
+    //       setFeedback(data.errorMsg);
+    //       getData();
+    //     }}
+    //     >
+    //       CONNECT WALLET
+    //     </button></div>
+    //   )
+    // }
+    // else if (data.kittenCallActive) {
+    //   return (
+    //   <div className="d-flex justify-content-center">
+    //     <form>
+    //       <div className="form-group">
+    //         <label htmlFor="exampleInputEmail1">Enter Lünagem IDs to Call a Kitten</label>
+    //         <input className="form-control bayc-button" name='apeId' id='apeId' placeholder="1, 2, 3" onChange={(e) => setApeSelection(e.target.value)}></input>
+    //       </div>
+    //       <button type="submit" className="btn btn-primary bayc-button " style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}} disabled={miningLunagemNft ? 1 : 0}
+    //         onClick={(e) => {
+    //           e.preventDefault();
+    //           if (document.getElementById("apeId").value) {
+    //             lunagemActionCaller(null, document.getElementById("apeId").value, false);
+    //           }
+    //           getData();
+    //         }}>Call</button>
+    //         <button type="submit" className="btn btn-primary bayc-button " style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}} disabled={callingKittenNft ? 1 : 0}
+    //           onClick={(e) => {
+    //             e.preventDefault();
+    //             lunagemActionCaller(null, [], true);
+    //             getData();
+    //           }}>Call All In Wallet</button>
+    //     </form>
+    //   </div>
+    //   )
+    // }
+    // else {
+    //   return (
+    //   <div>
+    //     <div>
+    //         <p className="common-p text-break mb-3">
+    //         Kitten calling has not yet commenced. Check out the Lünagem collection on OpenSea, you'll need one to call a Kitten.
+    //         </p>
+    //         </div>
+    //         <div className="d-flex justify-content-center">
+    //         <a href="https://opensea.io/collection/lunagems">
+    //             <button className="btn btn-primary bayc-button" type="button" style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}}>
+    //             BUY A LÜNAGEM ON OPENSEA
+    //             </button>
+    //         </a>
+    //         </div>
+    //     </div>
+    //   )
+    // }
   }
 
   const getData = () => {
-    if (blockchain.account !== "" && blockchain.lunagemSmartContract !== null) {
-      dispatch(fetchLunagemData());
-      //dispatch(fetchKittenData(blockchain.account));
+    if (blockchain.account !== "" && blockchain.kittenSmartContract !== null) {
+      // dispatch(fetchLunagemData());
+      dispatch(fetchKittenData());
     }
   };
 
