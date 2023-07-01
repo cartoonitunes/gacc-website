@@ -552,6 +552,20 @@ function KittenClub() {
                                 </a>
                                 </p>
                             </div>
+                            <div className="d-flex justify-content-center">
+                                <p className="common-p text-center text-break mb-0">
+                                <span className="bold-text">
+                                    VERIFIED GAKC SMART CONTRACT ADDRESS:&nbsp;
+                                </span>
+                                <a
+                                    title="0xb73B1335C1f14ECCD0D6787490bCe85e1af62378"
+                                    href="https://etherscan.io/address/0xb73B1335C1f14ECCD0D6787490bCe85e1af62378"
+                                    className="link"
+                                >
+                                    0xb73B1335C1f14ECCD0D6787490bCe85e1af62378
+                                </a>
+                                </p>
+                            </div>
                             </div>
                         </div>
                         </div>
