@@ -117,11 +117,12 @@ function KittenClub() {
             }
           }
           else if (contractAddress === process.env.REACT_APP_LUNAGEM_ADDRESS) {
-            blockchain.kittenSmartContract.methods.lunagemCalls(tokenId).call().then((isUsed) => {
-              if (!isUsed) {
-                res.push(tokenId);
-              }
-            })
+            res.push(tokenId);
+            // blockchain.kittenSmartContract.methods.lunagemCalls(tokenId).call().then((isUsed) => {
+            //   if (!isUsed) {
+            //     res.push(tokenId);
+            //   }
+            // })
           }
         });
         nextPageKey = response.pageKey;
@@ -160,8 +161,8 @@ function KittenClub() {
 
   const callKittens = async (lunagemIds, pullIds) => {
     setFeedback(`Kitten call vetting in progress...`);
-    let vaults = []
-    //let vaults = await getVaultsFromDelegations(blockchain.account);
+    // let vaults = []
+    let vaults = await getVaultsFromDelegations(blockchain.account);
     let vault = '0x0000000000000000000000000000000000000000'
     if (vaults.length > 0) {
       vault = vaults[0];
