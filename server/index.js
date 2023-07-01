@@ -215,8 +215,8 @@ app.post("/api/kittens/claim_tokens", async (req, res) => {
     });
   }
   let kittens = await db.Kittens.findAll({ where: { token: tokens.map(String), claimed: false } });
-  const web3 = new Web3(new Web3.providers.HttpProvider("https://eth-goerli.g.alchemy.com/v2/JZZ7so-CObB1pd2SVwuKbyQcaxCU_e9T"));
-  const contract = new web3.eth.Contract(abiKitten, "0x1CAe5547e6AFf41ABD062752125942F58bC3FE5B");
+  const web3 = new Web3(new Web3.providers.HttpProvider("https://eth-mainnet.g.alchemy.com/v2/ls-qujtks-A7Y49bcM0skuS1IyENmpUY"));
+  const contract = new web3.eth.Contract(abiKitten, "0xb73B1335C1f14ECCD0D6787490bCe85e1af62378");
   const promises = kittens.map(async (kitten) => {
     try{
       await contract.methods.ownerOf(parseInt(kitten.token)).call();
