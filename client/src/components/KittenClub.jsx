@@ -171,6 +171,7 @@ function KittenClub() {
     if (pullIds) {
       lunagemIds = await getOwnedNfts(vaults, process.env.REACT_APP_LUNAGEM_ADDRESS);
       lunagemIds = lunagemIds.map(Number);
+      lunagemIds = lunagemIds.filter(onlyUnique);
       setFeedback(`Found ${lunagemIds.length} Lünagem(s) to call Kittens with...`);
     }
     else {
