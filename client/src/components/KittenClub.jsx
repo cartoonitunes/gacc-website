@@ -265,7 +265,51 @@ function KittenClub() {
 
 
   const connectAndMintButton = () => {
-    return (
+    if (blockchain.account === "" || blockchain.kittenSmartContract === null) {
+      return (
+        <div className="d-flex justify-content-center"><button 
+        className="btn btn-primary bayc-button" 
+        type="button"
+        style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}}
+        onClick={(e) => {
+          e.preventDefault();
+          dispatch(connectGAKC());
+          setFeedback(data.errorMsg);
+          getData();
+        }}
+        >
+          CONNECT WALLET
+        </button></div>
+      )
+    }
+    else if (data.kittenCallActive) {
+      return (
+      <div className="d-flex justify-content-center">
+        <form>
+          <div className="form-group">
+            <label htmlFor="exampleInputEmail1">Enter Lünagem IDs to Call a Kitten</label>
+            <input className="form-control bayc-button" name='apeId' id='apeId' placeholder="1, 2, 3" onChange={(e) => setApeSelection(e.target.value)}></input>
+          </div>
+          <button type="submit" className="btn btn-primary bayc-button " style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}} disabled={miningLunagemNft ? 1 : 0}
+            onClick={(e) => {
+              e.preventDefault();
+              if (document.getElementById("apeId").value) {
+                lunagemActionCaller(null, document.getElementById("apeId").value, false);
+              }
+              getData();
+            }}>Call</button>
+            <button type="submit" className="btn btn-primary bayc-button " style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}} disabled={callingKittenNft ? 1 : 0}
+              onClick={(e) => {
+                e.preventDefault();
+                lunagemActionCaller(null, [], true);
+                getData();
+              }}>Call All In Wallet</button>
+        </form>
+      </div>
+      )
+    }
+    else {
+      return (
       <div>
         <div>
             <p className="common-p text-break mb-3">
@@ -281,67 +325,7 @@ function KittenClub() {
             </div>
         </div>
       )
-    // if (blockchain.account === "" || blockchain.kittenSmartContract === null) {
-    //   return (
-    //     <div className="d-flex justify-content-center"><button 
-    //     className="btn btn-primary bayc-button" 
-    //     type="button"
-    //     style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}}
-    //     onClick={(e) => {
-    //       e.preventDefault();
-    //       dispatch(connectGAKC());
-    //       setFeedback(data.errorMsg);
-    //       getData();
-    //     }}
-    //     >
-    //       CONNECT WALLET
-    //     </button></div>
-    //   )
-    // }
-    // else if (data.kittenCallActive) {
-    //   return (
-    //   <div className="d-flex justify-content-center">
-    //     <form>
-    //       <div className="form-group">
-    //         <label htmlFor="exampleInputEmail1">Enter Lünagem IDs to Call a Kitten</label>
-    //         <input className="form-control bayc-button" name='apeId' id='apeId' placeholder="1, 2, 3" onChange={(e) => setApeSelection(e.target.value)}></input>
-    //       </div>
-    //       <button type="submit" className="btn btn-primary bayc-button " style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}} disabled={miningLunagemNft ? 1 : 0}
-    //         onClick={(e) => {
-    //           e.preventDefault();
-    //           if (document.getElementById("apeId").value) {
-    //             lunagemActionCaller(null, document.getElementById("apeId").value, false);
-    //           }
-    //           getData();
-    //         }}>Call</button>
-    //         <button type="submit" className="btn btn-primary bayc-button " style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}} disabled={callingKittenNft ? 1 : 0}
-    //           onClick={(e) => {
-    //             e.preventDefault();
-    //             lunagemActionCaller(null, [], true);
-    //             getData();
-    //           }}>Call All In Wallet</button>
-    //     </form>
-    //   </div>
-    //   )
-    // }
-    // else {
-    //   return (
-    //   <div>
-    //     <div>
-    //         <p className="common-p text-break mb-3">
-    //         Kitten calling has not yet commenced. Check out the Lünagem collection on OpenSea, you'll need one to call a Kitten.
-    //         </p>
-    //         </div>
-    //         <div className="d-flex justify-content-center">
-    //         <a href="https://opensea.io/collection/lunagems">
-    //             <button className="btn btn-primary bayc-button" type="button" style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}}>
-    //             BUY A LÜNAGEM ON OPENSEA
-    //             </button>
-    //         </a>
-    //         </div>
-    //     </div>
-    //   )
-    // }
+    }
   }
 
   const getData = () => {
