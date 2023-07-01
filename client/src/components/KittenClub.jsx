@@ -511,6 +511,24 @@ function KittenClub() {
                             />
                             </div>
                         </div>
+                        <div className="mb-5 row">
+                      <div className="col">
+                        <div id="buy-a-gakc" className="buy-token-container">
+                          <div className="bayc-bg p-4 m-auto row"  style={{backgroundColor: '#977039', color: 'white'}}>
+                            <div className="m-auto col-lg-3 col-12">
+                              <h3 className="buy-ape-title">BUY A GAKC or LÜNAGEM</h3>
+                            </div>
+                            <div className="m-auto col-lg-4 col-12 offset-lg-1">
+                              <p className="common-p mb-lg-0">To get your Kitten, buy a Lünagem on OpenSea to call a kitten, or buy one directly on OpenSea.</p>
+                            </div>
+                            <div className="m-auto col-lg-2 col-12 offset-lg-1">
+                              <a href="https://opensea.io/collection/grandpaapekittenclub"><button className="btn btn-primary bayc-button" type="button" style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}}>GAKC</button></a><p></p>
+                              <a href="https://opensea.io/collection/lunagems"><button className="btn btn-primary bayc-button" type="button" style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}}>Lünagems</button></a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                         <hr className="gray-line mb-5" />
                         <div className="mb-5 row">
                             <div className="col-12">
