@@ -10,6 +10,7 @@ const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 const abi = require("./abi/mutantAbi.json");
+const abiKitten = require("./abi/kittenAbi.json");
 require("dotenv").config();
 const db = require("../models/index.js");
 const PORT = process.env.PORT || 3001;
@@ -168,6 +169,97 @@ app.post("/api/claim_token", (req, res) => {
       });
   }
 });
+
+//Kittens
+app.get("/api/kittens/metadata/:id", function (req, res) {
+  let token = req.params.id;
+  db.Kittens.findOne({ where: { token: token } }).then((obj) => {
+    let ret = {};
+    if (obj) {
+      if (obj.claimed === true) {
+        db.RevealedKittenMetadata.findOne({ where: { token: token } }).then((md) => {
+          ret = md.dataValues.metadata;
+          res.send(ret);
+          res.status(200);
+        });
+      } else {
+        db.HiddenKittenMetadata.findOne({ where: { token: token } }).then((md) => {
+          ret = md.dataValues.metadata;
+          res.send(ret);
+          res.status(200);
+        });
+      }
+    }
+    else {
+      res.send('The token does not exist');
+      res.status(404);
+    }
+  })
+  .catch(err => {
+    res.send('The token does not exist');
+    res.status(404);
+  });
+});
+
+app.post("/api/kittens/claim_tokens", async (req, res) => {
+  const address = req.body.address;
+  let tokens = req.body.tokens;
+  let flippable = true;
+  tokens = tokens.map(Number);
+  let isnum = !tokens.some(isNaN);
+  if (tokens.some((e) => e < 0) || tokens.some((e) => e > 2221) || !isnum) {
+    flippable = false;
+    return res.status(404).send({
+      success: false,
+      msg: 'Invalid token IDs'
+    });
+  }
+  let kittens = await db.Kittens.findAll({ where: { token: tokens.map(String), claimed: false } });
+  const web3 = new Web3(new Web3.providers.HttpProvider("https://eth-goerli.g.alchemy.com/v2/JZZ7so-CObB1pd2SVwuKbyQcaxCU_e9T"));
+  const contract = new web3.eth.Contract(abiKitten, "0x1CAe5547e6AFf41ABD062752125942F58bC3FE5B");
+  const promises = kittens.map(async (kitten) => {
+    try{
+      await contract.methods.ownerOf(parseInt(kitten.token)).call();
+    }
+    catch(e){
+      flippable = false;
+      return res.status(404).send({
+        success: false,
+        msg:`GAKC #${parseInt(kitten.token)} does not exist yet!`
+      });
+    }
+    });
+
+  try {
+    await Promise.all(promises);
+
+  if (flippable !== false) {
+    if (kittens.length > 0) {
+      await db.Kittens.update({claimed:true, address:address}, {where: { token: tokens.map(String), claimed: false }}).then( function() {
+        return res.status(200).send({
+          success: true,
+          msg: `The requested kittens have been claimed by ${address}`
+        });
+      })
+      .catch(err => {
+        return res.status(500).send({
+          success: false,
+          msg: 'Something went wrong updating the metadata'
+        });
+      });
+    }
+    else {
+      return res.status(200).send({
+        success: true,
+        msg: `All of the requested kittens have already been claimed.`
+      });
+    }
+  }
+  }
+  catch {}
+  
+});
+
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "/client/build/index.html"));
