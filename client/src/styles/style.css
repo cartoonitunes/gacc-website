@@ -165,6 +165,16 @@ div.qr-code-border{
     right:10%;
     max-width:75%
 }
+div.imageItem {
+    vertical-align: top;
+    display: inline-block;
+    text-align: center;
+}
+.caption {
+    display: block;
+    color: black;
+    font-weight: bold;
+}
 .bayc-button{
     background-color:#bfc500;
     border-radius:8px;
