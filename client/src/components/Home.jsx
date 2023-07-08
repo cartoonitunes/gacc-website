@@ -1,7 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import '../styles/style.css'
+const ranks = require('../ranks/gacc');
+
 
 function Home () {
+
+  const [apeSelection, setApeSelection] = useState(null);
+
+  function isPositiveInteger(n) {
+      return n >>> 0 === parseFloat(n);
+  }
+
+  function imageToShow() {
+    let token_id = Number(apeSelection) + 1;
+    if (apeSelection && isPositiveInteger(apeSelection) && token_id <= 5000) {
+      return (
+        <div className="my-auto col-lg-4 col-12 offset-lg-1">
+          <div className="imageItem">
+        <img className="img-fluid w-100" style={{borderRadius: '5px'}} src={`https://ipfs.io/ipfs/QmY6CdW5UGJPu76qm6SkBBiWPBcnH7sr4JMBcA9mjuaNSU/${token_id}.png`} alt="mystery token" />
+        <span className="caption">{`Rank #${ranks[apeSelection]}`}</span>
+        </div>
+        </div>
+      )
+    }
+    else {
+    return (
+    <div className="my-auto col-lg-4 col-12 offset-lg-1">
+      <img className="img-fluid w-100" style={{borderRadius: '5px'}} src={process.env.PUBLIC_URL + '/assets/images/Sneak_Peek_Preview.gif'} alt="mystery token" />
+      </div>
+    )
+  }
+  }
   
     return (
         <div>
@@ -84,9 +113,15 @@ function Home () {
                           <div className="row">
                             <div className="mb-3 col-lg-7 col-12">
                               <h2 className="common-title mb-3" style={{color: 'black'}}>THE SPECS</h2>
-                              <p className="common-p" style={{color: 'black'}}>Each Grandpa Ape is unique and programmatically generated from over 200 possible traits, including expression, headwear, clothing, and more. All apes are spiffy, but some are rarer than others. To check out "official" rarity, please use <a href="https://rarity.tools/grandpaapecountryclub">this link.</a> Please note that these are unofficial in nature. Every assignment of an ape's overall value or rarity is inherently subjective.<br /><br />The apes are stored as ERC-721 tokens on the Ethereum blockchain and hosted on IPFS.</p>
+                              <p className="common-p" style={{color: 'black'}}>Each Grandpa Ape is unique and programmatically generated from over 200 possible traits, including expression, headwear, clothing, and more. All apes are spiffy, but some are rarer than others.<br /><br />The apes are stored as ERC-721 tokens on the Ethereum blockchain and hosted on IPFS.</p>
+                              <form>
+                                 <div className="form-group">
+                                 <label for="staticEmail2" className="common-p mb-2"  style={{color: 'black', fontWeight: 'bold'}}>Lookup Rarity</label>
+                              <input className="form-control" name='apeId' id='apeId' placeholder="1" style={{textAlign: 'center'}} onChange={(e) => setApeSelection(e.target.value)}></input>
+                              </div>
+                                </form>
                             </div>
-                            <div className="my-auto col-lg-4 col-12 offset-lg-1"><img className="img-fluid w-100" style={{borderRadius: '5px'}} src={process.env.PUBLIC_URL + '/assets/images/Sneak_Peek_Preview.gif'} alt="mystery token" /></div>
+                            {imageToShow()}
                           </div>
                         </div>
                       </div>
