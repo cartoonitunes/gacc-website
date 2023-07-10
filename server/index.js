@@ -14,6 +14,8 @@ const abiKitten = require("./abi/kittenAbi.json");
 require("dotenv").config();
 const db = require("../models/index.js");
 const PORT = process.env.PORT || 3001;
+const gakc_ranks = require('./ranks/gakc.js');
+const gacc_ranks = require('./ranks/gacc.js');
 
 const app = express();
 
@@ -170,7 +172,44 @@ app.post("/api/claim_token", (req, res) => {
   }
 });
 
+//GACC
+app.get("/api/gacc/ranks/:id", function (req, res) {
+  let token = req.params.id;
+  try {
+    token = token.toString();
+    gacc_rank = gacc_ranks[token];
+    return res.status(200).send({
+      success: true,
+      rank: gacc_rank
+    });
+  }
+  catch {
+    return res.status(422).send({
+      success: false,
+      rank: null
+    });
+  }
+});
+
 //Kittens
+app.get("/api/kittens/ranks/:id", function (req, res) {
+  let token = req.params.id;
+  try {
+    token = token.toString();
+    kitten_rank = gakc_ranks[token];
+    return res.status(200).send({
+      success: true,
+      rank: kitten_rank
+    });
+  }
+  catch {
+    return res.status(422).send({
+      success: false,
+      rank: null
+    });
+  }
+});
+
 app.get("/api/kittens/metadata/:id", function (req, res) {
   let token = req.params.id;
   db.Kittens.findOne({ where: { token: token } }).then((obj) => {

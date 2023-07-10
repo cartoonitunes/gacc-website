@@ -21,11 +21,85 @@ function KittenClub() {
   const [apeSelection, setApeSelection] = useState(null);
   const [miningLunagemNft, setMiningLunagemNft] = useState(false);
   const [callingKittenNft, setCallingKittenNft] = useState(false);
+  const [kittenRankSelection, setKittenRankSelection] = useState(null);
+  const [rankToShow, setRankToShow] = useState(null);
+  const [rankImageUrl, setRankImageUrl] = useState("");
   const settings = {
     apiKey: process.env.REACT_APP_ALCHEMY_API_KEY,
     network: Network.ETH_MAINNET
   };
   const alchemy = new Alchemy(settings);
+
+  function setRankStateValues(token) {
+    setKittenRankUrl(token);
+    setKittenRankSelection(token);
+    setKittenRank(token);
+  }
+
+  async function setKittenRank(token_id) {
+    try {
+      await alchemy.nft.getOwnersForNft(process.env.REACT_APP_KITTEN_ADDRESS, token_id)
+    }
+    catch { 
+      setRankToShow('');
+      return 
+    }
+    if (token_id) {
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      };
+      const response = await fetch(process.env.REACT_APP_BASE_API_URL + '/api/kittens/ranks/' + token_id, requestOptions);
+      const result = await response.json();
+      let rank = result['rank'];
+      setRankToShow(rank);
+    }
+    else { setRankToShow(null); }
+  }
+
+  async function setKittenRankUrl(token_id) {
+    if (token_id) {
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      };
+      const response = await fetch(process.env.REACT_APP_BASE_API_URL + '/api/kittens/metadata/' + token_id, requestOptions);
+      const result = await response.json();
+      let imageUrl = result['image_url'];
+      setRankImageUrl(imageUrl);
+    }
+  }
+
+  function isPositiveInteger(n) {
+    return n >>> 0 === parseFloat(n);
+  }
+
+  function imageToShow() {
+    if (!kittenRankSelection) {
+      return (
+        <div className="my-auto col-lg-4 col-12 offset-lg-1">
+          <img className="img-fluid w-100" style={{borderRadius: '5px'}} src={'https://gakc.s3.amazonaws.com/unrevealed_kitten.png'} alt="mystery token" />
+          </div>
+        )
+    }
+    if (kittenRankSelection && isPositiveInteger(kittenRankSelection) && rankToShow && rankImageUrl) {
+      return (
+        <div className="my-auto col-lg-4 col-12 offset-lg-1">
+          <div className="imageItem">
+        <img className="img-fluid w-100" style={{borderRadius: '5px'}} src={rankImageUrl} alt='Kitten' />
+        <span className="kitten-caption">{`Rank #${rankToShow}`}</span>
+        </div>
+        </div>
+      )
+    }
+    else {
+    return (
+    <div className="my-auto col-lg-4 col-12 offset-lg-1">
+      <img className="img-fluid w-100" style={{borderRadius: '5px'}} src={'https://gakc.s3.amazonaws.com/unrevealed_kitten.png'} alt="mystery token" />
+      </div>
+    )
+  }
+  }
 
 
   const lunagemActionCaller = async (numLunagems=null, apeIds=null, pullIds=false) => {
@@ -514,6 +588,19 @@ function KittenClub() {
                             />
                             </div>
                         </div>
+                        <div className="mb-5 row">
+                            <div className="mb-4 mb-lg-0 col-lg-7 col-12">
+                            <h2 className="d-flex common-sub-title font-italic mb-2 bayc-color">OFFICIAL RARITY</h2>
+                              <p className="common-p" >Each Kitten is unique and programmatically generated from an impossible amount of traits, including expression, headwear, clothing, and more. All kittens are adorable, but some are rarer than others.<br /><br />Use the following tool to lookup the official rarity ranking of a GAKC kitten. Official rarity is also available in the Discord bot.</p>
+                              <form>
+                                 <div className="form-group">
+                                 <label for="staticEmail2" className="common-p mb-2"  style={{fontWeight: 'bold'}}>Lookup Rarity</label>
+                              <input className="form-control" name='apeId' id='apeId' placeholder="1" style={{textAlign: 'center'}} onChange={(e) => setRankStateValues(e.target.value)}></input>
+                              </div>
+                                </form>
+                            </div>
+                            {imageToShow()}
+                    </div>
                         <div className="mb-5 row">
                       <div className="col">
                         <div id="buy-a-gakc" className="buy-token-container">

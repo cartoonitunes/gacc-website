@@ -1,24 +1,49 @@
 import React, { useState } from "react";
 import '../styles/style.css'
-const ranks = require('../ranks/gacc');
 
 
 function Home () {
 
   const [apeSelection, setApeSelection] = useState(null);
+  const [rankToShow, setRankToShow] = useState(null);
 
   function isPositiveInteger(n) {
       return n >>> 0 === parseFloat(n);
   }
 
+  function setStateValues(token) {
+    setApeSelection(token);
+    setGaccRank(token);
+  }
+
+  async function setGaccRank(token_id) {
+    if (token_id) {
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      };
+      const response = await fetch(process.env.REACT_APP_BASE_API_URL + '/api/gacc/ranks/' + token_id, requestOptions);
+      const result = await response.json();
+      let rank = result['rank'];
+      setRankToShow(rank);
+    }
+  }
+
   function imageToShow() {
+    if (!apeSelection) {
+      return (
+        <div className="my-auto col-lg-4 col-12 offset-lg-1">
+          <img className="img-fluid w-100" style={{borderRadius: '5px'}} src={process.env.PUBLIC_URL + '/assets/images/Sneak_Peek_Preview.gif'} alt="mystery token" />
+          </div>
+        )
+    }
     let token_id = Number(apeSelection) + 1;
-    if (apeSelection && isPositiveInteger(apeSelection) && token_id <= 5000) {
+    if (apeSelection && isPositiveInteger(apeSelection) && token_id <= 5000 && rankToShow) {
       return (
         <div className="my-auto col-lg-4 col-12 offset-lg-1">
           <div className="imageItem">
         <img className="img-fluid w-100" style={{borderRadius: '5px'}} src={`https://ipfs.io/ipfs/QmY6CdW5UGJPu76qm6SkBBiWPBcnH7sr4JMBcA9mjuaNSU/${token_id}.png`} alt="mystery token" />
-        <span className="caption">{`Rank #${ranks[apeSelection]}`}</span>
+        <span className="caption">{`Rank #${rankToShow}`}</span>
         </div>
         </div>
       )
@@ -117,7 +142,7 @@ function Home () {
                               <form>
                                  <div className="form-group">
                                  <label for="staticEmail2" className="common-p mb-2"  style={{color: 'black', fontWeight: 'bold'}}>Lookup Rarity</label>
-                              <input className="form-control" name='apeId' id='apeId' placeholder="1" style={{textAlign: 'center'}} onChange={(e) => setApeSelection(e.target.value)}></input>
+                              <input className="form-control" name='apeId' id='apeId' placeholder="1" style={{textAlign: 'center'}} onChange={(e) => setStateValues(e.target.value)}></input>
                               </div>
                                 </form>
                             </div>
