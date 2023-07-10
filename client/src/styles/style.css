@@ -175,6 +175,11 @@ div.imageItem {
     color: black;
     font-weight: bold;
 }
+.kitten-caption {
+    display: block;
+    color: white;
+    font-weight: bold;
+}
 .bayc-button{
     background-color:#bfc500;
     border-radius:8px;
