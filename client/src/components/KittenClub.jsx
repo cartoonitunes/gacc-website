@@ -365,13 +365,13 @@ function KittenClub() {
         <form>
           <div className="form-group">
             <label htmlFor="exampleInputEmail1">Enter Lünagem IDs to Call a Kitten</label>
-            <input className="form-control bayc-button" name='apeId' id='apeId' placeholder="1, 2, 3" onChange={(e) => setApeSelection(e.target.value)}></input>
+            <input className="form-control bayc-button" name='kittenId' id='kittenId' placeholder="1, 2, 3" onChange={(e) => setApeSelection(e.target.value)}></input>
           </div>
-          <button type="submit" className="btn btn-primary bayc-button " style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}} disabled={miningLunagemNft ? 1 : 0}
+          <button type="submit" className="btn btn-primary bayc-button " style={{backgroundColor: '#977039', borderBottomColor: 'black', borderRightColor: 'black', borderWidth: '5px'}} disabled={callingKittenNft ? 1 : 0}
             onClick={(e) => {
               e.preventDefault();
-              if (document.getElementById("apeId").value) {
-                lunagemActionCaller(null, document.getElementById("apeId").value, false);
+              if (document.getElementById("kittenId").value) {
+                lunagemActionCaller(null, document.getElementById("kittenId").value, false);
               }
               getData();
             }}>Call</button>
