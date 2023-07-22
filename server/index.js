@@ -15,6 +15,7 @@ require("dotenv").config();
 const db = require("../models/index.js");
 const PORT = process.env.PORT || 3001;
 const gakc_ranks = require('./ranks/gakc.js');
+const macc_ranks = require('./ranks/macc.js');
 const gacc_ranks = require('./ranks/gacc.js');
 
 const app = express();
@@ -181,6 +182,25 @@ app.get("/api/gacc/ranks/:id", function (req, res) {
     return res.status(200).send({
       success: true,
       rank: gacc_rank
+    });
+  }
+  catch {
+    return res.status(422).send({
+      success: false,
+      rank: null
+    });
+  }
+});
+
+//MACC
+app.get("/api/macc/ranks/:id", function (req, res) {
+  let token = req.params.id;
+  try {
+    token = token.toString();
+    kitten_rank = macc_ranks[token];
+    return res.status(200).send({
+      success: true,
+      rank: kitten_rank
     });
   }
   catch {

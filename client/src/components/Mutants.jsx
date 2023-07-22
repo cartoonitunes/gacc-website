@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { connectMACC } from "../redux/blockchain/blockchainActions";
 import { fetchData } from "../redux/data/dataActions";
+import { Network, Alchemy } from "alchemy-sdk";
 import '../styles/style.css'
 
 require('dotenv').config();
@@ -14,7 +15,15 @@ function Mutants() {
   const [feedback, setFeedback] = useState("");
   const [apeSelection, setApeSelection] = useState(null);
   const [mintingNft, setMintingNft] = useState(false);
+  const [maccRankSelection, setMaccRankSelection] = useState(null);
+  const [maccRankToShow, setMaccRankToShow] = useState(null);
+  const [rankMaccImageUrl, setMaccRankImageUrl] = useState("");
   const legendaries = ["0","1","2","3","4","5","6","7","8","9","156","576","1713","2976","3023","3622","3767","3867"];
+  const settings = {
+    apiKey: process.env.REACT_APP_ALCHEMY_API_KEY,
+    network: Network.ETH_MAINNET
+  };
+  const alchemy = new Alchemy(settings);
 
   async function getProof(address, wlType) {
     const requestOptions = {
@@ -25,6 +34,77 @@ function Mutants() {
     const response = await fetch(process.env.REACT_APP_BASE_API_URL + '/api/proof', requestOptions);
     const result = await response.json();
     return result;
+  }
+
+  function setRankStateValues(token) {
+    setMaccRankUrl(token);
+    setMaccRankSelection(token);
+    setMaccRank(token);
+  }
+
+  async function setMaccRank(token_id) {
+    try {
+      await alchemy.nft.getOwnersForNft(process.env.REACT_APP_MACC_ADDRESS, token_id)
+    }
+    catch { 
+      setMaccRankToShow('');
+      return 
+    }
+    if (token_id) {
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      };
+      const response = await fetch(process.env.REACT_APP_BASE_API_URL + '/api/macc/ranks/' + token_id, requestOptions);
+      const result = await response.json();
+      let rank = result['rank'];
+      setMaccRankToShow(rank);
+    }
+    else { setMaccRankToShow(null); }
+  }
+
+  async function setMaccRankUrl(token_id) {
+    if (token_id) {
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      };
+      const response = await fetch(process.env.REACT_APP_BASE_API_URL + '/api/metadata/' + token_id, requestOptions);
+      const result = await response.json();
+      let imageUrl = result['image_url'];
+      setMaccRankImageUrl(imageUrl);
+    }
+  }
+
+  function isPositiveInteger(n) {
+    return n >>> 0 === parseFloat(n);
+  }
+
+  function imageToShow() {
+    if (!maccRankSelection) {
+      return (
+        <div className="my-auto col-lg-4 col-12 offset-lg-1">
+          <img className="img-fluid w-100" style={{borderRadius: '5px'}} src={'https://ipfs.io/ipfs/Qme4RRP6Q5iWmjnwoqiY2xRdx9fc1cPdht9CA9JYQg8JEH'} alt="mystery token" />
+          </div>
+        )
+    }
+    if (maccRankSelection && isPositiveInteger(maccRankSelection) && maccRankToShow && rankMaccImageUrl) {
+      return (
+        <div className="my-auto col-lg-4 col-12 offset-lg-1">
+          <div className="imageItem">
+        <img className="img-fluid w-100" style={{borderRadius: '5px'}} src={rankMaccImageUrl} alt='MACC ' />
+        <span className="kitten-caption">{`Rank #${maccRankToShow}`}</span>
+        </div>
+        </div>
+      )
+    }
+    else {
+    return (
+    <div className="my-auto col-lg-4 col-12 offset-lg-1">
+      <img className="img-fluid w-100" style={{borderRadius: '5px'}} src={'https://ipfs.io/ipfs/Qme4RRP6Q5iWmjnwoqiY2xRdx9fc1cPdht9CA9JYQg8JEH'} alt="mystery token" />
+      </div>
+    )
+  }
   }
 
   async function claimToken(address, token) {
@@ -584,6 +664,19 @@ function Mutants() {
                       </div>
                     </div>
                   </div>
+                  <div className="mb-5 row">
+                      <div className="mb-4 mb-lg-0 col-lg-7 col-12">
+                      <h2 className="d-flex common-sub-title font-italic mb-2 bayc-color">OFFICIAL RARITY</h2>
+                        <p className="common-p" >Each Mutant Grandpa is unique and programmatically generated from an impossible amount of traits, including expression, headwear, clothing, and more. All mutant grandpas are insane, but some are technically rarer than others.<br /><br />Use the following tool to lookup the official rarity ranking of a MACC. Official rarity is also available in the Discord bot. Remember, beauty is in the eye of the beholder.</p>
+                        <form>
+                            <div className="form-group">
+                            <label for="staticEmail2" className="common-p mb-2"  style={{fontWeight: 'bold'}}>Lookup Rarity</label>
+                        <input className="form-control" name='apeId' id='apeId' placeholder="1" style={{textAlign: 'center'}} onChange={(e) => setRankStateValues(e.target.value)}></input>
+                        </div>
+                          </form>
+                      </div>
+                      {imageToShow()}
+                    </div>
                   <div className="mb-5 row">
                       <div className="col">
                         <div id="buy-a-macc" className="buy-token-container">
