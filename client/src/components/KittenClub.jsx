@@ -467,7 +467,7 @@ function KittenClub() {
                         <div className="row">
                             <div className="px-0 col-12">
                             <img
-                                src='https://cdn.discordapp.com/attachments/937225793602474005/1097800393964146728/IMG_2832.png'
+                                src='https://gaccdiscordimages.s3.amazonaws.com/gacc_world.png'
                                 className="img-fluid px-0"
                                 useMap="#mutant"
                                 alt=""
@@ -522,7 +522,7 @@ function KittenClub() {
                             </div>
                             <div className="my-auto my-lg-0 col-lg-5 col-12 order-lg-first">
                                     <img
-                                        src='https://cdn.discordapp.com/attachments/935552546158817331/1098049698159398994/image.png'
+                                        src='https://gaccdiscordimages.s3.amazonaws.com/lunagem_closeup.png'
                                         className="img-fluid"
                                         alt=""
                                         />
@@ -557,7 +557,7 @@ function KittenClub() {
                             </div>
                             <div className="col-lg-5 col-12">
                                     <img
-                                        src='https://cdn.discordapp.com/attachments/937225793602474005/1097640752139481210/image0.gif'
+                                        src='https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExY2hxdTh5dThvMmE2NzB6NDZ1cm4yNzN3b2x2NjlnY3dkM2hoM24xYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/IsecmpZJhuFBA9ZXk8/source.gif'
                                         className="img-fluid"
                                         alt=""
                                         />
