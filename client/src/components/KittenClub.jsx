@@ -442,7 +442,7 @@ function KittenClub() {
                           </div>
                         </div>
                         <div className="navbar-nav" id="nav-social">
-                        <a href="https://discord.com/invite/gacc">
+                        <a href="https://discord.gg/8uuhkZ2TA2">
                         <i className="fa fa-discord-alt social-icon pr-lg-0" />
                         </a>
                         <a href="https://twitter.com/GrandpaApeCC">
@@ -692,7 +692,7 @@ function KittenClub() {
                 <div className="order-last my-auto text-center col-lg-4 col-sm-12 col-12">
                   <div className="row">
                     <div className="text-lg-right col-sm-12 col-12">
-                      <a href="https://discord.com/invite/gacc">
+                      <a href="https://discord.gg/8uuhkZ2TA2">
                         <i className="fa fa-discord-alt social-icon pr-lg-0" />
                       </a>
                       <a href="https://twitter.com/GrandpaApeCC">
