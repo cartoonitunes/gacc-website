@@ -22,7 +22,7 @@ function MaccMarketplace () {
                 </div>
               </div>
               <div className="navbar-nav" id="nav-social">
-              <a href="https://discord.com/invite/gacc">
+              <a href="https://discord.gg/8uuhkZ2TA2">
               <i className="fa fa-discord-alt social-icon pr-lg-0" />
               </a>
               <a href="https://twitter.com/GrandpaApeCC">

@@ -55,7 +55,7 @@ function Teaser() {
       <div className="container">
         <div className="row">
           <div className="teaser-btn-box text-center">
-            <a href="https://discord.com/invite/gacc">
+            <a href="https://discord.gg/8uuhkZ2TA2">
               <button className="teaser-button" type="button">
                 JOIN US ON DISCORD{" "}
                 <i
