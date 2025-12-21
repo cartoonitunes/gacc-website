@@ -19,7 +19,6 @@ function KittenClub() {
   const data = useSelector((state) => state.data);
   const [feedback, setFeedback] = useState("");
   const [apeSelection, setApeSelection] = useState(null);
-  const [miningLunagemNft, setMiningLunagemNft] = useState(false);
   const [callingKittenNft, setCallingKittenNft] = useState(false);
   const [kittenRankSelection, setKittenRankSelection] = useState(null);
   const [rankToShow, setRankToShow] = useState(null);
@@ -433,7 +432,7 @@ function KittenClub() {
                         <a id="nav-link" title="ROADMAP" href="/#roadmap" className="nav-link">ROADMAP</a>
                         <a id="nav-link" title="TEAM" href="/#team" className="nav-link">TEAM</a>
                         <div className="nav-item dropdown" style={{color: '#f9edcd'}}>
-                          <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style={{color: 'white'}}>MEMBERS</a>
+                          <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style={{color: 'white'}} onClick={(e) => e.preventDefault()}>MEMBERS</a>
                             <div aria-labelledby="nav-dropdown" className="dropdown-menu home-dropdown" style={{margin: '0px', color: 'white', backgroundColor: 'black'}}>
                                 <a id="nav-link" title="MACC" href="/macc" className="dropdown-item active"  style={{color: 'white', backgroundColor: 'black'}}>MACC</a>
                                 <a id="nav-link-active" title="Kitten Club" href="/kitten-club" className="dropdown-item"  style={{color: 'white', backgroundColor: 'black'}}>KITTEN CLUB</a>

@@ -320,6 +320,81 @@ app.post("/api/kittens/claim_tokens", async (req, res) => {
 });
 
 
+// API endpoint to fetch Grandpa Coin price in ETH (avoids CORS issues)
+app.get("/api/grandpa-price", async (req, res) => {
+  try {
+    const GRANDPA_COIN_ADDRESS = "0xaDde68057C6Eb34C066f8F0ED3310c6ca8C7Ca0b";
+    const WETH_ADDRESS = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
+    
+    // Try Uniswap V3 subgraph
+    const subgraphQuery = `
+      {
+        pools(
+          where: {
+            or: [
+              {token0: "${WETH_ADDRESS}", token1: "${GRANDPA_COIN_ADDRESS.toLowerCase()}"},
+              {token0: "${GRANDPA_COIN_ADDRESS.toLowerCase()}", token1: "${WETH_ADDRESS}"}
+            ]
+          },
+          orderBy: totalValueLockedUSD,
+          orderDirection: desc,
+          first: 1
+        ) {
+          token0 {
+            id
+          }
+          token1 {
+            id
+          }
+          token0Price
+          token1Price
+        }
+      }
+    `;
+    
+    const subgraphResponse = await fetch('https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: subgraphQuery })
+    });
+    
+    const result = await subgraphResponse.json();
+    if (result.data && result.data.pools && result.data.pools.length > 0) {
+      const pool = result.data.pools[0];
+      let priceInETH;
+      
+      // Check which token is ETH (WETH address)
+      if (pool.token0.id.toLowerCase() === WETH_ADDRESS.toLowerCase()) {
+        // ETH is token0, so token0Price is ETH per GRANDPA
+        // We need GRANDPA per ETH, which is 1/token0Price
+        priceInETH = 1 / parseFloat(pool.token0Price);
+      } else {
+        // ETH is token1, so token1Price is GRANDPA per ETH
+        priceInETH = parseFloat(pool.token1Price);
+      }
+      
+      if (priceInETH && !isNaN(priceInETH) && isFinite(priceInETH)) {
+        return res.json({ priceInETH });
+      }
+    }
+    
+    // Fallback: Try CoinGecko
+    const coingeckoResponse = await fetch(
+      `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${GRANDPA_COIN_ADDRESS}&vs_currencies=eth`
+    );
+    const coingeckoData = await coingeckoResponse.json();
+    
+    if (coingeckoData[GRANDPA_COIN_ADDRESS.toLowerCase()] && coingeckoData[GRANDPA_COIN_ADDRESS.toLowerCase()].eth) {
+      return res.json({ priceInETH: coingeckoData[GRANDPA_COIN_ADDRESS.toLowerCase()].eth });
+    }
+    
+    return res.status(404).json({ error: 'Price not found' });
+  } catch (error) {
+    console.error('Error fetching Grandpa Coin price:', error);
+    return res.status(500).json({ error: 'Failed to fetch price' });
+  }
+});
+
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "/client/build/index.html"));
 });

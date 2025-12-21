@@ -573,22 +573,14 @@ function Mutants() {
               <a id="nav-link" title="ROADMAP" href="/#roadmap" className="nav-link">ROADMAP</a>
               <a id="nav-link" title="TEAM" href="/#team" className="nav-link">TEAM</a>
               <div className="nav-item dropdown" style={{color: '#f9edcd'}}>
-              <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style={{color: 'white'}}>MEMBERS</a>
+                <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style={{color: 'white'}} onClick={(e) => e.preventDefault()}>MEMBERS</a>
                 <div aria-labelledby="nav-dropdown" className="dropdown-menu home-dropdown" style={{margin: '0px', color: 'white', backgroundColor: 'black'}}>
                     <a id="nav-link-active" title="MACC" href="/macc" className="dropdown-item active"  style={{color: 'white', backgroundColor: 'black'}}>MACC</a>
                     <a id="nav-link" title="Kitten Club" href="/kitten-club" className="dropdown-item"  style={{color: 'white', backgroundColor: 'black'}}>KITTEN CLUB</a>
                     <a id="nav-link" title="MERCH" href="/#merch" className="dropdown-item"  style={{color: 'white', backgroundColor: 'black'}}>MERCH</a>
                 </div>
                 </div>
-              <div className="nav-item dropdown" style={{color: '#f9edcd'}}>
-                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style={{color: 'white'}}>MARKETPLACES</a>
-                    <div aria-labelledby="nav-dropdown" className="dropdown-menu home-dropdown" style={{margin: '0px', color: 'white', backgroundColor: 'black'}}>
-                        <a id="nav-link" title="GACC" href="/gacc-marketplace" className="dropdown-item" style={{color: 'white', backgroundColor: 'black'}}>GACC</a>
-                        <a id="nav-link" title="SERUMS" href="/serum-marketplace" className="dropdown-item" style={{color: 'white', backgroundColor: 'black'}}>SERUMS</a>
-                        <a id="nav-link" title="MACC" href="/macc-marketplace" className="dropdown-item" style={{color: 'white', backgroundColor: 'black'}}>MACC</a>
-                        
-                    </div>
-                </div>
+              <a id="nav-link" title="$GRANDPA" href="/grandpacoin" className="nav-link" style={{color: 'white'}}>$GRANDPA</a>
               </div>
               <div className="navbar-nav" id="nav-social">
               <a href="https://discord.gg/8uuhkZ2TA2">
@@ -685,10 +677,10 @@ function Mutants() {
                               <h3 className="buy-ape-title">BUY A MACC</h3>
                             </div>
                             <div className="m-auto col-lg-4 col-12 offset-lg-1">
-                              <p className="common-p mb-lg-0">To get your Mutant Grandpa Ape, check out the collection on our marketplace, or mutate a GACC using a serum.</p>
+                              <p className="common-p mb-lg-0">To get your Mutant Grandpa Ape, check out the collection on OpenSea, or mutate a GACC using a serum.</p>
                             </div>
                             <div className="m-auto col-lg-2 col-12 offset-lg-1">
-                              <a href="/macc-marketplace"><button className="bayc-button mint" type="button">VISIT THE MARKETPLACE</button></a>
+                              <a href="https://opensea.io/collection/mutantapecountryclub" target="_blank" rel="noopener noreferrer"><button className="bayc-button mint" type="button">VISIT OPENSEA</button></a>
                             </div>
                           </div>
                         </div>
@@ -763,9 +755,9 @@ function Mutants() {
                               <h3 className="buy-ape-title">BUY A SERUM</h3>
                             </div>
                             <div className="m-auto col-lg-4 col-12 offset-lg-1">
-                              <p className="common-p mb-lg-0">The serum snapshot and airdrop has ended. To get your M1, M2, or Mega Serum, check out the collection on our marketplace.</p>
+                              <p className="common-p mb-lg-0">The serum snapshot and airdrop has ended. To get your M1, M2, or Mega Serum, check out the collection on OpenSea.</p>
                             </div>
-                            <div className="m-auto col-lg-3 col-12 offset-lg-1"><a href="/serum-marketplace"><button className="bayc-button mint" type="button">VISIT THE MARKETPLACE</button></a></div>
+                            <div className="m-auto col-lg-3 col-12 offset-lg-1"><a href="https://opensea.io/collection/grandpa-ape-serum" target="_blank" rel="noopener noreferrer"><button className="bayc-button mint" type="button">VISIT OPENSEA</button></a></div>
                           </div>
                         </div>
                       </div>
