@@ -71,14 +71,7 @@ function Home () {
                   <a id="nav-link" style={{color: 'black'}} title="TEAM" href="/home#team" className="nav-link">TEAM</a>
                   <a id="nav-link" style={{color: 'black'}} title="MACC" href="/macc" data-rb-event-key="/macc" className="nav-link">MACC</a>
                   <a id="nav-link" style={{color: 'black'}} title="GAKC" href="/kitten-club" data-rb-event-key="/kitten-club" className="nav-link">KITTENS</a>
-                  <div className="nav-item dropdown" style={{color: '#f9edcd'}}>
-                    <a className="nav-link dropdown-toggle black-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style={{color: 'black'}}>MARKETPLACES</a>
-                        <div aria-labelledby="nav-dropdown" className="dropdown-menu home-dropdown" style={{margin: '0px', color: 'black', backgroundColor: '#F9EDCD'}}>
-                            <a id="nav-link" title="GACC" href="/gacc-marketplace" className="dropdown-item" style={{color: 'black'}}>GACC</a>
-                            <a id="nav-link" title="SERUMS" href="/serum-marketplace" className="dropdown-item" style={{color: 'black'}}>SERUMS</a>
-                            <a id="nav-link" title="MACC" href="/macc-marketplace" className="dropdown-item" style={{color: 'black'}}>MACC</a>
-                        </div>
-                        </div>
+                  <a id="nav-link" style={{color: 'black'}} title="$GRANDPA" href="/grandpacoin" className="nav-link">$GRANDPA</a>
                 </div>
                 <div className="navbar-nav" id="nav-social"><a href="https://discord.gg/8uuhkZ2TA2"><i className="fa fa-discord-alt black-social-icon pr-lg-0" /></a><a href="https://twitter.com/GrandpaApeCC"><i className="fa fa-twitter black-social-icon pr-lg-0" /></a><a href="https://www.instagram.com/grandpaapecountryclubofficial"><i className="fa fa-instagram black-social-icon pr-lg-0" /></a></div>
               </div>
@@ -122,10 +115,10 @@ function Home () {
                               <h3 className="buy-ape-title">BUY A GACC</h3>
                             </div>
                             <div className="m-auto col-lg-4 col-12 offset-lg-1">
-                              <p className="common-p mb-lg-0">The initial sale has sold out. To get your Grandpa Ape, check out the collection on our marketplace, or any other major NFT marketplace.</p>
+                              <p className="common-p mb-lg-0">The initial sale has sold out. To get your Grandpa Ape, check out the collection on OpenSea, or any other major NFT marketplace.</p>
                             </div>
                             <div className="m-auto col-lg-2 col-12 offset-lg-1">
-                              <a href="/gacc-marketplace"><button className="bayc-button mint" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>VISIT THE MARKETPLACE</button></a>
+                              <a href="https://opensea.io/collection/grandpaapecountryclub" target="_blank" rel="noopener noreferrer"><button className="bayc-button mint" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>VISIT OPENSEA</button></a>
                             </div>
                           </div>
                         </div>
@@ -147,6 +140,29 @@ function Home () {
                                 </form>
                             </div>
                             {imageToShow()}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr className="gray-line mb-5" />
+                    <div className="mb-5 row">
+                      <div className="col">
+                        <div className="common-container">
+                          <div className="row">
+                            <div className="mb-3 col-lg-7 col-12">
+                              <h2 className="common-title mb-3" style={{color: 'black'}}>GRANDPA STRATEGY</h2>
+                              <p className="common-p" style={{color: 'black'}}>Grandpa Coin is a revolutionary token that powers the Grandpa Ape ecosystem. With each buy, 4% of the transaction goes to a Strategy Vault contract. An autonomous bot continuously monitors the floor price of Grandpa NFTs and uses these funds to purchase floor Grandpa NFTs, which are then sent to the Country Club contract where they are enshrined eternally and cannot be removed.</p>
+                              <p className="common-p mb-0" style={{color: 'black'}}>This creates a perpetual buy pressure mechanism that strengthens the Grandpa Ape collection while rewarding holders through the deflationary nature of the token.</p>
+                            </div>
+                            <div className="m-lg-auto col-lg-3 col-12 offset-lg-1">
+                              <div className="d-flex row">
+                                <div className="mx-auto col-lg-12 col-md-6 col-sm-12">
+                                  <a href="/grandpacoin">
+                                    <button className="bayc-button w-100" type="button" style={{backgroundColor: '#83D8FC', color: 'black'}}>GRANDPA COIN</button>
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>

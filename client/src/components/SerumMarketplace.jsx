@@ -12,14 +12,7 @@ function GaccMarketplace () {
               <a id="nav-link" title="HOME" href="/" className="nav-link">HOME</a>
               <a id="nav-link" title="ROADMAP" href="/#roadmap" className="nav-link">ROADMAP</a>
               <a id="nav-link" title="TEAM" href="/#team" className="nav-link">TEAM</a>
-              <div className="nav-item dropdown" style={{color: '#f9edcd'}}>
-                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style={{color: 'white'}}>MARKETPLACES</a>
-                    <div aria-labelledby="nav-dropdown" className="dropdown-menu home-dropdown" style={{margin: '0px', color: 'white', backgroundColor: 'black'}}>
-                        <a id="nav-link" title="GACC" href="/gacc-marketplace" className="dropdown-item" style={{color: 'white', backgroundColor: 'black'}}>GACC</a>
-                        <a id="nav-link" title="SERUMS" href="/serum-marketplace" className="dropdown-item" style={{color: 'white', backgroundColor: 'black'}}>SERUMS</a>
-                        <a id="nav-link" title="MACC" href="/macc-marketplace" className="dropdown-item" style={{color: 'white', backgroundColor: 'black'}}>MACC</a>
-                    </div>
-                </div>
+              <a id="nav-link" title="$GRANDPA" href="/grandpacoin" className="nav-link" style={{color: 'white'}}>$GRANDPA</a>
               </div>
               <div className="navbar-nav" id="nav-social">
               <a href="https://discord.gg/8uuhkZ2TA2">

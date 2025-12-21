@@ -9,6 +9,7 @@ import SerumMarketplace from './components/SerumMarketplace';
 import MaccMarketplace from './components/MaccMarketplace';
 import Teaser from './components/Teaser';
 import Navigation from './components/Navigation';
+import GrandpaCoin from './components/GrandpaCoin';
  
 class App extends Component {
   render() {
@@ -25,6 +26,7 @@ class App extends Component {
              <Route path="/macc" component={Mutants}/>
              <Route path="/kitten-club" component={KittenClub}/>
              <Route path="/thelab" component={Teaser}/>
+             <Route path="/grandpacoin" component={GrandpaCoin}/>
            </Switch>
         </div> 
       </BrowserRouter>
