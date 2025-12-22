@@ -87,6 +87,73 @@ const ERC721_ABI = [
   }
 ];
 
+// NFT Image component with error handling
+function NftImage({ imageUrl, nftName, loadingMetadata }) {
+  const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  if (!imageUrl || imageError) {
+    return (
+      <div style={{
+        width: '100%',
+        height: '200px',
+        borderRadius: '8px',
+        marginBottom: '10px',
+        backgroundColor: '#f5f5f5',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: '#999',
+        fontSize: '0.9rem'
+      }}>
+        {loadingMetadata ? 'Loading...' : 'No image'}
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ position: 'relative', width: '100%', marginBottom: '10px' }}>
+      {!imageLoaded && (
+        <div style={{
+          width: '100%',
+          height: '200px',
+          borderRadius: '8px',
+          backgroundColor: '#f5f5f5',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#999',
+          fontSize: '0.9rem',
+          position: 'absolute',
+          top: 0,
+          left: 0
+        }}>
+          Loading...
+        </div>
+      )}
+      <img 
+        src={imageUrl} 
+        alt={nftName}
+        style={{
+          width: '100%',
+          height: 'auto',
+          borderRadius: '8px',
+          objectFit: 'cover',
+          minHeight: '200px',
+          maxHeight: '300px',
+          backgroundColor: '#f5f5f5',
+          display: imageLoaded ? 'block' : 'none'
+        }}
+        onLoad={() => setImageLoaded(true)}
+        onError={() => {
+          setImageError(true);
+          setImageLoaded(false);
+        }}
+      />
+    </div>
+  );
+}
+
 function GrandpaCoin() {
   const [totalSupply, setTotalSupply] = useState(null);
   const [totalBurned, setTotalBurned] = useState(null);
@@ -136,7 +203,13 @@ function GrandpaCoin() {
         const metadataMap = {};
         data.results.forEach(result => {
           const key = `${result.contractAddress}-${result.tokenId}`;
-          metadataMap[key] = result.metadata;
+          if (result.metadata) {
+            metadataMap[key] = result.metadata;
+            // Debug: log image URL if available
+            if (result.metadata.image) {
+              console.log(`NFT ${key} image:`, result.metadata.image);
+            }
+          }
         });
         setNftMetadata(metadataMap);
       } else {
@@ -1018,7 +1091,21 @@ function GrandpaCoin() {
                                         const metadataKey = `${nft.collection}-${nft.tokenId}`;
                                         const metadata = nftMetadata[metadataKey];
                                         const senderInfo = nftSenders[metadataKey];
-                                        const imageUrl = metadata?.image || null;
+                                        
+                                        // Process image URL - handle IPFS and other formats
+                                        let imageUrl = null;
+                                        if (metadata?.image) {
+                                          imageUrl = metadata.image;
+                                          // Convert IPFS URLs to HTTP gateway
+                                          if (imageUrl.startsWith('ipfs://')) {
+                                            imageUrl = imageUrl.replace('ipfs://', 'https://ipfs.io/ipfs/');
+                                          }
+                                          // Handle relative URLs
+                                          if (imageUrl.startsWith('//')) {
+                                            imageUrl = 'https:' + imageUrl;
+                                          }
+                                        }
+                                        
                                         const nftName = metadata?.name || `${nft.collection === GACC_COLLECTION_ADDRESS ? 'GACC' : 'NFT'} #${nft.tokenId}`;
                                         
                                         return (
@@ -1033,39 +1120,11 @@ function GrandpaCoin() {
                                               display: 'flex',
                                               flexDirection: 'column'
                                             }}>
-                                              {imageUrl ? (
-                                                <img 
-                                                  src={imageUrl} 
-                                                  alt={nftName}
-                                                  style={{
-                                                    width: '100%',
-                                                    height: 'auto',
-                                                    borderRadius: '8px',
-                                                    marginBottom: '10px',
-                                                    objectFit: 'cover',
-                                                    minHeight: '200px',
-                                                    backgroundColor: '#f5f5f5'
-                                                  }}
-                                                  onError={(e) => {
-                                                    e.target.style.display = 'none';
-                                                  }}
-                                                />
-                                              ) : (
-                                                <div style={{
-                                                  width: '100%',
-                                                  height: '200px',
-                                                  borderRadius: '8px',
-                                                  marginBottom: '10px',
-                                                  backgroundColor: '#f5f5f5',
-                                                  display: 'flex',
-                                                  alignItems: 'center',
-                                                  justifyContent: 'center',
-                                                  color: '#999',
-                                                  fontSize: '0.9rem'
-                                                }}>
-                                                  {loadingMetadata ? 'Loading...' : 'No image'}
-                                                </div>
-                                              )}
+                                              <NftImage 
+                                                imageUrl={imageUrl}
+                                                nftName={nftName}
+                                                loadingMetadata={loadingMetadata}
+                                              />
                                               <h4 style={{
                                                 color: '#977039', 
                                                 fontSize: '1rem', 
