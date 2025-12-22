@@ -323,7 +323,7 @@ app.post("/api/kittens/claim_tokens", async (req, res) => {
 // API endpoint to fetch Grandpa Coin price in ETH (avoids CORS issues)
 app.get("/api/grandpa-price", async (req, res) => {
   try {
-    const GRANDPA_COIN_ADDRESS = "0xaDde68057C6Eb34C066f8F0ED3310c6ca8C7Ca0b";
+    const GRANDPA_COIN_ADDRESS = "0x20BFd82E6AD6A39cf4bD1F803e662FC065cD3d5F";
     const WETH_ADDRESS = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
     
     // Try Uniswap V3 subgraph

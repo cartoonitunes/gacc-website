@@ -3,7 +3,7 @@ import Web3 from "web3";
 import '../styles/style.css'
 
 // Contract addresses
-const GRANDPA_COIN_ADDRESS = "0xaDde68057C6Eb34C066f8F0ED3310c6ca8C7Ca0b";
+const GRANDPA_COIN_ADDRESS = "0x20BFd82E6AD6A39cf4bD1F803e662FC065cD3d5F";
 const STRATEGY_VAULT_ADDRESS = "0xDE82675759071131a21Ef97086B90410Bc68c96d";
 const COUNTRY_CLUB_ADDRESS = "0xf4C84ed6302b9214C63890cdA6d9f3a08cBCb410";
 const GACC_COLLECTION_ADDRESS = "0x4B103d07C18798365946E76845EDC6b565779402";
@@ -213,7 +213,7 @@ function GrandpaCoin() {
                           <div className="mb-4 col-lg-12 col-12">
                             <h2 className="common-title mb-3" style={{color: 'black'}}>GRANDPA COIN</h2>
                             <p className="common-p" style={{color: 'black'}}>
-                              Grandpa Coin ($GRANDPA) is a revolutionary token that powers the Grandpa Ape ecosystem through an innovative buy-and-burn strategy. With each purchase, 4% of the transaction goes directly to a Strategy Vault contract, where an autonomous bot continuously monitors the floor price of Grandpa NFTs.
+                              Grandpa Coin ($GRANDPA) is a revolutionary token that powers the Grandpa Ape ecosystem through an innovative buy-and-burn strategy. With each purchase, 6% of the transaction goes directly to a Strategy Vault contract, where an autonomous bot continuously monitors the floor price of Grandpa NFTs.
                             </p>
                             <p className="common-p" style={{color: 'black'}}>
                               The bot uses these accumulated funds to purchase floor Grandpa NFTs and automatically sends them to the Country Club contract, where they are enshrined eternally and cannot be removed. This creates perpetual buy pressure on the Grandpa Ape collection while rewarding holders through the deflationary nature of the token.
@@ -306,7 +306,7 @@ function GrandpaCoin() {
                                 }}>
                                   <h3 style={{color: '#977039', fontSize: '1.2rem', marginBottom: '15px', fontWeight: 'bold'}}>Buy Tax</h3>
                                   <p style={{color: 'black', fontSize: '2.5rem', fontWeight: 'bold', margin: '10px 0'}}>
-                                    4%
+                                    6%
                                   </p>
                                   <p style={{color: '#666', fontSize: '1rem', margin: '10px 0 0 0'}}>
                                     All to buy NFTs
@@ -324,10 +324,10 @@ function GrandpaCoin() {
                                 }}>
                                   <h3 style={{color: '#977039', fontSize: '1.2rem', marginBottom: '15px', fontWeight: 'bold'}}>Sell Tax</h3>
                                   <p style={{color: 'black', fontSize: '2.5rem', fontWeight: 'bold', margin: '10px 0'}}>
-                                    4%
+                                    0%
                                   </p>
                                   <p style={{color: '#666', fontSize: '1rem', margin: '10px 0 0 0'}}>
-                                    All burned
+                                    No sell tax
                                   </p>
                                 </div>
                               </div>
@@ -412,7 +412,7 @@ function GrandpaCoin() {
                             `}</style>
                             <div id="dexscreener-embed">
                               <iframe
-                                src="https://dexscreener.com/ethereum/0x8b140FE4214080057e176e7fC255d4F1d8157126?embed=1&loadChartSettings=0&chartLeftToolbar=0&chartDefaultOnMobile=1&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"
+                                src="https://dexscreener.com/ethereum/0xc2f9673849ea38fae55c29e18e797f36b18a3078?embed=1&loadChartSettings=0&chartLeftToolbar=0&chartDefaultOnMobile=1&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"
                                 title="DexScreener Chart"
                               />
                             </div>
