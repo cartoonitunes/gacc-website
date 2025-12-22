@@ -205,6 +205,11 @@ function GrandpaCoin() {
           const key = `${result.contractAddress}-${result.tokenId}`;
           if (result.metadata) {
             metadataMap[key] = result.metadata;
+            // Debug: log what we received
+            console.log(`NFT ${key} metadata:`, result.metadata);
+            console.log(`NFT ${key} image URL:`, result.metadata.image);
+          } else {
+            console.warn(`No metadata for ${key}:`, result);
           }
         });
         setNftMetadata(metadataMap);
