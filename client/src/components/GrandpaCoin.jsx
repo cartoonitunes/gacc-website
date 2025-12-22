@@ -177,6 +177,7 @@ function GrandpaCoin() {
   const [selectedNft, setSelectedNft] = useState(null);
   const [transferring, setTransferring] = useState(false);
   const [transferStatus, setTransferStatus] = useState("");
+  const [showStoryModal, setShowStoryModal] = useState(false);
   
   // Swap state
   const ethAmount = "0.05";
@@ -611,7 +612,7 @@ function GrandpaCoin() {
                               <p className="common-p" style={{color: 'black'}}>Loading token data...</p>
                             ) : (
                               <div className="row">
-                                <div className="col-lg-3 col-md-6 col-12 mb-4">
+                                <div className="col-lg-4 col-md-6 col-12 mb-4">
                                   <div style={{
                                     backgroundColor: 'white',
                                     padding: '30px',
@@ -626,7 +627,7 @@ function GrandpaCoin() {
                                     </p>
                                   </div>
                                 </div>
-                                <div className="col-lg-3 col-md-6 col-12 mb-4">
+                                <div className="col-lg-4 col-md-6 col-12 mb-4">
                                   <div style={{
                                     backgroundColor: 'white',
                                     padding: '30px',
@@ -641,7 +642,7 @@ function GrandpaCoin() {
                                     </p>
                                   </div>
                                 </div>
-                                <div className="col-lg-3 col-md-6 col-12 mb-4">
+                                <div className="col-lg-4 col-md-6 col-12 mb-4">
                                   <div style={{
                                     backgroundColor: 'white',
                                     padding: '30px',
@@ -652,33 +653,28 @@ function GrandpaCoin() {
                                   }}>
                                     <h3 style={{color: '#977039', fontSize: '1.2rem', marginBottom: '15px', fontWeight: 'bold'}}>In Strategy Vault</h3>
                                     <p style={{color: 'black', fontSize: '1.8rem', fontWeight: 'bold', margin: 0, lineHeight: '1.2'}}>
-                                      {formatNumber(vaultBalance)} $GRANDPA
+                                      {formatNumber(
+                                        (parseFloat(vaultBalance || 0) + parseFloat(additionalWalletBalance || 0)).toFixed(2)
+                                      )} $GRANDPA
                                     </p>
-                                    <p style={{color: '#666', fontSize: '0.9rem', marginTop: '10px', margin: 0}}>
-                                      <a href={`https://etherscan.io/address/${STRATEGY_VAULT_ADDRESS}`} target="_blank" rel="noopener noreferrer" style={{color: '#977039'}}>
-                                        View on Etherscan
+                                    <div style={{marginTop: '10px', display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'center'}}>
+                                      <a 
+                                        href={`https://etherscan.io/address/${STRATEGY_VAULT_ADDRESS}`} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer" 
+                                        style={{color: '#977039', fontSize: '0.9rem', textDecoration: 'underline'}}
+                                      >
+                                        Vault
                                       </a>
-                                    </p>
-                                  </div>
-                                </div>
-                                <div className="col-lg-3 col-md-6 col-12 mb-4">
-                                  <div style={{
-                                    backgroundColor: 'white',
-                                    padding: '30px',
-                                    borderRadius: '10px',
-                                    textAlign: 'center',
-                                    boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-                                    height: '100%'
-                                  }}>
-                                    <h3 style={{color: '#977039', fontSize: '1.2rem', marginBottom: '15px', fontWeight: 'bold'}}>Additional Wallet</h3>
-                                    <p style={{color: 'black', fontSize: '1.8rem', fontWeight: 'bold', margin: 0, lineHeight: '1.2'}}>
-                                      {formatNumber(additionalWalletBalance)} $GRANDPA
-                                    </p>
-                                    <p style={{color: '#666', fontSize: '0.9rem', marginTop: '10px', margin: 0}}>
-                                      <a href={`https://etherscan.io/address/${ADDITIONAL_WALLET_ADDRESS}`} target="_blank" rel="noopener noreferrer" style={{color: '#977039'}}>
-                                        View on Etherscan
+                                      <a 
+                                        href={`https://etherscan.io/address/${ADDITIONAL_WALLET_ADDRESS}`} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer" 
+                                        style={{color: '#977039', fontSize: '0.9rem', textDecoration: 'underline'}}
+                                      >
+                                        Bot
                                       </a>
-                                    </p>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -1152,6 +1148,24 @@ function GrandpaCoin() {
                                                   Joined: {nft.joinedAtFormatted || new Date(nft.joinedAt * 1000).toLocaleDateString()}
                                                 </p>
                                                 <div style={{marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '4px'}}>
+                                                  {nft.tokenId === '2945' && (
+                                                    <button
+                                                      onClick={() => setShowStoryModal(true)}
+                                                      style={{
+                                                        backgroundColor: '#977039',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        padding: '8px 15px',
+                                                        borderRadius: '5px',
+                                                        fontSize: '0.8rem',
+                                                        cursor: 'pointer',
+                                                        fontWeight: 'bold',
+                                                        marginBottom: '4px'
+                                                      }}
+                                                    >
+                                                      Story
+                                                    </button>
+                                                  )}
                                                   <a 
                                                     href={`https://opensea.io/assets/ethereum/${nft.collection}/${nft.tokenId}`}
                                                     target="_blank"
@@ -1235,6 +1249,169 @@ function GrandpaCoin() {
           </footer>
         </div>
       </div>
+
+      {/* Story Modal */}
+      {showStoryModal && (
+        <div 
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            zIndex: 9999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px',
+            overflowY: 'auto'
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setShowStoryModal(false);
+            }
+          }}
+        >
+          <div 
+            style={{
+              backgroundColor: '#f9edcd',
+              borderRadius: '15px',
+              padding: '30px',
+              maxWidth: '800px',
+              width: '100%',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              boxShadow: '0 10px 40px rgba(0,0,0,0.3)',
+              position: 'relative'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setShowStoryModal(false)}
+              style={{
+                position: 'absolute',
+                top: '15px',
+                right: '15px',
+                backgroundColor: '#977039',
+                color: 'white',
+                border: 'none',
+                borderRadius: '50%',
+                width: '35px',
+                height: '35px',
+                fontSize: '20px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 'bold'
+              }}
+            >
+              ×
+            </button>
+
+            {/* NFT Image and Title */}
+            <div style={{textAlign: 'center', marginBottom: '30px'}}>
+              {nftMetadata[`${GACC_COLLECTION_ADDRESS}-2945`]?.image && (
+                <img
+                  src={nftMetadata[`${GACC_COLLECTION_ADDRESS}-2945`].image}
+                  alt="Grandpa Ape #2945"
+                  style={{
+                    maxWidth: '300px',
+                    width: '100%',
+                    height: 'auto',
+                    borderRadius: '10px',
+                    marginBottom: '15px',
+                    border: '3px solid #977039'
+                  }}
+                />
+              )}
+              <h2 style={{
+                color: '#977039',
+                fontSize: '2rem',
+                fontWeight: 'bold',
+                marginBottom: '10px'
+              }}>
+                Grandpa Ape #2945
+              </h2>
+              <h3 style={{
+                color: 'black',
+                fontSize: '1.5rem',
+                fontStyle: 'italic',
+                marginBottom: '20px'
+              }}>
+                Reginald Baker
+              </h3>
+            </div>
+
+            {/* Story Text */}
+            <div style={{
+              color: '#1a1a1a',
+              fontSize: '1.1rem',
+              lineHeight: '1.8',
+              marginBottom: '30px',
+              textAlign: 'left',
+              fontFamily: 'inherit'
+            }}>
+              <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                Reginald Baker never goes anywhere without a smile and his 1st Armored Division military cap. Even though his time in the service left him confined to a wheelchair and permanently impaired vision due to unremovable shrapnel in his right eye, Reggie wears his scars like badges of honor.
+              </p>
+              <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                Rumor has it, the story of his last mission was almost turned into a major motion picture by a big time director, but Reggie refused to share the details of his famous tank raid.
+              </p>
+              <p style={{marginBottom: '20px', fontStyle: 'italic', color: '#333'}}>
+                "That's a story for the fellas that were there only," his friends heard him say.
+              </p>
+              <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                After the service, Reggie developed a passion for gardening, eventually opening his own Garden Center called Petal to the Metal Plants. Every Memorial Day, he hired local youths to put free flowers on the graves of every former soldier he could find.
+              </p>
+              <p style={{marginBottom: '20px', fontWeight: 'bold', color: '#1a1a1a'}}>
+                The Country Club is honored to have such a wonderful Ape as one of its very first residents. It is definitely a much happier place for having Reggie call it home.
+              </p>
+            </div>
+
+            {/* Story Images */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+              gap: '20px',
+              marginTop: '30px'
+            }}>
+              <img
+                src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2945_window.jpg"
+                alt="Reginald Baker Window"
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  borderRadius: '10px',
+                  boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                }}
+              />
+              <img
+                src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2945_comic.jpg"
+                alt="Reginald Baker Comic"
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  borderRadius: '10px',
+                  boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                }}
+              />
+              <img
+                src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2945_entry.jpg"
+                alt="Reginald Baker Entry"
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  borderRadius: '10px',
+                  boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
