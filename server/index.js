@@ -539,64 +539,35 @@ app.post("/api/nft-metadata-batch", async (req, res) => {
     // Fetch metadata for each NFT (with rate limiting consideration)
     for (const nft of nftsToFetch) {
       try {
-        // Use OpenSea asset API to get image_url directly
-        const url = `https://api.opensea.io/api/v2/chain/ethereum/contract/${nft.contractAddress}/nfts/${nft.tokenId}`;
-        const response = await fetch(url, {
+        // Use OpenSea metadata API - returns image URL directly in "image" field
+        const metadataUrl = `https://api.opensea.io/api/v2/metadata/ethereum/${nft.contractAddress}/${nft.tokenId}`;
+        const response = await fetch(metadataUrl, {
           headers: {
-            "accept": "application/json",
+            "accept": "*/*",
             "x-api-key": OPENSEA_API_KEY
           }
         });
         
         if (response.ok) {
-          const assetData = await response.json();
-          // Extract image URL from OpenSea asset response
-          // OpenSea API v2 returns: { nft: { image_url, name, ... } }
-          const imageUrl = assetData.nft?.image_url || assetData.image_url || null;
-          const name = assetData.nft?.name || assetData.name || null;
-          
+          const metadata = await response.json();
+          // OpenSea metadata API returns: { name, image, description, traits, ... }
+          // The image field contains the direct URL
           results.push({
             contractAddress: nft.contractAddress,
             tokenId: nft.tokenId,
             metadata: {
-              image: imageUrl,
-              name: name
+              image: metadata.image || null,
+              name: metadata.name || null
             }
           });
         } else {
-          // Fallback to metadata API if asset API fails
-          try {
-            const metadataUrl = `https://api.opensea.io/api/v2/metadata/ethereum/${nft.contractAddress}/${nft.tokenId}`;
-            const metadataResponse = await fetch(metadataUrl, {
-              headers: {
-                "accept": "*/*",
-                "x-api-key": OPENSEA_API_KEY
-              }
-            });
-            
-            if (metadataResponse.ok) {
-              const metadata = await metadataResponse.json();
-              results.push({
-                contractAddress: nft.contractAddress,
-                tokenId: nft.tokenId,
-                metadata
-              });
-            } else {
-              results.push({
-                contractAddress: nft.contractAddress,
-                tokenId: nft.tokenId,
-                metadata: null,
-                error: `HTTP ${metadataResponse.status}`
-              });
-            }
-          } catch (fallbackError) {
-            results.push({
-              contractAddress: nft.contractAddress,
-              tokenId: nft.tokenId,
-              metadata: null,
-              error: `HTTP ${response.status}`
-            });
-          }
+          console.error(`OpenSea API error for ${nft.contractAddress}/${nft.tokenId}: ${response.status} ${response.statusText}`);
+          results.push({
+            contractAddress: nft.contractAddress,
+            tokenId: nft.tokenId,
+            metadata: null,
+            error: `HTTP ${response.status}`
+          });
         }
         
         // Small delay to avoid rate limiting
