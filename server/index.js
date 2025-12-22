@@ -442,6 +442,84 @@ app.post("/api/nft-metadata", async (req, res) => {
   }
 });
 
+// Endpoint to fetch sender addresses for NFTs using Moralis API
+app.post("/api/nft-senders", async (req, res) => {
+  try {
+    const { nfts, countryClubAddress } = req.body; // Array of {collection, tokenId, joinedAt}
+    
+    if (!Array.isArray(nfts) || nfts.length === 0) {
+      return res.status(400).json({ error: 'nfts array is required' });
+    }
+    
+    if (!countryClubAddress) {
+      return res.status(400).json({ error: 'countryClubAddress is required' });
+    }
+    
+    const COUNTRY_CLUB_ADDRESS = countryClubAddress.toLowerCase();
+    const MORALIS_API_KEY = process.env.MORALIS_API_KEY || "YOUR_API_KEY";
+    
+    const results = {};
+    
+    // Query transfers for each NFT using Moralis API
+    for (const nft of nfts) {
+      try {
+        const collection = nft.collection.toLowerCase();
+        const tokenId = nft.tokenId;
+        
+        // Moralis API endpoint for NFT transfers
+        const url = `https://deep-index.moralis.io/api/v2.2/nft/${collection}/${tokenId}/transfers?chain=eth&format=decimal&limit=25&order=DESC`;
+        
+        const response = await fetch(url, {
+          headers: {
+            "Accept": "application/json",
+            "X-API-Key": MORALIS_API_KEY
+          }
+        });
+        
+        if (!response.ok) {
+          console.error(`Moralis API error for ${collection}/${tokenId}: ${response.status} ${response.statusText}`);
+          continue;
+        }
+        
+        const data = await response.json();
+        
+        // Find the transfer where to_address matches Country Club
+        const transferToCountryClub = data.result?.find(transfer => 
+          transfer.to_address?.toLowerCase() === COUNTRY_CLUB_ADDRESS
+        );
+        
+        if (transferToCountryClub) {
+          const key = `${collection}-${tokenId}`;
+          results[key] = {
+            collection: collection,
+            tokenId: tokenId,
+            sender: transferToCountryClub.from_address,
+            senderLabel: transferToCountryClub.from_address_label,
+            senderEntity: transferToCountryClub.from_address_entity,
+            transactionHash: transferToCountryClub.transaction_hash,
+            blockNumber: transferToCountryClub.block_number,
+            blockTimestamp: transferToCountryClub.block_timestamp
+          };
+        }
+        
+        // Small delay to avoid rate limiting
+        await new Promise(resolve => setTimeout(resolve, 100));
+      } catch (error) {
+        console.error(`Error fetching transfers for NFT ${nft.collection}/${nft.tokenId}:`, error);
+        // Continue with other NFTs
+      }
+    }
+    
+    return res.json({ results });
+  } catch (error) {
+    console.error('Error in NFT senders fetch:', error);
+    return res.status(500).json({ 
+      error: 'Failed to fetch NFT senders',
+      details: error.message 
+    });
+  }
+});
+
 // Batch endpoint to fetch multiple NFT metadata
 app.post("/api/nft-metadata-batch", async (req, res) => {
   try {
