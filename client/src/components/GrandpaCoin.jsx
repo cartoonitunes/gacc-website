@@ -55,10 +55,47 @@ function GrandpaCoin() {
   const [vaultBalance, setVaultBalance] = useState(null);
   const [countryClubMembers, setCountryClubMembers] = useState(null);
   const [nftList, setNftList] = useState([]);
+  const [nftMetadata, setNftMetadata] = useState({}); // Map of "contractAddress-tokenId" to metadata
   const [loading, setLoading] = useState(true);
+  const [loadingMetadata, setLoadingMetadata] = useState(false);
   
   // Swap state
   const ethAmount = "0.05";
+
+  const fetchNftMetadata = useCallback(async (nfts) => {
+    setLoadingMetadata(true);
+    try {
+      // Prepare batch request
+      const nftBatch = nfts.map(nft => ({
+        contractAddress: nft.collection,
+        tokenId: nft.tokenId
+      }));
+      
+      const response = await fetch('/api/nft-metadata-batch', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ nfts: nftBatch })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        const metadataMap = {};
+        data.results.forEach(result => {
+          const key = `${result.contractAddress}-${result.tokenId}`;
+          metadataMap[key] = result.metadata;
+        });
+        setNftMetadata(metadataMap);
+      } else {
+        console.error('Error fetching NFT metadata:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching NFT metadata:', error);
+    } finally {
+      setLoadingMetadata(false);
+    }
+  }, []);
 
   const loadContractData = useCallback(async () => {
     try {
@@ -109,6 +146,11 @@ function GrandpaCoin() {
           }
         }
         setNftList(nfts);
+        
+        // Fetch metadata for NFTs
+        if (nfts.length > 0) {
+          fetchNftMetadata(nfts);
+        }
       }
 
       setLoading(false);
@@ -116,7 +158,7 @@ function GrandpaCoin() {
       console.error("Error loading contract data:", error);
       setLoading(false);
     }
-  }, []);
+  }, [fetchNftMetadata]);
 
   useEffect(() => {
     loadContractData();
@@ -485,28 +527,101 @@ function GrandpaCoin() {
                                 {nftList.length > 0 && (
                                   <div>
                                     <h3 style={{color: 'black', fontSize: '1.2rem', marginBottom: '15px'}}>Recent Additions</h3>
+                                    {loadingMetadata && (
+                                      <p style={{color: '#666', fontSize: '0.9rem', marginBottom: '15px', textAlign: 'center'}}>
+                                        Loading NFT images...
+                                      </p>
+                                    )}
                                     <div className="row">
-                                      {nftList.slice(0, 12).map((nft, index) => (
-                                        <div key={index} className="col-lg-3 col-md-4 col-6 mb-3">
-                                          <div style={{
-                                            backgroundColor: 'white',
-                                            padding: '15px',
-                                            borderRadius: '10px',
-                                            textAlign: 'center',
-                                            boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
-                                          }}>
-                                            <p style={{color: '#977039', fontSize: '0.9rem', marginBottom: '5px', fontWeight: 'bold'}}>
-                                              {nft.collection === GACC_COLLECTION_ADDRESS ? 'GACC' : 'NFT'} #{nft.tokenId}
-                                            </p>
-                                            <p style={{color: '#666', fontSize: '0.8rem', margin: '5px 0'}}>
-                                              Source: {nft.source}
-                                            </p>
-                                            <p style={{color: '#666', fontSize: '0.8rem', margin: 0}}>
-                                              Joined: {nft.joinedAt}
-                                            </p>
+                                      {nftList.slice(0, 12).map((nft, index) => {
+                                        const metadataKey = `${nft.collection}-${nft.tokenId}`;
+                                        const metadata = nftMetadata[metadataKey];
+                                        const imageUrl = metadata?.image || null;
+                                        const nftName = metadata?.name || `${nft.collection === GACC_COLLECTION_ADDRESS ? 'GACC' : 'NFT'} #${nft.tokenId}`;
+                                        
+                                        return (
+                                          <div key={index} className="col-lg-3 col-md-4 col-6 mb-4">
+                                            <div style={{
+                                              backgroundColor: 'white',
+                                              padding: '15px',
+                                              borderRadius: '10px',
+                                              textAlign: 'center',
+                                              boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                                              height: '100%',
+                                              display: 'flex',
+                                              flexDirection: 'column'
+                                            }}>
+                                              {imageUrl ? (
+                                                <img 
+                                                  src={imageUrl} 
+                                                  alt={nftName}
+                                                  style={{
+                                                    width: '100%',
+                                                    height: 'auto',
+                                                    borderRadius: '8px',
+                                                    marginBottom: '10px',
+                                                    objectFit: 'cover',
+                                                    minHeight: '200px',
+                                                    backgroundColor: '#f5f5f5'
+                                                  }}
+                                                  onError={(e) => {
+                                                    e.target.style.display = 'none';
+                                                  }}
+                                                />
+                                              ) : (
+                                                <div style={{
+                                                  width: '100%',
+                                                  height: '200px',
+                                                  borderRadius: '8px',
+                                                  marginBottom: '10px',
+                                                  backgroundColor: '#f5f5f5',
+                                                  display: 'flex',
+                                                  alignItems: 'center',
+                                                  justifyContent: 'center',
+                                                  color: '#999',
+                                                  fontSize: '0.9rem'
+                                                }}>
+                                                  {loadingMetadata ? 'Loading...' : 'No image'}
+                                                </div>
+                                              )}
+                                              <h4 style={{
+                                                color: '#977039', 
+                                                fontSize: '1rem', 
+                                                marginBottom: '8px', 
+                                                fontWeight: 'bold',
+                                                minHeight: '40px',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center'
+                                              }}>
+                                                {nftName}
+                                              </h4>
+                                              <div style={{marginTop: 'auto', paddingTop: '10px'}}>
+                                                <p style={{color: '#666', fontSize: '0.8rem', margin: '5px 0'}}>
+                                                  Source: {nft.source}
+                                                </p>
+                                                <p style={{color: '#666', fontSize: '0.8rem', margin: 0}}>
+                                                  Joined: {nft.joinedAt}
+                                                </p>
+                                                <a 
+                                                  href={`https://opensea.io/assets/ethereum/${nft.collection}/${nft.tokenId}`}
+                                                  target="_blank"
+                                                  rel="noopener noreferrer"
+                                                  style={{
+                                                    color: '#977039',
+                                                    fontSize: '0.8rem',
+                                                    textDecoration: 'underline',
+                                                    marginTop: '8px',
+                                                    display: 'inline-block'
+                                                  }}
+                                                >
+                                                  View on OpenSea
+                                                </a>
+                                              </div>
+                                            </div>
                                           </div>
-                                        </div>
-                                      ))}
+                                        );
+                                      })}
                                     </div>
                                     {nftList.length > 12 && (
                                       <p style={{color: '#666', fontSize: '0.9rem', marginTop: '15px', textAlign: 'center'}}>

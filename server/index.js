@@ -395,6 +395,119 @@ app.get("/api/grandpa-price", async (req, res) => {
   }
 });
 
+// API endpoint to fetch NFT metadata from OpenSea
+app.post("/api/nft-metadata", async (req, res) => {
+  try {
+    const { contractAddress, tokenId } = req.body;
+    
+    if (!contractAddress || tokenId === undefined) {
+      return res.status(400).json({ error: 'contractAddress and tokenId are required' });
+    }
+    
+    const OPENSEA_API_KEY = process.env.OPENSEA_API_KEY || "23d5bad506884e4bb45477a239944d3e";
+    const url = `https://api.opensea.io/api/v2/metadata/ethereum/${contractAddress}/${tokenId}`;
+    
+    const response = await fetch(url, {
+      headers: {
+        "accept": "*/*",
+        "x-api-key": OPENSEA_API_KEY
+      }
+    });
+    
+    if (!response.ok) {
+      // If 404 or other error, return null metadata instead of error
+      if (response.status === 404) {
+        return res.json({ 
+          contractAddress, 
+          tokenId, 
+          metadata: null,
+          error: 'NFT metadata not found'
+        });
+      }
+      throw new Error(`OpenSea API error: ${response.status}`);
+    }
+    
+    const metadata = await response.json();
+    return res.json({ 
+      contractAddress, 
+      tokenId, 
+      metadata 
+    });
+  } catch (error) {
+    console.error('Error fetching NFT metadata:', error);
+    return res.status(500).json({ 
+      error: 'Failed to fetch NFT metadata',
+      details: error.message 
+    });
+  }
+});
+
+// Batch endpoint to fetch multiple NFT metadata
+app.post("/api/nft-metadata-batch", async (req, res) => {
+  try {
+    const { nfts } = req.body; // Array of {contractAddress, tokenId}
+    
+    if (!Array.isArray(nfts) || nfts.length === 0) {
+      return res.status(400).json({ error: 'nfts array is required' });
+    }
+    
+    // Limit batch size to avoid overwhelming the API
+    const maxBatchSize = 20;
+    const nftsToFetch = nfts.slice(0, maxBatchSize);
+    
+    const OPENSEA_API_KEY = process.env.OPENSEA_API_KEY || "23d5bad506884e4bb45477a239944d3e";
+    const results = [];
+    
+    // Fetch metadata for each NFT (with rate limiting consideration)
+    for (const nft of nftsToFetch) {
+      try {
+        const url = `https://api.opensea.io/api/v2/metadata/ethereum/${nft.contractAddress}/${nft.tokenId}`;
+        const response = await fetch(url, {
+          headers: {
+            "accept": "*/*",
+            "x-api-key": OPENSEA_API_KEY
+          }
+        });
+        
+        if (response.ok) {
+          const metadata = await response.json();
+          results.push({
+            contractAddress: nft.contractAddress,
+            tokenId: nft.tokenId,
+            metadata
+          });
+        } else {
+          results.push({
+            contractAddress: nft.contractAddress,
+            tokenId: nft.tokenId,
+            metadata: null,
+            error: `HTTP ${response.status}`
+          });
+        }
+        
+        // Small delay to avoid rate limiting
+        await new Promise(resolve => setTimeout(resolve, 100));
+      } catch (error) {
+        console.error(`Error fetching metadata for ${nft.contractAddress}/${nft.tokenId}:`, error);
+        results.push({
+          contractAddress: nft.contractAddress,
+          tokenId: nft.tokenId,
+          metadata: null,
+          error: error.message
+        });
+      }
+    }
+    
+    return res.json({ results });
+  } catch (error) {
+    console.error('Error in batch NFT metadata fetch:', error);
+    return res.status(500).json({ 
+      error: 'Failed to fetch NFT metadata',
+      details: error.message 
+    });
+  }
+});
+
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "/client/build/index.html"));
 });
