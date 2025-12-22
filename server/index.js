@@ -12,6 +12,9 @@ const bodyParser = require("body-parser");
 const abi = require("./abi/mutantAbi.json");
 const abiKitten = require("./abi/kittenAbi.json");
 require("dotenv").config();
+
+// Polyfill fetch for Node.js 16 (fetch is not available natively)
+const fetch = require('node-fetch');
 const db = require("../models/index.js");
 const PORT = process.env.PORT || 3001;
 const gakc_ranks = require('./ranks/gakc.js');
