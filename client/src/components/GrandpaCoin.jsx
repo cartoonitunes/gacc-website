@@ -205,10 +205,6 @@ function GrandpaCoin() {
           const key = `${result.contractAddress}-${result.tokenId}`;
           if (result.metadata) {
             metadataMap[key] = result.metadata;
-            // Debug: log image URL if available
-            if (result.metadata.image) {
-              console.log(`NFT ${key} image:`, result.metadata.image);
-            }
           }
         });
         setNftMetadata(metadataMap);
@@ -1092,20 +1088,8 @@ function GrandpaCoin() {
                                         const metadata = nftMetadata[metadataKey];
                                         const senderInfo = nftSenders[metadataKey];
                                         
-                                        // Process image URL - handle IPFS and other formats
-                                        let imageUrl = null;
-                                        if (metadata?.image) {
-                                          imageUrl = metadata.image;
-                                          // Convert IPFS URLs to HTTP gateway
-                                          if (imageUrl.startsWith('ipfs://')) {
-                                            imageUrl = imageUrl.replace('ipfs://', 'https://ipfs.io/ipfs/');
-                                          }
-                                          // Handle relative URLs
-                                          if (imageUrl.startsWith('//')) {
-                                            imageUrl = 'https:' + imageUrl;
-                                          }
-                                        }
-                                        
+                                        // Get image URL directly from OpenSea metadata
+                                        const imageUrl = metadata?.image || null;
                                         const nftName = metadata?.name || `${nft.collection === GACC_COLLECTION_ADDRESS ? 'GACC' : 'NFT'} #${nft.tokenId}`;
                                         
                                         return (
