@@ -178,6 +178,7 @@ function GrandpaCoin() {
   const [transferring, setTransferring] = useState(false);
   const [transferStatus, setTransferStatus] = useState("");
   const [showStoryModal, setShowStoryModal] = useState(false);
+  const [storyTokenId, setStoryTokenId] = useState(null); // Track which token's story to show
   
   // Swap state
   const ethAmount = "0.05";
@@ -1148,9 +1149,12 @@ function GrandpaCoin() {
                                                   Joined: {nft.joinedAtFormatted || new Date(nft.joinedAt * 1000).toLocaleDateString()}
                                                 </p>
                                                 <div style={{marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '4px'}}>
-                                                  {nft.tokenId === '2945' && (
+                                                  {(nft.tokenId === '2945' || nft.tokenId === '693') && (
                                                     <button
-                                                      onClick={() => setShowStoryModal(true)}
+                                                      onClick={() => {
+                                                        setStoryTokenId(nft.tokenId);
+                                                        setShowStoryModal(true);
+                                                      }}
                                                       style={{
                                                         backgroundColor: '#977039',
                                                         color: 'white',
@@ -1270,6 +1274,7 @@ function GrandpaCoin() {
           onClick={(e) => {
             if (e.target === e.currentTarget) {
               setShowStoryModal(false);
+              setStoryTokenId(null);
             }
           }}
         >
@@ -1289,7 +1294,10 @@ function GrandpaCoin() {
           >
             {/* Close Button */}
             <button
-              onClick={() => setShowStoryModal(false)}
+              onClick={() => {
+                setShowStoryModal(false);
+                setStoryTokenId(null);
+              }}
               style={{
                 position: 'absolute',
                 top: '15px',
@@ -1313,10 +1321,10 @@ function GrandpaCoin() {
 
             {/* NFT Image and Title */}
             <div style={{textAlign: 'center', marginBottom: '30px'}}>
-              {nftMetadata[`${GACC_COLLECTION_ADDRESS}-2945`]?.image && (
+              {storyTokenId && nftMetadata[`${GACC_COLLECTION_ADDRESS}-${storyTokenId}`]?.image && (
                 <img
-                  src={nftMetadata[`${GACC_COLLECTION_ADDRESS}-2945`].image}
-                  alt="Grandpa Ape #2945"
+                  src={nftMetadata[`${GACC_COLLECTION_ADDRESS}-${storyTokenId}`].image}
+                  alt={`Grandpa Ape #${storyTokenId}`}
                   style={{
                     maxWidth: '300px',
                     width: '100%',
@@ -1333,82 +1341,181 @@ function GrandpaCoin() {
                 fontWeight: 'bold',
                 marginBottom: '10px'
               }}>
-                Grandpa Ape #2945
+                Grandpa Ape #{storyTokenId}
               </h2>
-              <h3 style={{
-                color: 'black',
-                fontSize: '1.5rem',
-                fontStyle: 'italic',
-                marginBottom: '20px'
-              }}>
-                Reginald Baker
-              </h3>
+              {storyTokenId === '2945' && (
+                <h3 style={{
+                  color: 'black',
+                  fontSize: '1.5rem',
+                  fontStyle: 'italic',
+                  marginBottom: '20px'
+                }}>
+                  Reginald Baker
+                </h3>
+              )}
+              {storyTokenId === '693' && (
+                <h3 style={{
+                  color: 'black',
+                  fontSize: '1.5rem',
+                  fontStyle: 'italic',
+                  marginBottom: '20px'
+                }}>
+                  Freddy McGrady
+                </h3>
+              )}
             </div>
 
-            {/* Story Text */}
-            <div style={{
-              color: '#1a1a1a',
-              fontSize: '1.1rem',
-              lineHeight: '1.8',
-              marginBottom: '30px',
-              textAlign: 'left',
-              fontFamily: 'inherit'
-            }}>
-              <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                Reginald Baker never goes anywhere without a smile and his 1st Armored Division military cap. Even though his time in the service left him confined to a wheelchair and permanently impaired vision due to unremovable shrapnel in his right eye, Reggie wears his scars like badges of honor.
-              </p>
-              <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                Rumor has it, the story of his last mission was almost turned into a major motion picture by a big time director, but Reggie refused to share the details of his famous tank raid.
-              </p>
-              <p style={{marginBottom: '20px', fontStyle: 'italic', color: '#333'}}>
-                "That's a story for the fellas that were there only," his friends heard him say.
-              </p>
-              <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                After the service, Reggie developed a passion for gardening, eventually opening his own Garden Center called Petal to the Metal Plants. Every Memorial Day, he hired local youths to put free flowers on the graves of every former soldier he could find.
-              </p>
-              <p style={{marginBottom: '20px', fontWeight: 'bold', color: '#1a1a1a'}}>
-                The Country Club is honored to have such a wonderful Ape as one of its very first residents. It is definitely a much happier place for having Reggie call it home.
-              </p>
-            </div>
+            {/* Story Text - 2945 */}
+            {storyTokenId === '2945' && (
+              <>
+                <div style={{
+                  color: '#1a1a1a',
+                  fontSize: '1.1rem',
+                  lineHeight: '1.8',
+                  marginBottom: '30px',
+                  textAlign: 'left',
+                  fontFamily: 'inherit'
+                }}>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    Reginald Baker never goes anywhere without a smile and his 1st Armored Division military cap. Even though his time in the service left him confined to a wheelchair and permanently impaired vision due to unremovable shrapnel in his right eye, Reggie wears his scars like badges of honor.
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    Rumor has it, the story of his last mission was almost turned into a major motion picture by a big time director, but Reggie refused to share the details of his famous tank raid.
+                  </p>
+                  <p style={{marginBottom: '20px', fontStyle: 'italic', color: '#333'}}>
+                    "That's a story for the fellas that were there only," his friends heard him say.
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    After the service, Reggie developed a passion for gardening, eventually opening his own Garden Center called Petal to the Metal Plants. Every Memorial Day, he hired local youths to put free flowers on the graves of every former soldier he could find.
+                  </p>
+                  <p style={{marginBottom: '20px', fontWeight: 'bold', color: '#1a1a1a'}}>
+                    The Country Club is honored to have such a wonderful Ape as one of its very first residents. It is definitely a much happier place for having Reggie call it home.
+                  </p>
+                </div>
 
-            {/* Story Images */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-              gap: '20px',
-              marginTop: '30px'
-            }}>
-              <img
-                src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2945_window.jpg"
-                alt="Reginald Baker Window"
-                style={{
-                  width: '100%',
-                  height: 'auto',
-                  borderRadius: '10px',
-                  boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                }}
-              />
-              <img
-                src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2945_comic.jpg"
-                alt="Reginald Baker Comic"
-                style={{
-                  width: '100%',
-                  height: 'auto',
-                  borderRadius: '10px',
-                  boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                }}
-              />
-              <img
-                src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2945_entry.jpg"
-                alt="Reginald Baker Entry"
-                style={{
-                  width: '100%',
-                  height: 'auto',
-                  borderRadius: '10px',
-                  boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                }}
-              />
-            </div>
+                {/* Story Images - 2945 */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                  gap: '20px',
+                  marginTop: '30px'
+                }}>
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2945_window.jpg"
+                    alt="Reginald Baker Window"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2945_comic.jpg"
+                    alt="Reginald Baker Comic"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2945_entry.jpg"
+                    alt="Reginald Baker Entry"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                </div>
+              </>
+            )}
+
+            {/* Story Text - 693 */}
+            {storyTokenId === '693' && (
+              <>
+                <div style={{
+                  color: '#1a1a1a',
+                  fontSize: '1.1rem',
+                  lineHeight: '1.8',
+                  marginBottom: '30px',
+                  textAlign: 'left',
+                  fontFamily: 'inherit'
+                }}>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    Freddy McGrady was on the verge of becoming the next great prizefighter. Two wins away from a title fight, Fred took the punch every fighter dreads. It put his lights out, ended his boxing career, and caused a steady and unrelenting drooling condition. Tough break.
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    After he hung up the gloves, Freddy turned his focus to his other great passion—Freshwater Fishing. He tried, unsuccessfully I must add, to create Freshwater Freddy's Fishing Tours. Unfortunately, things like permits, a lack of well stocked fishing holes, and that unsightly drool proved too much for the business to attract customers.
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    These days, loud noises and bright lights are a bit much for old Fred. He prefers the peace and quiet of the Country Club, and loves to engage in games requiring blindfolds, of which the facility has a surprisingly good amount. If you can stomach a little drool, ok it's A LOT of drool, please stop by and hello to Freddy!
+                  </p>
+                </div>
+
+                {/* Story Images - 693 */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                  gap: '20px',
+                  marginTop: '30px'
+                }}>
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/693_box.jpg"
+                    alt="Freddy McGrady Boxing"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/693_fish_hd.jpg"
+                    alt="Freddy McGrady Fishing"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/693_helper.jpg"
+                    alt="Freddy McGrady Helper"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/693_fishing.jpg"
+                    alt="Freddy McGrady Fishing Scene"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/693_pin.jpg"
+                    alt="Freddy McGrady Pin"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
