@@ -584,7 +584,7 @@ function GrandpaCoin() {
                           <div className="mb-4 col-lg-12 col-12">
                             <h2 className="common-title mb-3" style={{color: 'black'}}>GRANDPA COIN</h2>
                             <p className="common-p" style={{color: 'black'}}>
-                              Grandpa Coin ($GRANDPA) is a revolutionary token that powers the Grandpa Ape ecosystem through an innovative buy-and-burn strategy. With each purchase, 6% of the transaction goes directly to a Strategy Vault contract, where an autonomous bot continuously monitors the floor price of Grandpa NFTs.
+                              Grandpa Coin ($GRANDPA) is a strategy token that powers the Grandpa Ape Country Club ecosystem through an innovative buy-burn-lock strategy. With each purchase, 6% of the transaction goes directly to a Strategy Vault contract, where an autonomous bot continuously monitors the floor price of Grandpa NFTs and burns 2%.
                             </p>
                             <p className="common-p" style={{color: 'black'}}>
                               The bot uses these accumulated funds to purchase floor Grandpa NFTs and automatically sends them to the Country Club contract, where they are enshrined eternally and cannot be removed. This creates perpetual buy pressure on the Grandpa Ape collection while rewarding holders through the deflationary nature of the token.
@@ -816,7 +816,7 @@ function GrandpaCoin() {
                       <div className="buy-token-container">
                         <div className="bayc-bg p-4 m-auto row" style={{backgroundColor: 'white'}}>
                           <div className="m-auto col-lg-3 col-12">
-                            <h3 className="buy-ape-title">BUY GRANDPACOIN</h3>
+                            <h3 className="buy-ape-title">BUY GRANDPA COIN</h3>
                           </div>
                           <div className="m-auto col-lg-4 col-12 offset-lg-1">
                             <p className="common-p mb-lg-0">Swap ETH for $GRANDPA on Uniswap. Connect your wallet and complete the swap on Uniswap's secure interface.</p>

@@ -151,7 +151,7 @@ function Home () {
                           <div className="row">
                             <div className="mb-3 col-lg-7 col-12">
                               <h2 className="common-title mb-3" style={{color: 'black'}}>GRANDPA STRATEGY</h2>
-                              <p className="common-p" style={{color: 'black'}}>Grandpa Coin is a revolutionary token that powers the Grandpa Ape ecosystem. With each buy, 4% of the transaction goes to a Strategy Vault contract. An autonomous bot continuously monitors the floor price of Grandpa NFTs and uses these funds to purchase floor Grandpa NFTs, which are then sent to the Country Club contract where they are enshrined eternally and cannot be removed.</p>
+                              <p className="common-p" style={{color: 'black'}}>Grandpa Coin ($GRANDPA) is a strategy token that powers the Grandpa Ape Country Club ecosystem through an innovative buy-burn-lock strategy. With each purchase, 6% of the transaction goes directly to a Strategy Vault contract, where an autonomous bot continuously monitors the floor price of Grandpa NFTs and burns 2%.</p>
                               <p className="common-p mb-0" style={{color: 'black'}}>This creates a perpetual buy pressure mechanism that strengthens the Grandpa Ape collection while rewarding holders through the deflationary nature of the token.</p>
                             </div>
                             <div className="m-lg-auto col-lg-3 col-12 offset-lg-1">
