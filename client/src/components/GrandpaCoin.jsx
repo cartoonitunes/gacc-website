@@ -585,7 +585,7 @@ function GrandpaCoin() {
                           <div className="mb-4 col-lg-12 col-12">
                             <h2 className="common-title mb-3" style={{color: 'black'}}>GRANDPA COIN</h2>
                             <p className="common-p" style={{color: 'black'}}>
-                              Grandpa Coin ($GRANDPA) is a strategy token that powers the Grandpa Ape Country Club ecosystem through an innovative buy-burn-lock strategy. With each purchase, 6% of the transaction goes directly to a Strategy Vault contract, where an autonomous bot continuously monitors the floor price of Grandpa NFTs and burns 2%.
+                              Grandpa Coin ($GRANDPA) is a strategy token that powers the Grandpa Ape Country Club ecosystem through an innovative buy-burn-lock strategy. With each purchase, 6% of the transaction goes directly to a Strategy Vault contract, where an autonomous bot continuously monitors the floor price of Grandpa NFTs and burns a perentage of $GRANDPA each time.
                             </p>
                             <p className="common-p" style={{color: 'black'}}>
                               The bot uses these accumulated funds to purchase floor Grandpa NFTs and automatically sends them to the Country Club contract, where they are enshrined eternally and cannot be removed. This creates perpetual buy pressure on the Grandpa Ape collection while rewarding holders through the deflationary nature of the token.
