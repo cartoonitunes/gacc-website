@@ -355,50 +355,19 @@ function GrandpaCoin() {
         }
       }
 
-      // Fetch floor price from OpenSea - try different collection identifiers
-      const collectionSlugs = [
-        'grandpa-ape-country-club',
-        'grandpaapecountryclub',
-        'gacc'
-      ];
-      
-      for (const slug of collectionSlugs) {
-        try {
-          const openseaResponse = await fetch(`https://api.opensea.io/api/v2/collection/${slug}/stats`, {
-            headers: {
-              'Accept': 'application/json',
-              'X-API-KEY': '23d5bad506884e4bb45477a239944d3e'
-            }
-          });
-          if (openseaResponse.ok) {
-            const openseaData = await openseaResponse.json();
-            if (openseaData.floor_price) {
-              setFloorPrice(parseFloat(openseaData.floor_price));
-              break;
-            }
+      // Fetch floor price from backend API (avoids CORS and handles OpenSea API properly)
+      try {
+        const floorPriceResponse = await fetch('/api/gacc-floor-price');
+        if (floorPriceResponse.ok) {
+          const floorPriceData = await floorPriceResponse.json();
+          if (floorPriceData.floorPrice !== undefined && floorPriceData.floorPrice !== null) {
+            setFloorPrice(floorPriceData.floorPrice);
           }
-        } catch (err) {
-          // Try next slug
-          continue;
+        } else {
+          console.error('Error fetching floor price:', floorPriceResponse.statusText);
         }
-      }
-      
-      // Fallback: try using the contract address directly
-      if (floorPrice === null) {
-        try {
-          const openseaResponse = await fetch(`https://api.opensea.io/api/v2/chain/ethereum/contract/${GACC_COLLECTION_ADDRESS}/nfts?limit=1`, {
-            headers: {
-              'Accept': 'application/json',
-              'X-API-KEY': '23d5bad506884e4bb45477a239944d3e'
-            }
-          });
-          if (openseaResponse.ok) {
-            // For contract-based queries, we might need to use a different endpoint
-            // This is a fallback - the collection stats endpoint should work
-          }
-        } catch (err) {
-          console.error('Error fetching floor price:', err);
-        }
+      } catch (err) {
+        console.error('Error fetching floor price:', err);
       }
     } catch (error) {
       console.error('Error fetching market data:', error);
