@@ -726,7 +726,6 @@ function GrandpaCoin() {
                       width: '100%',
                       height: 'auto',
                       marginBottom: '30px',
-                      borderRadius: '10px',
                       boxShadow: '0 4px 20px rgba(0,0,0,0.3)'
                     }}
                   />
@@ -1031,29 +1030,35 @@ function GrandpaCoin() {
                                 marginTop: '20px',
                                 boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
                               }}>
-                                <h3 style={{color: '#977039', fontSize: '1.2rem', marginBottom: '15px', fontWeight: 'bold', textAlign: 'center'}}>
+                                <h3 style={{color: '#977039', fontSize: '1.2rem', marginBottom: '20px', fontWeight: 'bold', textAlign: 'center'}}>
                                   Progress to Next NFT Purchase
                                 </h3>
                                 <div style={{
                                   width: '100%',
-                                  height: '40px',
-                                  backgroundColor: '#e9ecef',
-                                  borderRadius: '20px',
+                                  height: '50px',
+                                  backgroundColor: '#f9edcd',
+                                  borderRadius: '25px',
                                   overflow: 'hidden',
                                   position: 'relative',
-                                  marginBottom: '10px'
+                                  marginBottom: '15px',
+                                  border: '2px solid #977039'
                                 }}>
                                   <div style={{
                                     width: `${Math.min((estimatedEth / floorPrice) * 100, 100)}%`,
                                     height: '100%',
-                                    backgroundColor: estimatedEth >= floorPrice ? '#28a745' : '#977039',
+                                    backgroundColor: estimatedEth >= floorPrice ? '#977039' : '#977039',
+                                    background: estimatedEth >= floorPrice 
+                                      ? 'linear-gradient(135deg, #977039 0%, #7a5a2e 100%)' 
+                                      : 'linear-gradient(135deg, #977039 0%, #b8955a 100%)',
                                     transition: 'width 0.5s ease',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    color: 'white',
+                                    color: '#f9edcd',
                                     fontWeight: 'bold',
-                                    fontSize: '0.9rem'
+                                    fontSize: '1rem',
+                                    textShadow: '0 1px 2px rgba(0,0,0,0.2)',
+                                    boxShadow: estimatedEth >= floorPrice ? 'inset 0 2px 4px rgba(0,0,0,0.1)' : 'none'
                                   }}>
                                     {estimatedEth >= floorPrice ? 'Ready!' : `${((estimatedEth / floorPrice) * 100).toFixed(1)}%`}
                                   </div>
@@ -1061,15 +1066,16 @@ function GrandpaCoin() {
                                 <div style={{
                                   display: 'flex',
                                   justifyContent: 'space-between',
-                                  fontSize: '0.9rem',
+                                  fontSize: '0.95rem',
                                   color: '#666',
-                                  marginTop: '5px'
+                                  marginTop: '10px',
+                                  fontWeight: '500'
                                 }}>
-                                  <span>0 ETH</span>
-                                  <span style={{fontWeight: 'bold', color: '#977039'}}>
+                                  <span style={{color: '#977039'}}>0 ETH</span>
+                                  <span style={{fontWeight: 'bold', color: '#977039', fontSize: '1rem'}}>
                                     {estimatedEth.toFixed(4)} ETH / {floorPrice.toFixed(4)} ETH
                                   </span>
-                                  <span>{floorPrice.toFixed(4)} ETH</span>
+                                  <span style={{color: '#977039'}}>{floorPrice.toFixed(4)} ETH</span>
                                 </div>
                               </div>
                             )}

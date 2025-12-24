@@ -619,9 +619,10 @@ app.get("/api/gacc-floor-price", async (req, res) => {
         
         if (response.ok) {
           const data = await response.json();
-          if (data.floor_price !== undefined && data.floor_price !== null) {
+          // Floor price is in data.total.floor_price based on OpenSea API response structure
+          if (data.total && data.total.floor_price !== undefined && data.total.floor_price !== null) {
             return res.json({ 
-              floorPrice: parseFloat(data.floor_price),
+              floorPrice: parseFloat(data.total.floor_price),
               source: 'opensea_stats'
             });
           }
