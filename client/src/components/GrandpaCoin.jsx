@@ -182,6 +182,12 @@ function GrandpaCoin() {
   const [showStoryModal, setShowStoryModal] = useState(false);
   const [storyTokenId, setStoryTokenId] = useState(null); // Track which token's story to show
   
+  // DexScreener and market data state
+  const [dexData, setDexData] = useState(null);
+  const [floorPrice, setFloorPrice] = useState(null);
+  const [estimatedEth, setEstimatedEth] = useState(null);
+  const [loadingMarketData, setLoadingMarketData] = useState(false);
+  
   // Router hooks
   const history = useHistory();
   const location = useLocation();
@@ -331,6 +337,73 @@ function GrandpaCoin() {
       console.error('Error fetching NFT senders:', error);
     } finally {
       setLoadingSenders(false);
+    }
+  }, []);
+
+  // Fetch DexScreener data and floor price
+  const fetchMarketData = useCallback(async () => {
+    setLoadingMarketData(true);
+    try {
+      // Fetch DexScreener data
+      const dexResponse = await fetch('https://api.dexscreener.com/latest/dex/pairs/ethereum/0xc2f9673849ea38fae55c29e18e797f36b18a3078');
+      if (dexResponse.ok) {
+        const dexData = await dexResponse.json();
+        if (dexData.pair) {
+          setDexData(dexData.pair);
+        } else if (dexData.pairs && dexData.pairs.length > 0) {
+          setDexData(dexData.pairs[0]);
+        }
+      }
+
+      // Fetch floor price from OpenSea - try different collection identifiers
+      const collectionSlugs = [
+        'grandpa-ape-country-club',
+        'grandpaapecountryclub',
+        'gacc'
+      ];
+      
+      for (const slug of collectionSlugs) {
+        try {
+          const openseaResponse = await fetch(`https://api.opensea.io/api/v2/collection/${slug}/stats`, {
+            headers: {
+              'Accept': 'application/json',
+              'X-API-KEY': '23d5bad506884e4bb45477a239944d3e'
+            }
+          });
+          if (openseaResponse.ok) {
+            const openseaData = await openseaResponse.json();
+            if (openseaData.floor_price) {
+              setFloorPrice(parseFloat(openseaData.floor_price));
+              break;
+            }
+          }
+        } catch (err) {
+          // Try next slug
+          continue;
+        }
+      }
+      
+      // Fallback: try using the contract address directly
+      if (floorPrice === null) {
+        try {
+          const openseaResponse = await fetch(`https://api.opensea.io/api/v2/chain/ethereum/contract/${GACC_COLLECTION_ADDRESS}/nfts?limit=1`, {
+            headers: {
+              'Accept': 'application/json',
+              'X-API-KEY': '23d5bad506884e4bb45477a239944d3e'
+            }
+          });
+          if (openseaResponse.ok) {
+            // For contract-based queries, we might need to use a different endpoint
+            // This is a fallback - the collection stats endpoint should work
+          }
+        } catch (err) {
+          console.error('Error fetching floor price:', err);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching market data:', error);
+    } finally {
+      setLoadingMarketData(false);
     }
   }, []);
 
@@ -567,7 +640,26 @@ function GrandpaCoin() {
 
   useEffect(() => {
     loadContractData();
-  }, [loadContractData]);
+    fetchMarketData();
+  }, [loadContractData, fetchMarketData]);
+
+  // Calculate estimated ETH value when we have all the data
+  useEffect(() => {
+    if (dexData && vaultBalance && additionalWalletBalance) {
+      const totalGrandpa = parseFloat(vaultBalance || 0) + parseFloat(additionalWalletBalance || 0);
+      const priceUsd = parseFloat(dexData.priceUsd || 0);
+      const priceNative = parseFloat(dexData.priceNative || 0); // Price in WETH
+      
+      // Calculate ETH value of GRANDPA tokens
+      const grandpaValueInEth = totalGrandpa * priceNative;
+      
+      // Apply haircut (5% for gas and slippage)
+      const haircut = 0.95;
+      const estimatedEthValue = grandpaValueInEth * haircut;
+      
+      setEstimatedEth(estimatedEthValue);
+    }
+  }, [dexData, vaultBalance, additionalWalletBalance]);
 
   // Handle URL parameters for story modals
   useEffect(() => {
@@ -836,6 +928,178 @@ function GrandpaCoin() {
                               </div>
                             </div>
                             
+                            {/* DexScreener Market Data */}
+                            {loadingMarketData ? (
+                              <div style={{textAlign: 'center', padding: '20px'}}>
+                                <p style={{color: '#666'}}>Loading market data...</p>
+                              </div>
+                            ) : dexData && (
+                              <div className="row mt-4">
+                                <div className="col-lg-3 col-md-6 col-12 mb-4">
+                                  <div style={{
+                                    backgroundColor: 'white',
+                                    padding: '20px',
+                                    borderRadius: '10px',
+                                    textAlign: 'center',
+                                    boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                                    height: '100%'
+                                  }}>
+                                    <h3 style={{color: '#977039', fontSize: '1rem', marginBottom: '10px', fontWeight: 'bold'}}>Price (USD)</h3>
+                                    <p style={{color: 'black', fontSize: '1.5rem', fontWeight: 'bold', margin: 0}}>
+                                      ${parseFloat(dexData.priceUsd || 0).toFixed(6)}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="col-lg-3 col-md-6 col-12 mb-4">
+                                  <div style={{
+                                    backgroundColor: 'white',
+                                    padding: '20px',
+                                    borderRadius: '10px',
+                                    textAlign: 'center',
+                                    boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                                    height: '100%'
+                                  }}>
+                                    <h3 style={{color: '#977039', fontSize: '1rem', marginBottom: '10px', fontWeight: 'bold'}}>24h Volume</h3>
+                                    <p style={{color: 'black', fontSize: '1.5rem', fontWeight: 'bold', margin: 0}}>
+                                      ${formatNumber(dexData.volume?.h24 || 0, 2)}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="col-lg-3 col-md-6 col-12 mb-4">
+                                  <div style={{
+                                    backgroundColor: 'white',
+                                    padding: '20px',
+                                    borderRadius: '10px',
+                                    textAlign: 'center',
+                                    boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                                    height: '100%'
+                                  }}>
+                                    <h3 style={{color: '#977039', fontSize: '1rem', marginBottom: '10px', fontWeight: 'bold'}}>Liquidity</h3>
+                                    <p style={{color: 'black', fontSize: '1.5rem', fontWeight: 'bold', margin: 0}}>
+                                      ${formatNumber(dexData.liquidity?.usd || 0, 2)}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="col-lg-3 col-md-6 col-12 mb-4">
+                                  <div style={{
+                                    backgroundColor: 'white',
+                                    padding: '20px',
+                                    borderRadius: '10px',
+                                    textAlign: 'center',
+                                    boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                                    height: '100%'
+                                  }}>
+                                    <h3 style={{color: '#977039', fontSize: '1rem', marginBottom: '10px', fontWeight: 'bold'}}>24h Change</h3>
+                                    <p style={{
+                                      color: (dexData.priceChange?.h24 || 0) >= 0 ? '#28a745' : '#dc3545',
+                                      fontSize: '1.5rem',
+                                      fontWeight: 'bold',
+                                      margin: 0
+                                    }}>
+                                      {(dexData.priceChange?.h24 || 0) >= 0 ? '+' : ''}{(dexData.priceChange?.h24 || 0).toFixed(2)}%
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Floor Price and Estimated ETH */}
+                            <div className="row mt-4">
+                              <div className="col-lg-6 col-md-6 col-12 mb-4">
+                                <div style={{
+                                  backgroundColor: 'white',
+                                  padding: '30px',
+                                  borderRadius: '10px',
+                                  textAlign: 'center',
+                                  boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                                  height: '100%'
+                                }}>
+                                  <h3 style={{color: '#977039', fontSize: '1.2rem', marginBottom: '15px', fontWeight: 'bold'}}>GACC Floor Price</h3>
+                                  {floorPrice !== null ? (
+                                    <p style={{color: 'black', fontSize: '2rem', fontWeight: 'bold', margin: 0}}>
+                                      {formatNumber(floorPrice, 4)} ETH
+                                    </p>
+                                  ) : (
+                                    <p style={{color: '#666', fontSize: '1rem', margin: 0}}>Loading...</p>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="col-lg-6 col-md-6 col-12 mb-4">
+                                <div style={{
+                                  backgroundColor: 'white',
+                                  padding: '30px',
+                                  borderRadius: '10px',
+                                  textAlign: 'center',
+                                  boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                                  height: '100%'
+                                }}>
+                                  <h3 style={{color: '#977039', fontSize: '1.2rem', marginBottom: '15px', fontWeight: 'bold'}}>Estimated ETH (Vault + Bot)</h3>
+                                  {estimatedEth !== null ? (
+                                    <p style={{color: 'black', fontSize: '2rem', fontWeight: 'bold', margin: 0}}>
+                                      {formatNumber(estimatedEth, 4)} ETH
+                                    </p>
+                                  ) : (
+                                    <p style={{color: '#666', fontSize: '1rem', margin: 0}}>Calculating...</p>
+                                  )}
+                                  <p style={{color: '#666', fontSize: '0.85rem', margin: '10px 0 0 0', fontStyle: 'italic'}}>
+                                    (5% haircut for gas & slippage)
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Progress Bar */}
+                            {floorPrice !== null && estimatedEth !== null && (
+                              <div style={{
+                                backgroundColor: 'white',
+                                padding: '30px',
+                                borderRadius: '10px',
+                                marginTop: '20px',
+                                boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
+                              }}>
+                                <h3 style={{color: '#977039', fontSize: '1.2rem', marginBottom: '15px', fontWeight: 'bold', textAlign: 'center'}}>
+                                  Progress to Next NFT Purchase
+                                </h3>
+                                <div style={{
+                                  width: '100%',
+                                  height: '40px',
+                                  backgroundColor: '#e9ecef',
+                                  borderRadius: '20px',
+                                  overflow: 'hidden',
+                                  position: 'relative',
+                                  marginBottom: '10px'
+                                }}>
+                                  <div style={{
+                                    width: `${Math.min((estimatedEth / floorPrice) * 100, 100)}%`,
+                                    height: '100%',
+                                    backgroundColor: estimatedEth >= floorPrice ? '#28a745' : '#977039',
+                                    transition: 'width 0.5s ease',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    color: 'white',
+                                    fontWeight: 'bold',
+                                    fontSize: '0.9rem'
+                                  }}>
+                                    {estimatedEth >= floorPrice ? 'Ready!' : `${((estimatedEth / floorPrice) * 100).toFixed(1)}%`}
+                                  </div>
+                                </div>
+                                <div style={{
+                                  display: 'flex',
+                                  justifyContent: 'space-between',
+                                  fontSize: '0.9rem',
+                                  color: '#666',
+                                  marginTop: '5px'
+                                }}>
+                                  <span>0 ETH</span>
+                                  <span style={{fontWeight: 'bold', color: '#977039'}}>
+                                    {estimatedEth.toFixed(4)} ETH / {floorPrice.toFixed(4)} ETH
+                                  </span>
+                                  <span>{floorPrice.toFixed(4)} ETH</span>
+                                </div>
+                              </div>
+                            )}
+
                             <div style={{
                               padding: '30px 20px',
                               marginTop: '30px',
@@ -886,7 +1150,7 @@ function GrandpaCoin() {
 
                   <hr className="gray-line mb-5" />
 
-                  {/* DexScreener Section */}
+                  {/* GeckoTerminal Chart Section */}
                   <div id="chart" className="mb-5 row">
                     <div className="col">
                       <div className="common-container">
@@ -894,17 +1158,17 @@ function GrandpaCoin() {
                           <div className="mb-4 col-lg-12 col-12">
                             <h2 className="common-title mb-3" style={{color: 'black'}}>GRANDPA COIN CHART</h2>
                             <style>{`
-                              #dexscreener-embed {
+                              #geckoterminal-embed {
                                 position: relative;
                                 width: 100%;
                                 padding-bottom: 125%;
                               }
                               @media (min-width: 1400px) {
-                                #dexscreener-embed {
+                                #geckoterminal-embed {
                                   padding-bottom: 65%;
                                 }
                               }
-                              #dexscreener-embed iframe {
+                              #geckoterminal-embed iframe {
                                 position: absolute;
                                 width: 100%;
                                 height: 100%;
@@ -913,10 +1177,15 @@ function GrandpaCoin() {
                                 border: 0;
                               }
                             `}</style>
-                            <div id="dexscreener-embed">
+                            <div id="geckoterminal-embed">
                               <iframe
-                                src="https://dexscreener.com/ethereum/0xc2f9673849ea38fae55c29e18e797f36b18a3078?embed=1&loadChartSettings=0&chartLeftToolbar=0&chartDefaultOnMobile=1&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"
-                                title="DexScreener Chart"
+                                height="100%"
+                                width="100%"
+                                title="Embed GRANDPA / WETH 1%"
+                                src="https://www.geckoterminal.com/eth/pools/0xc2f9673849ea38fae55c29e18e797f36b18a3078?embed=1&info=1&swaps=1&grayscale=0&light_chart=0&chart_type=price&resolution=15m"
+                                frameBorder="0"
+                                allow="clipboard-write"
+                                allowFullScreen
                               />
                             </div>
                           </div>
