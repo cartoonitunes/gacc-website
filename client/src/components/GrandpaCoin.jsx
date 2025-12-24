@@ -340,12 +340,17 @@ function GrandpaCoin() {
     }
   }, []);
 
-  // Fetch DexScreener data and floor price
+  // Fetch DexScreener data and floor price (in parallel for faster loading)
   const fetchMarketData = useCallback(async () => {
     setLoadingMarketData(true);
     try {
-      // Fetch DexScreener data
-      const dexResponse = await fetch('https://api.dexscreener.com/latest/dex/pairs/ethereum/0xc2f9673849ea38fae55c29e18e797f36b18a3078');
+      // Fetch both in parallel
+      const [dexResponse, floorPriceResponse] = await Promise.all([
+        fetch('https://api.dexscreener.com/latest/dex/pairs/ethereum/0xc2f9673849ea38fae55c29e18e797f36b18a3078'),
+        fetch('/api/gacc-floor-price')
+      ]);
+
+      // Process DexScreener data
       if (dexResponse.ok) {
         const dexData = await dexResponse.json();
         if (dexData.pair) {
@@ -353,21 +358,21 @@ function GrandpaCoin() {
         } else if (dexData.pairs && dexData.pairs.length > 0) {
           setDexData(dexData.pairs[0]);
         }
+      } else {
+        console.error('Error fetching DexScreener data:', dexResponse.statusText);
       }
 
-      // Fetch floor price from backend API (avoids CORS and handles OpenSea API properly)
-      try {
-        const floorPriceResponse = await fetch('/api/gacc-floor-price');
-        if (floorPriceResponse.ok) {
-          const floorPriceData = await floorPriceResponse.json();
-          if (floorPriceData.floorPrice !== undefined && floorPriceData.floorPrice !== null) {
-            setFloorPrice(floorPriceData.floorPrice);
-          }
+      // Process floor price
+      if (floorPriceResponse.ok) {
+        const floorPriceData = await floorPriceResponse.json();
+        if (floorPriceData.floorPrice !== undefined && floorPriceData.floorPrice !== null) {
+          setFloorPrice(floorPriceData.floorPrice);
         } else {
-          console.error('Error fetching floor price:', floorPriceResponse.statusText);
+          console.error('Floor price data missing:', floorPriceData);
         }
-      } catch (err) {
-        console.error('Error fetching floor price:', err);
+      } else {
+        const errorText = await floorPriceResponse.text();
+        console.error('Error fetching floor price:', floorPriceResponse.status, floorPriceResponse.statusText, errorText);
       }
     } catch (error) {
       console.error('Error fetching market data:', error);
