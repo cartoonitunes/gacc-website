@@ -609,11 +609,11 @@ app.get("/api/gacc-floor-price", async (req, res) => {
     
     for (const slug of collectionSlugs) {
       try {
-        const url = `https://api.opensea.io/api/v2/collection/${slug}/stats`;
+        const url = `https://api.opensea.io/api/v2/collections/${slug}/stats`;
         const response = await fetch(url, {
           headers: {
             'Accept': 'application/json',
-            'X-API-KEY': OPENSEA_API_KEY
+            'x-api-key': OPENSEA_API_KEY
           }
         });
         
@@ -625,6 +625,9 @@ app.get("/api/gacc-floor-price", async (req, res) => {
               source: 'opensea_stats'
             });
           }
+        } else {
+          const errorText = await response.text();
+          console.error(`OpenSea API error for ${slug}: ${response.status} ${response.statusText}`, errorText);
         }
       } catch (err) {
         console.error(`Error fetching floor price for slug ${slug}:`, err);
@@ -638,7 +641,7 @@ app.get("/api/gacc-floor-price", async (req, res) => {
       const listingsResponse = await fetch(listingsUrl, {
         headers: {
           'Accept': 'application/json',
-          'X-API-KEY': OPENSEA_API_KEY
+          'x-api-key': OPENSEA_API_KEY
         }
       });
       
