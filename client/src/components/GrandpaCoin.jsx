@@ -9,6 +9,7 @@ const STRATEGY_VAULT_ADDRESS = "0xDE82675759071131a21Ef97086B90410Bc68c96d";
 const COUNTRY_CLUB_ADDRESS = "0xf4C84ed6302b9214C63890cdA6d9f3a08cBCb410";
 const GACC_COLLECTION_ADDRESS = "0x4B103d07C18798365946E76845EDC6b565779402";
 const ADDITIONAL_WALLET_ADDRESS = "0x4965599764a4C48C4f209Ca1eE36d8AA4530a551";
+const DEAD_ADDRESS = "0x000000000000000000000000000000000000dEaD";
 
 // ERC20 ABI (minimal for balance, totalSupply)
 const ERC20_ABI = [
@@ -283,10 +284,10 @@ function GrandpaCoin() {
       const additionalWalletBalFormatted = web3.utils.fromWei(additionalWalletBal, 'ether');
       setAdditionalWalletBalance(additionalWalletBalFormatted);
 
-      // Calculate burned (initial supply was 100,000,000 - current supply)
-      const initialSupply = 100000000;
-      const burned = initialSupply - parseFloat(supplyFormatted);
-      setTotalBurned(burned.toFixed(2));
+      // Get burned amount from dead address balance
+      const deadAddressBal = await grandpaContract.methods.balanceOf(DEAD_ADDRESS).call();
+      const deadAddressBalFormatted = web3.utils.fromWei(deadAddressBal, 'ether');
+      setTotalBurned(parseFloat(deadAddressBalFormatted).toFixed(2));
 
       // CountryClub contract
       const countryClubContract = new web3.eth.Contract(COUNTRY_CLUB_ABI, COUNTRY_CLUB_ADDRESS);
@@ -640,6 +641,9 @@ function GrandpaCoin() {
                                     <h3 style={{color: '#977039', fontSize: '1.2rem', marginBottom: '15px', fontWeight: 'bold'}}>Total Burned</h3>
                                     <p style={{color: 'black', fontSize: '1.8rem', fontWeight: 'bold', margin: 0, lineHeight: '1.2'}}>
                                       {formatNumber(totalBurned, 0)} $GRANDPA
+                                    </p>
+                                    <p style={{color: '#666', fontSize: '1rem', margin: '10px 0 0 0', lineHeight: '1.2'}}>
+                                      ({totalBurned ? ((parseFloat(totalBurned) / 100000000) * 100).toFixed(2) : '0.00'}%)
                                     </p>
                                   </div>
                                 </div>
