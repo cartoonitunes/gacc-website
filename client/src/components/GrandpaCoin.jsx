@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import Web3 from "web3";
 import { Network, Alchemy } from "alchemy-sdk";
 import '../styles/style.css'
@@ -181,8 +182,75 @@ function GrandpaCoin() {
   const [showStoryModal, setShowStoryModal] = useState(false);
   const [storyTokenId, setStoryTokenId] = useState(null); // Track which token's story to show
   
+  // Router hooks
+  const history = useHistory();
+  const location = useLocation();
+  
   // Swap state
   const ethAmount = "0.05";
+
+  // Function to update meta tags for social sharing
+  const updateMetaTags = useCallback((title, description, image, url) => {
+    // Update or create meta tags
+    const updateMetaTag = (property, content) => {
+      let element = document.querySelector(`meta[property="${property}"]`) || 
+                    document.querySelector(`meta[name="${property}"]`);
+      if (!element) {
+        element = document.createElement('meta');
+        if (property.startsWith('og:')) {
+          element.setAttribute('property', property);
+        } else {
+          element.setAttribute('name', property);
+        }
+        document.head.appendChild(element);
+      }
+      element.setAttribute('content', content);
+    };
+
+    // Update title
+    document.title = title;
+
+    // Update Open Graph tags
+    updateMetaTag('og:title', title);
+    updateMetaTag('og:description', description);
+    updateMetaTag('og:image', image);
+    updateMetaTag('og:url', url);
+    updateMetaTag('og:type', 'website');
+
+    // Update Twitter Card tags
+    updateMetaTag('twitter:card', 'summary_large_image');
+    updateMetaTag('twitter:title', title);
+    updateMetaTag('twitter:description', description);
+    updateMetaTag('twitter:image', image);
+
+    // Update standard meta description
+    updateMetaTag('description', description);
+  }, []);
+
+  // Story data for meta tags - use useMemo to compute based on nftMetadata
+  const storyData = React.useMemo(() => {
+    const defaultImage = 'https://lh3.googleusercontent.com/n9HKrkgouw_PsI79-XDrbfeomqcpVDXwDuJTKykWQjxVIOitQeDongPHwap1SbsFb_X0mVyoNGzztJPIV776N0kmnFkApZa-JBxyMA=s0';
+    return {
+      '2945': {
+        name: 'Reginald Baker',
+        title: 'Grandpa Ape #2945 - Reginald Baker | Grandpa Coin',
+        description: 'Reginald Baker never goes anywhere without a smile and his 1st Armored Division military cap. Even though his time in the service left him confined to a wheelchair, Reggie wears his scars like badges of honor.',
+        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-2945`]?.image || defaultImage
+      },
+      '693': {
+        name: 'Freddy McGrady',
+        title: 'Grandpa Ape #693 - Freddy McGrady | Grandpa Coin',
+        description: 'Freddy McGrady was on the verge of becoming the next great prizefighter. Two wins away from a title fight, Fred took the punch every fighter dreads. It put his lights out, ended his boxing career, and caused a steady and unrelenting drooling condition.',
+        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-693`]?.image || defaultImage
+      },
+      '4935': {
+        name: 'Terrance Lawrence',
+        title: 'Grandpa Ape #4935 - Terrance Lawrence | Grandpa Coin',
+        description: 'If you recognize the Country Club\'s newest resident, it may be because you were going 26 in a 25 down Pine Street where Terrance Lawrence has worked as a crossing guard for the last 28 years, and were served up one serious tongue lashing.',
+        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-4935`]?.image || defaultImage
+      }
+    };
+  }, [nftMetadata]);
 
   const fetchNftMetadata = useCallback(async (nfts) => {
     setLoadingMetadata(true);
@@ -494,6 +562,44 @@ function GrandpaCoin() {
   useEffect(() => {
     loadContractData();
   }, [loadContractData]);
+
+  // Handle URL parameters for story modals
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const storyParam = searchParams.get('story');
+    
+    if (storyParam && ['2945', '693', '4935'].includes(storyParam)) {
+      setStoryTokenId(storyParam);
+      setShowStoryModal(true);
+      
+      // Update meta tags for the story
+      const story = storyData[storyParam];
+      if (story) {
+        const url = `${window.location.origin}${location.pathname}?story=${storyParam}`;
+        // Use the actual NFT image if available, otherwise use the fallback
+        const imageUrl = nftMetadata[`${GACC_COLLECTION_ADDRESS}-${storyParam}`]?.image || story.image;
+        updateMetaTags(story.title, story.description, imageUrl, url);
+      }
+    } else {
+      // Set default meta tags for /grandpacoin page
+      const defaultTitle = 'Grandpa Coin ($GRANDPA) | Grandpa Ape Country Club';
+      const defaultDescription = 'Grandpa Coin ($GRANDPA) is a strategy token that powers the Grandpa Ape Country Club ecosystem through an innovative buy-burn-lock strategy.';
+      const defaultImage = 'https://lh3.googleusercontent.com/n9HKrkgouw_PsI79-XDrbfeomqcpVDXwDuJTKykWQjxVIOitQeDongPHwap1SbsFb_X0mVyoNGzztJPIV776N0kmnFkApZa-JBxyMA=s0';
+      const defaultUrl = `${window.location.origin}${location.pathname}`;
+      updateMetaTags(defaultTitle, defaultDescription, defaultImage, defaultUrl);
+    }
+  }, [location.search, location.pathname, updateMetaTags, storyData, nftMetadata]);
+
+  // Update meta tags when story modal opens/closes or storyTokenId changes
+  useEffect(() => {
+    if (showStoryModal && storyTokenId && storyData[storyTokenId]) {
+      const story = storyData[storyTokenId];
+      const url = `${window.location.origin}${location.pathname}?story=${storyTokenId}`;
+      // Use the actual NFT image if available, otherwise use the fallback
+      const imageUrl = nftMetadata[`${GACC_COLLECTION_ADDRESS}-${storyTokenId}`]?.image || story.image;
+      updateMetaTags(story.title, story.description, imageUrl, url);
+    }
+  }, [showStoryModal, storyTokenId, nftMetadata, location.pathname, updateMetaTags, storyData]);
 
 
   const formatNumber = (num, decimals = 2) => {
@@ -1158,6 +1264,8 @@ function GrandpaCoin() {
                                                       onClick={() => {
                                                         setStoryTokenId(nft.tokenId);
                                                         setShowStoryModal(true);
+                                                        // Update URL with story parameter
+                                                        history.push(`${location.pathname}?story=${nft.tokenId}`);
                                                       }}
                                                       style={{
                                                         backgroundColor: '#977039',
@@ -1279,6 +1387,8 @@ function GrandpaCoin() {
             if (e.target === e.currentTarget) {
               setShowStoryModal(false);
               setStoryTokenId(null);
+              // Remove story parameter from URL
+              history.push(location.pathname);
             }
           }}
         >
@@ -1301,6 +1411,8 @@ function GrandpaCoin() {
               onClick={() => {
                 setShowStoryModal(false);
                 setStoryTokenId(null);
+                // Remove story parameter from URL
+                history.push(location.pathname);
               }}
               style={{
                 position: 'absolute',
