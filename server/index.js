@@ -596,6 +596,81 @@ app.post("/api/nft-metadata-batch", async (req, res) => {
   }
 });
 
+// API endpoint to fetch GACC floor price from OpenSea
+app.get("/api/gacc-floor-price", async (req, res) => {
+  try {
+    const OPENSEA_API_KEY = process.env.OPENSEA_API_KEY || "23d5bad506884e4bb45477a239944d3e";
+    const GACC_COLLECTION_ADDRESS = "0x4B103d07C18798365946E76845EDC6b565779402";
+    
+    // Try collection stats endpoint with different slugs
+    const collectionSlugs = [
+      'grandpaapecountryclub'
+    ];
+    
+    for (const slug of collectionSlugs) {
+      try {
+        const url = `https://api.opensea.io/api/v2/collection/${slug}/stats`;
+        const response = await fetch(url, {
+          headers: {
+            'Accept': 'application/json',
+            'X-API-KEY': OPENSEA_API_KEY
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          if (data.floor_price !== undefined && data.floor_price !== null) {
+            return res.json({ 
+              floorPrice: parseFloat(data.floor_price),
+              source: 'opensea_stats'
+            });
+          }
+        }
+      } catch (err) {
+        console.error(`Error fetching floor price for slug ${slug}:`, err);
+        continue;
+      }
+    }
+    
+    // Fallback: Try using the contract address with listings endpoint
+    try {
+      const listingsUrl = `https://api.opensea.io/api/v2/orders/ethereum/seaport/listings?asset_contract_address=${GACC_COLLECTION_ADDRESS}&order_by=eth_price&order_direction=asc&limit=1`;
+      const listingsResponse = await fetch(listingsUrl, {
+        headers: {
+          'Accept': 'application/json',
+          'X-API-KEY': OPENSEA_API_KEY
+        }
+      });
+      
+      if (listingsResponse.ok) {
+        const listingsData = await listingsResponse.json();
+        if (listingsData.orders && listingsData.orders.length > 0) {
+          const order = listingsData.orders[0];
+          // Extract ETH price from the order
+          if (order.current_price) {
+            const priceInWei = order.current_price;
+            const priceInEth = parseFloat(priceInWei) / 1e18;
+            return res.json({ 
+              floorPrice: priceInEth,
+              source: 'opensea_listings'
+            });
+          }
+        }
+      }
+    } catch (err) {
+      console.error('Error fetching floor price from listings:', err);
+    }
+    
+    return res.status(404).json({ error: 'Floor price not found' });
+  } catch (error) {
+    console.error('Error fetching floor price:', error);
+    return res.status(500).json({ 
+      error: 'Failed to fetch floor price',
+      details: error.message 
+    });
+  }
+});
+
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "/client/build/index.html"));
 });
