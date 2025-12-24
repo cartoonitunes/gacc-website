@@ -248,6 +248,12 @@ function GrandpaCoin() {
         title: 'Grandpa Ape #4935 - Terrance Lawrence | Grandpa Coin',
         description: 'If you recognize the Country Club\'s newest resident, it may be because you were going 26 in a 25 down Pine Street where Terrance Lawrence has worked as a crossing guard for the last 28 years, and were served up one serious tongue lashing.',
         image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-4935`]?.image || defaultImage
+      },
+      '1784': {
+        name: 'Otis',
+        title: 'Grandpa Ape #1784 - Otis | Grandpa Coin',
+        description: 'Sadly, very little is known about the Country Club\'s newest resident, and so far he\'s been keeping to himself. But you know old Reggie is going to keep the door open to him.',
+        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-1784`]?.image || defaultImage
       }
     };
   }, [nftMetadata]);
@@ -568,7 +574,7 @@ function GrandpaCoin() {
     const searchParams = new URLSearchParams(location.search);
     const storyParam = searchParams.get('story');
     
-    if (storyParam && ['2945', '693', '4935'].includes(storyParam)) {
+    if (storyParam && ['2945', '693', '4935', '1784'].includes(storyParam)) {
       setStoryTokenId(storyParam);
       setShowStoryModal(true);
       
@@ -1259,7 +1265,7 @@ function GrandpaCoin() {
                                                   Joined: {nft.joinedAtFormatted || new Date(nft.joinedAt * 1000).toLocaleDateString()}
                                                 </p>
                                                 <div style={{marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '4px'}}>
-                                                  {(nft.tokenId === '2945' || nft.tokenId === '693' || nft.tokenId === '4935') && (
+                                                  {(nft.tokenId === '2945' || nft.tokenId === '693' || nft.tokenId === '4935' || nft.tokenId === '1784') && (
                                                     <button
                                                       onClick={() => {
                                                         setStoryTokenId(nft.tokenId);
@@ -1489,6 +1495,16 @@ function GrandpaCoin() {
                   Terrance Lawrence
                 </h3>
               )}
+              {storyTokenId === '1784' && (
+                <h3 style={{
+                  color: 'black',
+                  fontSize: '1.5rem',
+                  fontStyle: 'italic',
+                  marginBottom: '20px'
+                }}>
+                  Otis
+                </h3>
+              )}
             </div>
 
             {/* Story Text - 2945 */}
@@ -1698,6 +1714,59 @@ function GrandpaCoin() {
                   <img
                     src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/4935_pickle.jpg"
                     alt="Terrance Lawrence Pickleball"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                </div>
+              </>
+            )}
+
+            {/* Story Text - 1784 */}
+            {storyTokenId === '1784' && (
+              <>
+                <div style={{
+                  color: '#1a1a1a',
+                  fontSize: '1.1rem',
+                  lineHeight: '1.8',
+                  marginBottom: '30px',
+                  textAlign: 'left',
+                  fontFamily: 'inherit'
+                }}>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    Sadly, very little is known about the Country Club's newest resident, and so far he's been keeping to himself. But you know old Reggie is going to keep the door open to him. There's some speculation that Otis used to be a Jazz musician. Other rumors have him once owning a bar somewhere. Only time will tell, as Otis ain't talking'.
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    Country Club staff, upon notification from Terrance, have found Otis wandering around the back parking lot of the facility at night. When asked what he is doing, Otis simply shrugs, gives a sad smile, and shuffles inside.
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    Like Terrance, he listed NONE on his Expected Visitors Intake Documents page, though I suspect it's for different reasons. Let's hope Otis finds his stay at the Country Club to be a happier place than wherever he's been before.
+                  </p>
+                </div>
+
+                {/* Story Images - 1784 */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                  gap: '20px',
+                  marginTop: '30px'
+                }}>
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/1784_club.jpg"
+                    alt="Otis Club"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/1784_sad.jpg"
+                    alt="Otis Sad"
                     style={{
                       width: '100%',
                       height: 'auto',
