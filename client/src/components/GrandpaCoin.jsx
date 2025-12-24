@@ -188,6 +188,9 @@ function GrandpaCoin() {
   const [estimatedEth, setEstimatedEth] = useState(null);
   const [loadingMarketData, setLoadingMarketData] = useState(false);
   
+  // Window size for responsive design
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  
   // Router hooks
   const history = useHistory();
   const location = useLocation();
@@ -877,7 +880,7 @@ function GrandpaCoin() {
                                     6%
                                   </p>
                                   <p style={{color: '#666', fontSize: '1rem', margin: '10px 0 0 0'}}>
-                                    All to buy NFTs
+                                    No team fee.
                                   </p>
                                 </div>
                               </div>
@@ -1025,27 +1028,35 @@ function GrandpaCoin() {
                             {floorPrice !== null && estimatedEth !== null && (
                               <div style={{
                                 backgroundColor: 'white',
-                                padding: '30px',
+                                padding: isMobile ? '20px 15px' : '30px',
                                 borderRadius: '10px',
                                 marginTop: '20px',
                                 boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
                               }}>
-                                <h3 style={{color: '#977039', fontSize: '1.2rem', marginBottom: '20px', fontWeight: 'bold', textAlign: 'center'}}>
+                                <h3 style={{
+                                  color: '#977039', 
+                                  fontSize: isMobile ? '1rem' : '1.2rem', 
+                                  marginBottom: isMobile ? '15px' : '20px', 
+                                  fontWeight: 'bold', 
+                                  textAlign: 'center',
+                                  lineHeight: '1.3'
+                                }}>
                                   Progress to Next NFT Purchase
                                 </h3>
                                 <div style={{
                                   width: '100%',
-                                  height: '50px',
+                                  height: isMobile ? '45px' : '50px',
                                   backgroundColor: '#f9edcd',
                                   borderRadius: '25px',
                                   overflow: 'hidden',
                                   position: 'relative',
-                                  marginBottom: '15px',
+                                  marginBottom: isMobile ? '12px' : '15px',
                                   border: '2px solid #977039'
                                 }}>
                                   <div style={{
                                     width: `${Math.min((estimatedEth / floorPrice) * 100, 100)}%`,
                                     height: '100%',
+                                    minWidth: estimatedEth > 0 ? (isMobile ? '50px' : '60px') : '0px', // Ensure text is visible even at low percentages
                                     backgroundColor: estimatedEth >= floorPrice ? '#977039' : '#977039',
                                     background: estimatedEth >= floorPrice 
                                       ? 'linear-gradient(135deg, #977039 0%, #7a5a2e 100%)' 
@@ -1053,26 +1064,37 @@ function GrandpaCoin() {
                                     transition: 'width 0.5s ease',
                                     display: 'flex',
                                     alignItems: 'center',
-                                    justifyContent: 'center',
+                                    justifyContent: estimatedEth / floorPrice < 0.15 ? 'flex-start' : 'center',
+                                    paddingLeft: estimatedEth / floorPrice < 0.15 ? (isMobile ? '10px' : '12px') : '0',
                                     color: '#f9edcd',
                                     fontWeight: 'bold',
-                                    fontSize: '1rem',
+                                    fontSize: isMobile ? '0.85rem' : '1rem',
                                     textShadow: '0 1px 2px rgba(0,0,0,0.2)',
-                                    boxShadow: estimatedEth >= floorPrice ? 'inset 0 2px 4px rgba(0,0,0,0.1)' : 'none'
+                                    boxShadow: estimatedEth >= floorPrice ? 'inset 0 2px 4px rgba(0,0,0,0.1)' : 'none',
+                                    whiteSpace: 'nowrap'
                                   }}>
                                     {estimatedEth >= floorPrice ? 'Ready!' : `${((estimatedEth / floorPrice) * 100).toFixed(1)}%`}
                                   </div>
                                 </div>
                                 <div style={{
                                   display: 'flex',
+                                  flexDirection: isMobile ? 'column' : 'row',
                                   justifyContent: 'space-between',
-                                  fontSize: '0.95rem',
+                                  alignItems: isMobile ? 'center' : 'flex-start',
+                                  fontSize: isMobile ? '0.8rem' : '0.95rem',
                                   color: '#666',
-                                  marginTop: '10px',
-                                  fontWeight: '500'
+                                  marginTop: isMobile ? '8px' : '10px',
+                                  fontWeight: '500',
+                                  gap: isMobile ? '8px' : '0'
                                 }}>
                                   <span style={{color: '#977039'}}>0 ETH</span>
-                                  <span style={{fontWeight: 'bold', color: '#977039', fontSize: '1rem'}}>
+                                  <span style={{
+                                    fontWeight: 'bold', 
+                                    color: '#977039', 
+                                    fontSize: isMobile ? '0.9rem' : '1rem',
+                                    textAlign: 'center',
+                                    lineHeight: '1.4'
+                                  }}>
                                     {estimatedEth.toFixed(4)} ETH / {floorPrice.toFixed(4)} ETH
                                   </span>
                                   <span style={{color: '#977039'}}>{floorPrice.toFixed(4)} ETH</span>
