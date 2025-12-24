@@ -1149,7 +1149,7 @@ function GrandpaCoin() {
                                                   Joined: {nft.joinedAtFormatted || new Date(nft.joinedAt * 1000).toLocaleDateString()}
                                                 </p>
                                                 <div style={{marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '4px'}}>
-                                                  {(nft.tokenId === '2945' || nft.tokenId === '693') && (
+                                                  {(nft.tokenId === '2945' || nft.tokenId === '693' || nft.tokenId === '4935') && (
                                                     <button
                                                       onClick={() => {
                                                         setStoryTokenId(nft.tokenId);
@@ -1363,6 +1363,16 @@ function GrandpaCoin() {
                   Freddy McGrady
                 </h3>
               )}
+              {storyTokenId === '4935' && (
+                <h3 style={{
+                  color: 'black',
+                  fontSize: '1.5rem',
+                  fontStyle: 'italic',
+                  marginBottom: '20px'
+                }}>
+                  Terrance Lawrence
+                </h3>
+              )}
             </div>
 
             {/* Story Text - 2945 */}
@@ -1506,6 +1516,72 @@ function GrandpaCoin() {
                   <img
                     src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/693_pin.jpg"
                     alt="Freddy McGrady Pin"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                </div>
+              </>
+            )}
+
+            {/* Story Text - 4935 */}
+            {storyTokenId === '4935' && (
+              <>
+                <div style={{
+                  color: '#1a1a1a',
+                  fontSize: '1.1rem',
+                  lineHeight: '1.8',
+                  marginBottom: '30px',
+                  textAlign: 'left',
+                  fontFamily: 'inherit'
+                }}>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    If you recognize the Country Club's newest resident, it may be because you were going 26 in a 25 down Pine Street where Terrance Lawrence has worked as a crossing guard for the last 28 years, and were served up one serious tongue lashing. Bet you didn't do that twice!
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    Anyway, these days Terrence, Terry to his friends—of which he has none, can be found ringing the bell at the service desk, ready to register a new complaint or suggest an improvement. The staff has already learned to hide when he approaches, and his latest demand was for the addition of reflective signage to another resident's wheel chair. The request was denied, but Terrence is far from done with that issue. Those who have argued with him in the past have claimed he has a way of hypnotizing you with his stare, causing you to give in to his demands.
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    He is also campaigning for the construction of a Pickleball Court and League at the County Club. Not because he wants to play. Terrence wants to be the umpire.
+                  </p>
+                  <p style={{marginBottom: '20px', fontWeight: 'bold', color: '#1a1a1a'}}>
+                    We hope to see you at The Country Club soon. You might want to steer clear of Mr. Lawrence, though.
+                  </p>
+                </div>
+
+                {/* Story Images - 4935 */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                  gap: '20px',
+                  marginTop: '30px'
+                }}>
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/4935_stop.jpg"
+                    alt="Terrance Lawrence Stop Sign"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/4935_bell.jpg"
+                    alt="Terrance Lawrence Bell"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/4935_pickle.jpg"
+                    alt="Terrance Lawrence Pickleball"
                     style={{
                       width: '100%',
                       height: 'auto',
