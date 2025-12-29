@@ -1217,7 +1217,7 @@ function GrandpaCoin() {
                           </div>
                           <div className="m-auto col-lg-2 col-12 offset-lg-1">
                             <a 
-                              href={`https://app.uniswap.org/#/swap?exactField=input&exactAmount=${ethAmount}&inputCurrency=ETH&outputCurrency=${GRANDPA_COIN_ADDRESS}&slippage=6.5`}
+                              href={`https://app.uniswap.org/#/swap?exactField=input&exactAmount=${ethAmount}&inputCurrency=ETH&outputCurrency=${GRANDPA_COIN_ADDRESS}`}
                               target="_blank"
                               rel="noopener noreferrer"
                             >
