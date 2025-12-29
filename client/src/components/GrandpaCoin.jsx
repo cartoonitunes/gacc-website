@@ -1542,7 +1542,7 @@ function GrandpaCoin() {
                                                   Joined: {nft.joinedAtFormatted || new Date(nft.joinedAt * 1000).toLocaleDateString()}
                                                 </p>
                                                 <div style={{marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '4px'}}>
-                                                  {(nft.tokenId === '2945' || nft.tokenId === '693' || nft.tokenId === '4935' || nft.tokenId === '1784') && (
+                                                  {(nft.tokenId === '2945' || nft.tokenId === '693' || nft.tokenId === '4935' || nft.tokenId === '1784' || nft.tokenId === '2190') && (
                                                     <button
                                                       onClick={() => {
                                                         setStoryTokenId(nft.tokenId);
@@ -2095,7 +2095,7 @@ function GrandpaCoin() {
                   marginTop: '30px'
                 }}>
                   <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2190_welcome.jpg"
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2190_welcome.jpeg"
                     alt="Henderson Pritchett Welcome"
                     style={{
                       width: '100%',
