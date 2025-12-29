@@ -263,6 +263,12 @@ function GrandpaCoin() {
         title: 'Grandpa Ape #1784 - Otis | Grandpa Coin',
         description: 'Sadly, very little is known about the Country Club\'s newest resident, and so far he\'s been keeping to himself. But you know old Reggie is going to keep the door open to him.',
         image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-1784`]?.image || defaultImage
+      },
+      '2190': {
+        name: 'Henderson Pritchett',
+        title: 'Grandpa Ape #2190 - Henderson Pritchett | Grandpa Coin',
+        description: 'Today we welcome our newest resident, Henderson Pritchett. Henderson was a world renowned trophy hunter turned reality television star. His show, Nature\'s Assassin, ended in controversy when a contestant went missing and hasn\'t been seen since.',
+        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-2190`]?.image || defaultImage
       }
     };
   }, [nftMetadata]);
@@ -643,7 +649,7 @@ function GrandpaCoin() {
     const searchParams = new URLSearchParams(location.search);
     const storyParam = searchParams.get('story');
     
-    if (storyParam && ['2945', '693', '4935', '1784'].includes(storyParam)) {
+    if (storyParam && ['2945', '693', '4935', '1784', '2190'].includes(storyParam)) {
       setStoryTokenId(storyParam);
       setShowStoryModal(true);
       
@@ -1776,6 +1782,16 @@ function GrandpaCoin() {
                   Otis
                 </h3>
               )}
+              {storyTokenId === '2190' && (
+                <h3 style={{
+                  color: 'black',
+                  fontSize: '1.5rem',
+                  fontStyle: 'italic',
+                  marginBottom: '20px'
+                }}>
+                  Henderson Pritchett
+                </h3>
+              )}
             </div>
 
             {/* Story Text - 2945 */}
@@ -2038,6 +2054,89 @@ function GrandpaCoin() {
                   <img
                     src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/1784_sad.jpg"
                     alt="Otis Sad"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                </div>
+              </>
+            )}
+
+            {/* Story Text - 2190 */}
+            {storyTokenId === '2190' && (
+              <>
+                <div style={{
+                  color: '#1a1a1a',
+                  fontSize: '1.1rem',
+                  lineHeight: '1.8',
+                  marginBottom: '30px',
+                  textAlign: 'left',
+                  fontFamily: 'inherit'
+                }}>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    Today we welcome our newest resident, Henderson Pritchett. Henderson was a world renowned trophy hunter turned reality television star. His show, <em>Nature's Assassin</em>, ended in controversy when a contestant went missing and hasn't been seen since. Henderson denied any involvement and was eventually cleared of any wrongdoing, but the show simply couldn't recover from the scandal.
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    Henderson tried to rebound by opening an amusement park with rides and attractions based on his famous adventures, but after multiple rides broke down, the insurance became too costly to maintain.
+                  </p>
+                  <p style={{marginBottom: '20px', fontWeight: 'bold', color: '#1a1a1a'}}>
+                    Henderson arrived at the Country Club appearing totally defeated. Let's hope his string of bad luck turns around soon.
+                  </p>
+                </div>
+
+                {/* Story Images - 2190 */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                  gap: '20px',
+                  marginTop: '30px'
+                }}>
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2190_welcome.jpg"
+                    alt="Henderson Pritchett Welcome"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2190_body.jpg"
+                    alt="Henderson Pritchett Body"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2190_car.jpg"
+                    alt="Henderson Pritchett Car"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2190_army.jpg"
+                    alt="Henderson Pritchett Army"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2190_club.jpg"
+                    alt="Henderson Pritchett Club"
                     style={{
                       width: '100%',
                       height: 'auto',
