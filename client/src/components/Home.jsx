@@ -285,6 +285,79 @@ function Home () {
     }
   }, [checkCurrentSubdomain]);
 
+  // Check if subdomain is already taken
+  const checkSubdomainAvailable = useCallback(async (label) => {
+    try {
+      const rpcUrl = process.env.REACT_APP_ALCHEMY_URL || process.env.REACT_APP_INFURA_URL;
+      const readWeb3 = rpcUrl 
+        ? new Web3(new Web3.providers.HttpProvider(rpcUrl))
+        : web3 || new Web3(window.ethereum);
+      
+      // Calculate namehash for the subdomain: {label}.thegrandpa.eth
+      function namehash(name) {
+        const parts = name.split('.');
+        let node = '0x0000000000000000000000000000000000000000000000000000000000000000';
+        for (let i = parts.length - 1; i >= 0; i--) {
+          const labelHash = readWeb3.utils.keccak256(parts[i]);
+          node = readWeb3.utils.keccak256(node + labelHash.slice(2));
+        }
+        return node;
+      }
+      
+      const subdomainName = `${label.toLowerCase()}.thegrandpa.eth`;
+      const subdomainNode = namehash(subdomainName);
+      
+      // Check owner in ENS Registry
+      const ENS_REGISTRY = "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
+      const ENS_REGISTRY_ABI = [
+        {
+          "constant": true,
+          "inputs": [{"name": "node", "type": "bytes32"}],
+          "name": "owner",
+          "outputs": [{"name": "", "type": "address"}],
+          "type": "function"
+        }
+      ];
+      
+      const registry = new readWeb3.eth.Contract(ENS_REGISTRY_ABI, ENS_REGISTRY);
+      const owner = await registry.methods.owner(subdomainNode).call();
+      
+      // If owner is the zero address, it's available
+      // If owner is the claimer contract, it might be available (depends on contract logic)
+      // If owner is someone else, it's taken
+      const zeroAddress = "0x0000000000000000000000000000000000000000";
+      const claimerAddress = SUBDOMAIN_CLAIMER_ADDRESS.toLowerCase();
+      
+      if (owner.toLowerCase() === zeroAddress) {
+        return true; // Available
+      }
+      
+      // Check if the current user already owns it (via the claimer contract)
+      if (account) {
+        const contract = new readWeb3.eth.Contract(SUBDOMAIN_CLAIMER_ABI, SUBDOMAIN_CLAIMER_ADDRESS);
+        const currentLabel = await contract.methods.currentLabelOf(account).call();
+        if (currentLabel && currentLabel.toLowerCase() === label.toLowerCase()) {
+          return true; // User owns it, can switch
+        }
+      }
+      
+      // If owner is the claimer contract, check if it's reserved or available
+      if (owner.toLowerCase() === claimerAddress) {
+        // Check if any address owns this label
+        // We can't easily check this without events, so we'll let the contract handle it
+        // The contract will revert if the label is invalid or reserved
+        return true; // Assume available, contract will reject if not
+      }
+      
+      // Owner is someone else, so it's taken
+      return false;
+    } catch (error) {
+      console.error("Error checking subdomain availability:", error);
+      // If we can't check, let the contract handle it (it will revert if taken)
+      return true;
+    }
+  }, [web3, account]);
+
   // Claim or switch subdomain
   const claimSubdomain = useCallback(async () => {
     if (!web3 || !account || !subdomainInput.trim()) {
@@ -292,17 +365,33 @@ function Home () {
       return;
     }
 
-
     setClaiming(true);
     setClaimStatus("");
 
     try {
+      // Check if subdomain is already taken
+      const isAvailable = await checkSubdomainAvailable(subdomainInput.trim());
+      if (!isAvailable) {
+        setClaimStatus(`Error: The subdomain "${subdomainInput.trim()}.thegrandpa.eth" is already taken. Please choose a different name.`);
+        setClaiming(false);
+        return;
+      }
+      
       const contract = new web3.eth.Contract(SUBDOMAIN_CLAIMER_ABI, SUBDOMAIN_CLAIMER_ADDRESS);
       
-      // Let the wallet estimate gas automatically for optimal cost
-      // Don't set gas limit - let wallet handle it
-      const tx = await contract.methods.claim(subdomainInput.trim()).send({
+      // Get current gas price from network (like Etherscan does)
+      const gasPrice = await web3.eth.getGasPrice();
+      
+      // Estimate gas for accurate limit
+      const gasEstimate = await contract.methods.claim(subdomainInput.trim()).estimateGas({
         from: account
+      });
+      
+      // Use estimated gas with 10% buffer, and current network gas price
+      const tx = await contract.methods.claim(subdomainInput.trim()).send({
+        from: account,
+        gas: Math.floor(gasEstimate * 1.1),
+        gasPrice: gasPrice
       });
 
       setClaimStatus(`Success! Transaction: ${tx.transactionHash}`);
@@ -315,11 +404,18 @@ function Home () {
 
     } catch (error) {
       console.error("Error claiming subdomain:", error);
-      setClaimStatus(`Error: ${error.message}`);
+      // Provide more helpful error messages
+      if (error.message && error.message.includes("Invalid or reserved label")) {
+        setClaimStatus(`Error: The subdomain "${subdomainInput.trim()}" is invalid or reserved. Please choose a different name.`);
+      } else if (error.message && error.message.includes("Label required")) {
+        setClaimStatus(`Error: Please enter a valid subdomain name.`);
+      } else {
+        setClaimStatus(`Error: ${error.message}`);
+      }
     } finally {
       setClaiming(false);
     }
-  }, [web3, account, subdomainInput, checkCurrentSubdomain]);
+  }, [web3, account, subdomainInput, checkCurrentSubdomain, checkSubdomainAvailable]);
 
   // Check subdomain and resolve ENS when account and web3 are available
   useEffect(() => {
