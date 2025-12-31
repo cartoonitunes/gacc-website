@@ -76,8 +76,6 @@ function Home () {
     }
 
     try {
-      console.log("Resolving ENS for address:", address);
-      
       // Use HTTP provider for ENS lookup (more reliable)
       const rpcUrl = process.env.REACT_APP_ALCHEMY_URL || process.env.REACT_APP_INFURA_URL;
       const readWeb3 = rpcUrl 
@@ -90,8 +88,6 @@ function Home () {
       // Reverse the address for ENS reverse lookup: {reversed}.addr.reverse
       const reversedAddress = addressLower.split('').reverse().join('');
       const reverseName = reversedAddress + '.addr.reverse';
-      
-      console.log("Reverse name:", reverseName);
       
       // ENS Registry contract address (mainnet)
       const ENS_REGISTRY = "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
@@ -146,11 +142,8 @@ function Home () {
       
       const registry = new readWeb3.eth.Contract(ENS_REGISTRY_ABI, ENS_REGISTRY);
       const reverseNode = namehash(reverseName);
-      console.log("Reverse node (namehash):", reverseNode);
       
       const resolverAddress = await registry.methods.resolver(reverseNode).call();
-      
-      console.log("Resolver address:", resolverAddress);
       
       if (resolverAddress && resolverAddress !== "0x0000000000000000000000000000000000000000") {
         const resolver = new readWeb3.eth.Contract(RESOLVER_ABI, resolverAddress);
@@ -159,14 +152,12 @@ function Home () {
         let name = "";
         try {
           name = await resolver.methods.name(reverseNode).call();
-          console.log("ENS name from resolver.name():", name);
         } catch (error) {
           // If name() doesn't work, try text() with "name" key (for newer resolvers)
           try {
             name = await resolver.methods.text(reverseNode, "name").call();
-            console.log("ENS name from resolver.text():", name);
           } catch (textError) {
-            console.log("Both name() and text() failed:", textError.message);
+            // Both methods failed
           }
         }
         
@@ -174,25 +165,19 @@ function Home () {
           // Verify forward resolution to ensure it's correct
           try {
             const forwardAddress = await readWeb3.eth.ens.getAddress(name);
-            console.log("Forward resolution:", forwardAddress, "Original:", address);
             if (forwardAddress && forwardAddress.toLowerCase() === address.toLowerCase()) {
               setEnsName(name);
-              console.log("✓ ENS name verified:", name);
             } else {
-              console.log("✗ Forward verification failed");
               setEnsName(null);
             }
           } catch (verifyError) {
             // If forward verification fails, still use the name
-            console.log("Forward verification error, using name anyway:", verifyError.message);
             setEnsName(name);
           }
         } else {
-          console.log("No ENS name found (empty or invalid)");
           setEnsName(null);
         }
       } else {
-        console.log("No resolver found for reverse node - address may not have reverse resolution configured");
         setEnsName(null);
       }
     } catch (error) {
@@ -204,12 +189,10 @@ function Home () {
   // Check current subdomain
   const checkCurrentSubdomain = useCallback(async (web3Instance, userAccount) => {
     if (!userAccount) {
-      console.log("Missing userAccount");
       return;
     }
     
     if (!SUBDOMAIN_CLAIMER_ADDRESS) {
-      console.error("Subdomain claimer contract address is missing");
       return;
     }
     
@@ -224,15 +207,9 @@ function Home () {
       
       // Normalize address to checksummed format
       const checksummedAddress = readWeb3.utils.toChecksumAddress(userAccount);
-      console.log("Checking subdomain for:", checksummedAddress);
-      console.log("Using contract address:", SUBDOMAIN_CLAIMER_ADDRESS);
-      console.log("Using RPC:", rpcUrl ? "HTTP Provider" : "Wallet Provider");
       
       const contract = new readWeb3.eth.Contract(SUBDOMAIN_CLAIMER_ABI, SUBDOMAIN_CLAIMER_ADDRESS);
       const label = await contract.methods.currentLabelOf(checksummedAddress).call();
-      
-      console.log("Subdomain check result:", label, "Type:", typeof label, "Length:", label?.length);
-      console.log("Raw label value:", JSON.stringify(label));
       
       // Check if label exists and is not empty
       // Handle both string and other types, and check for empty strings
@@ -242,37 +219,13 @@ function Home () {
         labelStr = String(label).trim();
       }
       
-      console.log("Processing label:", {
-        raw: label,
-        stringified: labelStr,
-        length: labelStr.length,
-        isEmpty: labelStr.length === 0,
-        isNull: labelStr === "null",
-        isUndefined: labelStr === "undefined",
-        willSet: labelStr.length > 0 && labelStr !== "null" && labelStr !== "undefined"
-      });
-      
       if (labelStr.length > 0 && labelStr !== "null" && labelStr !== "undefined") {
-        console.log("✓ ABOUT TO SET currentSubdomain state to:", labelStr);
         setCurrentSubdomain(labelStr);
-        // Force a check after state update
-        setTimeout(() => {
-          console.log("State update completed. Verifying...");
-        }, 100);
       } else {
-        console.log("✗ NOT setting subdomain - conditions not met");
-        console.log("  - length > 0:", labelStr.length > 0);
-        console.log("  - !== 'null':", labelStr !== "null");
-        console.log("  - !== 'undefined':", labelStr !== "undefined");
         setCurrentSubdomain(null);
       }
     } catch (error) {
       console.error("Error checking subdomain:", error);
-      console.error("Error details:", {
-        message: error.message,
-        code: error.code,
-        data: error.data
-      });
       setCurrentSubdomain(null);
     } finally {
       setLoadingSubdomain(false);
@@ -346,9 +299,10 @@ function Home () {
     try {
       const contract = new web3.eth.Contract(SUBDOMAIN_CLAIMER_ABI, SUBDOMAIN_CLAIMER_ADDRESS);
       
+      // Let the wallet estimate gas automatically for optimal cost
+      // Don't set gas limit - let wallet handle it
       const tx = await contract.methods.claim(subdomainInput.trim()).send({
-        from: account,
-        gas: 200000
+        from: account
       });
 
       setClaimStatus(`Success! Transaction: ${tx.transactionHash}`);
@@ -371,17 +325,11 @@ function Home () {
   useEffect(() => {
     if (web3 && account) {
       if (SUBDOMAIN_CLAIMER_ADDRESS) {
-        console.log("useEffect: Checking subdomain for connected wallet");
         checkCurrentSubdomain(web3, account);
       }
       resolveEnsName(web3, account);
     }
   }, [web3, account, checkCurrentSubdomain, resolveEnsName]);
-
-  // Debug: Log when currentSubdomain changes
-  useEffect(() => {
-    console.log("currentSubdomain state changed to:", currentSubdomain);
-  }, [currentSubdomain]);
 
   function imageToShow() {
     if (!apeSelection) {
