@@ -269,6 +269,12 @@ function GrandpaCoin() {
         title: 'Grandpa Ape #2190 - Henderson Pritchett | Grandpa Coin',
         description: 'Today we welcome our newest resident, Henderson Pritchett. Henderson was a world renowned trophy hunter turned reality television star. His show, Nature\'s Assassin, ended in controversy when a contestant went missing and hasn\'t been seen since.',
         image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-2190`]?.image || defaultImage
+      },
+      '238': {
+        name: 'Monty LeVine',
+        title: 'Grandpa Ape #238 - Monty LeVine | Grandpa Coin',
+        description: 'The newest resident has arrived at the Country Club, and although the others have not met him yet, Monty LeVine is causing quite a stir. Particularly with one resident. Monty is not a normal resident. He is Resident Entertainment.',
+        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-238`]?.image || defaultImage
       }
     };
   }, [nftMetadata]);
@@ -662,7 +668,7 @@ function GrandpaCoin() {
     const searchParams = new URLSearchParams(location.search);
     const storyParam = searchParams.get('story');
     
-    if (storyParam && ['2945', '693', '4935', '1784', '2190'].includes(storyParam)) {
+    if (storyParam && ['2945', '693', '4935', '1784', '2190', '238'].includes(storyParam)) {
       setStoryTokenId(storyParam);
       setShowStoryModal(true);
       
@@ -1555,7 +1561,7 @@ function GrandpaCoin() {
                                                   Joined: {nft.joinedAtFormatted || new Date(nft.joinedAt * 1000).toLocaleDateString()}
                                                 </p>
                                                 <div style={{marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '4px'}}>
-                                                  {(nft.tokenId === '2945' || nft.tokenId === '693' || nft.tokenId === '4935' || nft.tokenId === '1784' || nft.tokenId === '2190') && (
+                                                  {(nft.tokenId === '2945' || nft.tokenId === '693' || nft.tokenId === '4935' || nft.tokenId === '1784' || nft.tokenId === '2190' || nft.tokenId === '238') && (
                                                     <button
                                                       onClick={() => {
                                                         setStoryTokenId(nft.tokenId);
@@ -1803,6 +1809,16 @@ function GrandpaCoin() {
                   marginBottom: '20px'
                 }}>
                   Henderson Pritchett
+                </h3>
+              )}
+              {storyTokenId === '238' && (
+                <h3 style={{
+                  color: 'black',
+                  fontSize: '1.5rem',
+                  fontStyle: 'italic',
+                  marginBottom: '20px'
+                }}>
+                  Monty LeVine
                 </h3>
               )}
             </div>
@@ -2150,6 +2166,72 @@ function GrandpaCoin() {
                   <img
                     src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2190_club.jpg"
                     alt="Henderson Pritchett Club"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                </div>
+              </>
+            )}
+
+            {/* Story Text - 238 */}
+            {storyTokenId === '238' && (
+              <>
+                <div style={{
+                  color: '#1a1a1a',
+                  fontSize: '1.1rem',
+                  lineHeight: '1.8',
+                  marginBottom: '30px',
+                  textAlign: 'left',
+                  fontFamily: 'inherit'
+                }}>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    The newest resident has arrived at the Country Club, and although the others have not met him yet, Monty LeVine is causing quite a stir. Particularly with one resident.
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    You see, Monty is not a normal resident. He is <em>Resident Entertainment</em>. This means that he lives on the premises, but his living expenses are waived in exchange for the services Monty provides. This has really raised the ire of Terrance, as he has been trying to secure a similar deal for himself, though nobody is asking for the services he has been providing.
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    Monty was a big deal on the disco scene back in the day. He claims to have been the "Secret Lover" of many of the famous movie starlets of the time, but those claims have never been substantiated. He made a living as a party host on cruise ships, had a short run as a DJ at a swanky nightclub, and put out a collection of instructional dance videos. Unfortunately, he insisted that those only be recorded on laser disc, a format he saw as the wave of the future.
+                  </p>
+                  <p style={{marginBottom: '20px', fontWeight: 'bold', color: '#1a1a1a'}}>
+                    Pop in and join the fun with our newest resident. I'm sure those Open Mic nights will really be something.
+                  </p>
+                </div>
+
+                {/* Story Images - 238 */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                  gap: '20px',
+                  marginTop: '30px'
+                }}>
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/238_angry.jpg"
+                    alt="Monty LeVine Angry"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/238_star.jpeg"
+                    alt="Monty LeVine Star"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/238_dance.jpg"
+                    alt="Monty LeVine Dance"
                     style={{
                       width: '100%',
                       height: 'auto',
