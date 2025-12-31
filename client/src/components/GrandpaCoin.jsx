@@ -591,14 +591,27 @@ function GrandpaCoin() {
       // Create ERC721 contract instance
       const nftContract = new web3.eth.Contract(ERC721_ABI, selectedCollection);
 
-      // Call safeTransferFrom
+      // Get current gas price from network (like Etherscan does)
+      const gasPrice = await web3.eth.getGasPrice();
+      
+      // Estimate gas for accurate limit
+      const gasEstimate = await nftContract.methods.safeTransferFrom(
+        account,
+        COUNTRY_CLUB_ADDRESS,
+        selectedTokenId
+      ).estimateGas({
+        from: account
+      });
+      
+      // Use estimated gas with 10% buffer, and current network gas price
       const tx = await nftContract.methods.safeTransferFrom(
         account,
         COUNTRY_CLUB_ADDRESS,
         selectedTokenId
       ).send({
         from: account,
-        gas: 200000 // Adjust gas limit as needed
+        gas: Math.floor(gasEstimate * 1.1),
+        gasPrice: gasPrice
       });
 
       setTransferStatus(`Success! Transaction: ${tx.transactionHash}`);
