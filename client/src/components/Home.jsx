@@ -44,6 +44,17 @@ const RESOLVER_SETADDR_ABI = [
     "name": "setAddr",
     "outputs": [],
     "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {"name": "node", "type": "bytes32"},
+      {"name": "coinType", "type": "uint256"},
+      {"name": "addr", "type": "bytes"}
+    ],
+    "name": "setAddr",
+    "outputs": [],
+    "type": "function"
   }
 ];
 
@@ -61,6 +72,8 @@ const NAMEWRAPPER_ABI = [
     "type": "function"
   }
 ];
+
+const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 // ENS Registry ABI for setting resolver
 const ENS_REGISTRY_ABI_FULL = [
@@ -102,11 +115,11 @@ function Home () {
   const [ensName, setEnsName] = useState(null);
   const [subdomainInput, setSubdomainInput] = useState("");
   const [currentSubdomain, setCurrentSubdomain] = useState(null);
-  const [subdomainResolves, setSubdomainResolves] = useState(false);
+  const [subdomainState, setSubdomainState] = useState("NONE"); // NONE, CLAIMED_NO_RESOLVER, RESOLVER_SET_NO_ADDR, FULLY_ACTIVE
   const [claiming, setClaiming] = useState(false);
   const [claimStatus, setClaimStatus] = useState("");
   const [loadingSubdomain, setLoadingSubdomain] = useState(false);
-  const [settingAddress, setSettingAddress] = useState(false);
+  const [activatingEns, setActivatingEns] = useState(false);
 
   function isPositiveInteger(n) {
       return n >>> 0 === parseFloat(n);
@@ -190,20 +203,9 @@ function Home () {
         }
       ];
 
-      // Calculate namehash for the reverse name
-      // namehash function implementation (Web3.js doesn't have it built-in)
-      function namehash(name) {
-        const parts = name.split('.');
-        let node = '0x0000000000000000000000000000000000000000000000000000000000000000';
-        for (let i = parts.length - 1; i >= 0; i--) {
-          const labelHash = readWeb3.utils.keccak256(parts[i]);
-          node = readWeb3.utils.keccak256(node + labelHash.slice(2));
-        }
-        return node;
-      }
-      
+      // Use ethers for canonical namehash
       const registry = new readWeb3.eth.Contract(ENS_REGISTRY_ABI, ENS_REGISTRY);
-      const reverseNode = namehash(reverseName);
+      const reverseNode = ethers.utils.namehash(reverseName);
       
       const resolverAddress = await registry.methods.resolver(reverseNode).call();
       
@@ -248,6 +250,58 @@ function Home () {
     }
   }, []);
 
+  // Get subdomain state (resolver + addr) - correct ENS v2 mental model
+  const getSubdomainState = useCallback(async (label, account, web3Instance) => {
+    try {
+      const subdomainName = `${label}.thegrandpa.eth`;
+      const subdomainNode = ethers.utils.namehash(subdomainName);
+      
+      const ENS_REGISTRY = "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
+      const ENS_REGISTRY_ABI = [
+        {
+          "constant": true,
+          "inputs": [{"name": "node", "type": "bytes32"}],
+          "name": "resolver",
+          "outputs": [{"name": "", "type": "address"}],
+          "type": "function"
+        }
+      ];
+      
+      const RESOLVER_ABI = [
+        {
+          "constant": true,
+          "inputs": [{"name": "node", "type": "bytes32"}],
+          "name": "addr",
+          "outputs": [{"name": "", "type": "address"}],
+          "type": "function"
+        }
+      ];
+      
+      const registry = new web3Instance.eth.Contract(ENS_REGISTRY_ABI, ENS_REGISTRY);
+      const resolverAddr = await registry.methods.resolver(subdomainNode).call();
+      
+      if (!resolverAddr || resolverAddr === ZERO_ADDRESS) {
+        return "CLAIMED_NO_RESOLVER";
+      }
+      
+      const resolver = new web3Instance.eth.Contract(RESOLVER_ABI, resolverAddr);
+      const addr = await resolver.methods.addr(subdomainNode).call();
+      
+      if (!addr || addr === ZERO_ADDRESS) {
+        return "RESOLVER_SET_NO_ADDR";
+      }
+      
+      if (addr.toLowerCase() === account.toLowerCase()) {
+        return "FULLY_ACTIVE";
+      }
+      
+      return "RESOLVER_SET_NO_ADDR";
+    } catch (error) {
+      console.error("Error getting subdomain state:", error);
+      return "CLAIMED_NO_RESOLVER"; // Default to safest state
+    }
+  }, []);
+
   // Check current subdomain
   const checkCurrentSubdomain = useCallback(async (web3Instance, userAccount) => {
     if (!userAccount) {
@@ -284,64 +338,21 @@ function Home () {
       if (labelStr.length > 0 && labelStr !== "null" && labelStr !== "undefined") {
         setCurrentSubdomain(labelStr);
         
-        // Check if the subdomain resolves to the user's address
-        try {
-          const subdomainName = `${labelStr}.thegrandpa.eth`;
-          
-          const ENS_REGISTRY = "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
-          const ENS_REGISTRY_ABI = [
-            {
-              "constant": true,
-              "inputs": [{"name": "node", "type": "bytes32"}],
-              "name": "resolver",
-              "outputs": [{"name": "", "type": "address"}],
-              "type": "function"
-            }
-          ];
-          
-          const RESOLVER_ABI = [
-            {
-              "constant": true,
-              "inputs": [{"name": "node", "type": "bytes32"}],
-              "name": "addr",
-              "outputs": [{"name": "", "type": "address"}],
-              "type": "function"
-            }
-          ];
-          
-          // Use ethers for canonical namehash (same as setSubdomainAddr)
-          const subdomainNode = ethers.utils.namehash(subdomainName);
-          const registry = new readWeb3.eth.Contract(ENS_REGISTRY_ABI, ENS_REGISTRY);
-          const resolverAddress = await registry.methods.resolver(subdomainNode).call();
-          
-          if (resolverAddress && resolverAddress !== "0x0000000000000000000000000000000000000000") {
-            const resolver = new readWeb3.eth.Contract(RESOLVER_ABI, resolverAddress);
-            const resolvedAddress = await resolver.methods.addr(subdomainNode).call();
-            
-            if (resolvedAddress && resolvedAddress !== "0x0000000000000000000000000000000000000000" && resolvedAddress.toLowerCase() === checksummedAddress.toLowerCase()) {
-              setSubdomainResolves(true);
-            } else {
-              setSubdomainResolves(false);
-            }
-          } else {
-            setSubdomainResolves(false);
-          }
-        } catch (resolveError) {
-          console.error("Error checking subdomain resolution:", resolveError);
-          setSubdomainResolves(false);
-        }
+        // Get subdomain state (resolver + addr)
+        const state = await getSubdomainState(labelStr, checksummedAddress, readWeb3);
+        setSubdomainState(state);
       } else {
         setCurrentSubdomain(null);
-        setSubdomainResolves(false);
+        setSubdomainState("NONE");
       }
     } catch (error) {
       console.error("Error checking subdomain:", error);
       setCurrentSubdomain(null);
-      setSubdomainResolves(false);
+      setSubdomainState("NONE");
     } finally {
       setLoadingSubdomain(false);
     }
-  }, []);
+  }, [getSubdomainState]);
 
   // Connect wallet for subdomain claiming
   const connectWallet = useCallback(async () => {
@@ -397,200 +408,100 @@ function Home () {
   }, [checkCurrentSubdomain]);
 
   // Check if subdomain is already taken
+  // Check if subdomain is available - let the contract decide (correct for wrapped names)
   const checkSubdomainAvailable = useCallback(async (label) => {
-    try {
-      const rpcUrl = process.env.REACT_APP_ALCHEMY_URL || process.env.REACT_APP_INFURA_URL;
-      const readWeb3 = rpcUrl 
-        ? new Web3(new Web3.providers.HttpProvider(rpcUrl))
-        : web3 || new Web3(window.ethereum);
-      
-      // Calculate namehash for the subdomain: {label}.thegrandpa.eth
-      function namehash(name) {
-        const parts = name.split('.');
-        let node = '0x0000000000000000000000000000000000000000000000000000000000000000';
-        for (let i = parts.length - 1; i >= 0; i--) {
-          const labelHash = readWeb3.utils.keccak256(parts[i]);
-          node = readWeb3.utils.keccak256(node + labelHash.slice(2));
-        }
-        return node;
-      }
-      
-      const subdomainName = `${label.toLowerCase()}.thegrandpa.eth`;
-      const subdomainNode = namehash(subdomainName);
-      
-      // Check owner in ENS Registry
-      const ENS_REGISTRY = "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
-      const ENS_REGISTRY_ABI = [
-        {
-          "constant": true,
-          "inputs": [{"name": "node", "type": "bytes32"}],
-          "name": "owner",
-          "outputs": [{"name": "", "type": "address"}],
-          "type": "function"
-        }
-      ];
-      
-      const registry = new readWeb3.eth.Contract(ENS_REGISTRY_ABI, ENS_REGISTRY);
-      const owner = await registry.methods.owner(subdomainNode).call();
-      
-      // If owner is the zero address, it's available
-      // If owner is the claimer contract, it might be available (depends on contract logic)
-      // If owner is someone else, it's taken
-      const zeroAddress = "0x0000000000000000000000000000000000000000";
-      const claimerAddress = SUBDOMAIN_CLAIMER_ADDRESS.toLowerCase();
-      
-      if (owner.toLowerCase() === zeroAddress) {
-        return true; // Available
-      }
-      
-      // Check if the current user already owns it (via the claimer contract)
-      if (account) {
-        const contract = new readWeb3.eth.Contract(SUBDOMAIN_CLAIMER_ABI, SUBDOMAIN_CLAIMER_ADDRESS);
-        const currentLabel = await contract.methods.currentLabelOf(account).call();
-        if (currentLabel && currentLabel.toLowerCase() === label.toLowerCase()) {
-          return true; // User owns it, can switch
-        }
-      }
-      
-      // If owner is the claimer contract, check if it's reserved or available
-      if (owner.toLowerCase() === claimerAddress) {
-        // Check if any address owns this label
-        // We can't easily check this without events, so we'll let the contract handle it
-        // The contract will revert if the label is invalid or reserved
-        return true; // Assume available, contract will reject if not
-      }
-      
-      // Owner is someone else, so it's taken
-      return false;
-    } catch (error) {
-      console.error("Error checking subdomain availability:", error);
-      // If we can't check, let the contract handle it (it will revert if taken)
-      return true;
-    }
-  }, [web3, account]);
+    // Always return true and let the contract decide
+    // For wrapped names, registry ownership is irrelevant
+    // The claimer contract enforces: one subdomain per wallet, uniqueness, release-on-switch
+    return true;
+  }, []);
 
-  // Set subdomain address resolution
-  const setSubdomainAddr = useCallback(async (subdomainLabel, userAddress) => {
+  // Activate ENS: Set resolver + addr (always use NameWrapper for wrapped names)
+  const activateEns = useCallback(async (subdomainLabel, userAddress) => {
     if (!web3 || !account || !subdomainLabel) {
       return;
     }
 
     try {
       const subdomainName = `${subdomainLabel}.thegrandpa.eth`;
-      
-      // ✅ canonical ENS namehash
       const subdomainNode = ethers.utils.namehash(subdomainName);
       
       const registry = new web3.eth.Contract(ENS_REGISTRY_ABI_FULL, ENS_REGISTRY);
       let resolverAddress = await registry.methods.resolver(subdomainNode).call();
       
-      // If no resolver is set, or if it's set to a different resolver, set it to our resolver
-      if (!resolverAddress || resolverAddress === "0x0000000000000000000000000000000000000000" || resolverAddress.toLowerCase() !== RESOLVER.toLowerCase()) {
-        if (!resolverAddress || resolverAddress === "0x0000000000000000000000000000000000000000") {
-          console.log(`No resolver set for ${subdomainName}, setting resolver first...`);
-        } else {
-          console.log(`Resolver is set to ${resolverAddress} but should be ${RESOLVER}, updating resolver...`);
-        }
-        
-        // Check if the node is wrapped (owned by NameWrapper)
-        const nodeOwner = await registry.methods.owner(subdomainNode).call();
-        console.log(`Node owner: ${nodeOwner}, Account: ${account}`);
-        
-        // Get current gas price
-        const gasPrice = await web3.eth.getGasPrice();
-        
-        // Verify the resolver contract has code (is a contract)
-        const resolverCode = await web3.eth.getCode(RESOLVER);
-        if (!resolverCode || resolverCode === "0x") {
-          throw new Error(`Resolver address ${RESOLVER} is not a contract or doesn't exist.`);
-        }
-        
-        console.log(`Resolver contract verified, setting resolver to ${RESOLVER}...`);
-        
-        // Check if name is wrapped (owned by NameWrapper)
-        const isWrapped = nodeOwner.toLowerCase() === NAMEWRAPPER_ADDRESS.toLowerCase();
-        
-        // Try to estimate gas first to catch any errors early
-        try {
-          let setResolverTx;
-          
-          if (isWrapped) {
-            // For wrapped names, use NameWrapper.setResolver()
-            console.log(`Name is wrapped, using NameWrapper.setResolver()...`);
-            const nameWrapper = new web3.eth.Contract(NAMEWRAPPER_ABI, NAMEWRAPPER_ADDRESS);
-            
-            const setResolverGasEstimate = await nameWrapper.methods.setResolver(subdomainNode, RESOLVER).estimateGas({
-              from: account
-            });
-            
-            console.log(`Gas estimate for NameWrapper.setResolver: ${setResolverGasEstimate}`);
-            
-            setResolverTx = await nameWrapper.methods.setResolver(subdomainNode, RESOLVER).send({
-              from: account,
-              gas: Math.floor(setResolverGasEstimate * 1.1),
-              gasPrice: gasPrice
-            });
-          } else {
-            // For unwrapped names, use ENS Registry.setResolver()
-            console.log(`Name is not wrapped, using ENS Registry.setResolver()...`);
-            
-            // Check if the connected account owns the node
-            if (nodeOwner.toLowerCase() !== account.toLowerCase()) {
-              throw new Error(`You don't have permission to set the resolver for this subdomain. The subdomain is owned by ${nodeOwner}, but your connected account is ${account}. Please connect the wallet that owns the subdomain.`);
-            }
-            
-            const setResolverGasEstimate = await registry.methods.setResolver(subdomainNode, RESOLVER).estimateGas({
-              from: account
-            });
-            
-            console.log(`Gas estimate for Registry.setResolver: ${setResolverGasEstimate}`);
-            
-            setResolverTx = await registry.methods.setResolver(subdomainNode, RESOLVER).send({
-              from: account,
-              gas: Math.floor(setResolverGasEstimate * 1.1),
-              gasPrice: gasPrice
-            });
-          }
-          
-          console.log(`Resolver set: ${setResolverTx.transactionHash}`);
-          resolverAddress = RESOLVER;
-        } catch (estimateError) {
-          console.error("Error estimating/setting resolver:", estimateError);
-          // Check if it's a revert reason
-          if (estimateError.reason) {
-            throw new Error(`Failed to set resolver: ${estimateError.reason}`);
-          } else if (estimateError.message && estimateError.message.includes("execution reverted")) {
-            throw new Error(`Failed to set resolver: The transaction was reverted. ${isWrapped ? 'Make sure you are the controller of this wrapped name.' : `Make sure you're connected with the wallet that owns the subdomain (${nodeOwner}).`}`);
-          } else if (estimateError.message) {
-            throw new Error(`Failed to set resolver: ${estimateError.message}`);
-          } else {
-            throw new Error(`Failed to set resolver. The transaction reverted.`);
-          }
-        }
-      }
-      
-      console.log(`Using resolver: ${resolverAddress} for node: ${subdomainNode} (${subdomainName})`);
-      
-      const resolver = new web3.eth.Contract(RESOLVER_SETADDR_ABI, resolverAddress);
-      
-      // Get current gas price from network
       const gasPrice = await web3.eth.getGasPrice();
       
-      // Estimate gas for accurate limit
-      const gasEstimate = await resolver.methods.setAddr(subdomainNode, userAddress).estimateGas({
-        from: account
-      });
+      // Verify the resolver contract has code
+      const resolverCode = await web3.eth.getCode(RESOLVER);
+      if (!resolverCode || resolverCode === "0x") {
+        throw new Error(`Resolver address ${RESOLVER} is not a contract or doesn't exist.`);
+      }
       
-      // Use estimated gas with 10% buffer, and current network gas price
-      const tx = await resolver.methods.setAddr(subdomainNode, userAddress).send({
-        from: account,
-        gas: Math.floor(gasEstimate * 1.1),
-        gasPrice: gasPrice
-      });
+      // Always use NameWrapper.setResolver for wrapped names (let chain decide permissions)
+      // For wrapped subdomains, this is the correct approach
+      const nameWrapper = new web3.eth.Contract(NAMEWRAPPER_ABI, NAMEWRAPPER_ADDRESS);
       
-      return tx;
+      // Set resolver if needed
+      let setResolverTxHash = null;
+      const needsResolver = !resolverAddress || resolverAddress === ZERO_ADDRESS || resolverAddress.toLowerCase() !== RESOLVER.toLowerCase();
+      
+      if (needsResolver) {
+        console.log(`Setting resolver to ${RESOLVER}...`);
+        const setResolverGasEstimate = await nameWrapper.methods.setResolver(subdomainNode, RESOLVER).estimateGas({
+          from: account
+        });
+        
+        const setResolverTx = await nameWrapper.methods.setResolver(subdomainNode, RESOLVER).send({
+          from: account,
+          gas: Math.floor(setResolverGasEstimate * 1.1),
+          gasPrice: gasPrice
+        });
+        
+        console.log(`Resolver set: ${setResolverTx.transactionHash}`);
+        setResolverTxHash = setResolverTx.transactionHash;
+        resolverAddress = RESOLVER;
+      }
+      
+      // Set address on resolver (try legacy first, fallback to coin-type if needed)
+      console.log(`Setting address on resolver...`);
+      const resolver = new web3.eth.Contract(RESOLVER_SETADDR_ABI, resolverAddress);
+      
+      let setAddrTx;
+      try {
+        // Try legacy setAddr(node, address) first
+        const setAddrGasEstimate = await resolver.methods.setAddr(subdomainNode, userAddress).estimateGas({
+          from: account
+        });
+        
+        setAddrTx = await resolver.methods.setAddr(subdomainNode, userAddress).send({
+          from: account,
+          gas: Math.floor(setAddrGasEstimate * 1.1),
+          gasPrice: gasPrice
+        });
+      } catch (legacyError) {
+        // Fallback to coin-type version (coinType 60 = Ethereum)
+        console.log(`Legacy setAddr failed, trying coin-type version...`);
+        const coinType = 60; // Ethereum
+        const addrBytes = web3.eth.abi.encodeParameter('address', userAddress);
+        
+        const setAddrGasEstimate = await resolver.methods.setAddr(subdomainNode, coinType, addrBytes).estimateGas({
+          from: account
+        });
+        
+        setAddrTx = await resolver.methods.setAddr(subdomainNode, coinType, addrBytes).send({
+          from: account,
+          gas: Math.floor(setAddrGasEstimate * 1.1),
+          gasPrice: gasPrice
+        });
+      }
+      
+      console.log(`Address set: ${setAddrTx.transactionHash}`);
+      return { 
+        setResolverTx: setResolverTxHash, 
+        setAddrTx: setAddrTx.transactionHash 
+      };
     } catch (error) {
-      console.error("Error setting subdomain address:", error);
+      console.error("Error activating ENS:", error);
       throw error;
     }
   }, [web3, account]);
@@ -606,46 +517,32 @@ function Home () {
     setClaimStatus("");
 
     try {
-      // Check if subdomain is already taken
-      const isAvailable = await checkSubdomainAvailable(subdomainInput.trim());
-      if (!isAvailable) {
-        setClaimStatus(`Error: The subdomain "${subdomainInput.trim()}.thegrandpa.eth" is already taken. Please choose a different name.`);
-        setClaiming(false);
-        return;
-      }
-      
+      // Let the contract decide availability (correct for wrapped names)
       const contract = new web3.eth.Contract(SUBDOMAIN_CLAIMER_ABI, SUBDOMAIN_CLAIMER_ADDRESS);
+      
+      // Normalize label to lowercase (ENS names are case-insensitive but hash-sensitive)
+      const label = subdomainInput.trim().toLowerCase();
       
       // Get current gas price from network (like Etherscan does)
       const gasPrice = await web3.eth.getGasPrice();
       
       // Estimate gas for accurate limit
-      const gasEstimate = await contract.methods.claim(subdomainInput.trim()).estimateGas({
+      const gasEstimate = await contract.methods.claim(label).estimateGas({
         from: account
       });
       
       // Use estimated gas with 10% buffer, and current network gas price
-      const tx = await contract.methods.claim(subdomainInput.trim()).send({
+      const tx = await contract.methods.claim(label).send({
         from: account,
         gas: Math.floor(gasEstimate * 1.1),
         gasPrice: gasPrice
       });
 
-      setClaimStatus(`✅ Transaction 1/3 Complete: Subdomain claimed! (${tx.transactionHash}) Setting resolver...`);
-      
-      // After claiming, set the address resolution
-      try {
-        setClaimStatus(`⏳ Transaction 2/3: Setting resolver and address...`);
-        const setAddrTx = await setSubdomainAddr(subdomainInput.trim(), account);
-        setClaimStatus(`✅ All Complete! Subdomain claimed and address set. Transactions: ${tx.transactionHash}, ${setAddrTx.transactionHash}`);
-      } catch (setAddrError) {
-        console.error("Error setting subdomain address:", setAddrError);
-        setClaimStatus(`⚠️ Subdomain claimed (${tx.transactionHash}), but failed to set address. You can set it manually using the button below.`);
-      }
+      setClaimStatus(`✅ Success! Subdomain claimed: ${label}.thegrandpa.eth (${tx.transactionHash})`);
       
       setSubdomainInput("");
       
-      // Refresh subdomain after a delay
+      // Wait a moment for indexing, then refresh subdomain state
       setTimeout(() => {
         checkCurrentSubdomain(web3, account);
       }, 3000);
@@ -663,33 +560,45 @@ function Home () {
     } finally {
       setClaiming(false);
     }
-  }, [web3, account, subdomainInput, checkCurrentSubdomain, checkSubdomainAvailable, setSubdomainAddr]);
+  }, [web3, account, subdomainInput, checkCurrentSubdomain]);
 
-  // Manually set subdomain address
-  const handleSetSubdomainAddress = useCallback(async () => {
+  // Activate ENS (set resolver + addr)
+  const handleActivateEns = useCallback(async () => {
     if (!web3 || !account || !currentSubdomain) {
       return;
     }
 
-    setSettingAddress(true);
+    setActivatingEns(true);
     setClaimStatus("");
 
     try {
-      setClaimStatus(`⏳ Setting resolver and address...`);
-      const tx = await setSubdomainAddr(currentSubdomain, account);
-      setClaimStatus(`✅ Success! Address resolution set. Transaction: ${tx.transactionHash}`);
+      // Conditional message based on state
+      if (subdomainState === 'CLAIMED_NO_RESOLVER') {
+        setClaimStatus(`⏳ Transaction 1/2: Setting resolver...`);
+      } else {
+        setClaimStatus(`⏳ Setting address...`);
+      }
+      
+      const result = await activateEns(currentSubdomain, account);
+      
+      if (result.setResolverTx) {
+        setClaimStatus(`✅ Transaction 1/2 Complete! Setting address...`);
+      }
+      
+      const txHashes = [result.setResolverTx, result.setAddrTx].filter(Boolean).join(', ');
+      setClaimStatus(`✅ Success! ENS activated. Transactions: ${txHashes}`);
       
       // Refresh subdomain after a delay
       setTimeout(() => {
         checkCurrentSubdomain(web3, account);
       }, 3000);
     } catch (error) {
-      console.error("Error setting subdomain address:", error);
+      console.error("Error activating ENS:", error);
       setClaimStatus(`Error: ${error.message}`);
     } finally {
-      setSettingAddress(false);
+      setActivatingEns(false);
     }
-  }, [web3, account, currentSubdomain, setSubdomainAddr, checkCurrentSubdomain]);
+  }, [web3, account, currentSubdomain, activateEns, checkCurrentSubdomain]);
 
   // Check subdomain and resolve ENS when account and web3 are available
   useEffect(() => {
@@ -978,7 +887,7 @@ function Home () {
                                           </p>
                                         </div>
                                         
-                                        {!subdomainResolves && (
+                                        {(subdomainState === 'CLAIMED_NO_RESOLVER' || subdomainState === 'RESOLVER_SET_NO_ADDR') && (
                                           <div style={{
                                             marginBottom: '20px',
                                             padding: '15px',
@@ -993,10 +902,12 @@ function Home () {
                                               margin: '0 0 12px 0',
                                               fontWeight: 'bold'
                                             }}>
-                                              Your subdomain is not yet resolved to your address.
+                                              {subdomainState === 'CLAIMED_NO_RESOLVER' 
+                                                ? 'Your subdomain needs to be activated to resolve to your address.'
+                                                : 'Your subdomain resolver is set, but address needs to be configured.'}
                                             </p>
                                             
-                                            {/* Transaction explanation for setting address */}
+                                            {/* Transaction explanation for activating ENS */}
                                             <div style={{
                                               marginBottom: '15px',
                                               padding: '12px',
@@ -1020,38 +931,57 @@ function Home () {
                                                 paddingLeft: '20px',
                                                 lineHeight: '1.5'
                                               }}>
-                                                <li><strong>Transaction 1:</strong> Set the resolver (if not already set) - tells ENS where to store your address</li>
-                                                <li><strong>Transaction 2:</strong> Set your address on the resolver - links your subdomain to your wallet</li>
+                                                {subdomainState === 'CLAIMED_NO_RESOLVER' && (
+                                                  <>
+                                                    <li><strong>Transaction 1:</strong> Set the resolver - tells ENS where to store your address</li>
+                                                    <li><strong>Transaction 2:</strong> Set your address on the resolver - links your subdomain to your wallet</li>
+                                                  </>
+                                                )}
+                                                {subdomainState === 'RESOLVER_SET_NO_ADDR' && (
+                                                  <li><strong>Transaction 1:</strong> Set your address on the resolver - links your subdomain to your wallet</li>
+                                                )}
                                               </ul>
-                                              <p style={{
-                                                color: '#856404',
-                                                fontSize: '0.75rem',
-                                                margin: '8px 0 0 0',
-                                                fontStyle: 'italic'
-                                              }}>
-                                                Note: If the resolver is already set, you'll only sign one transaction.
-                                              </p>
                                             </div>
                                             
                                             <button
                                               className="bayc-button mint"
                                               type="button"
-                                              onClick={handleSetSubdomainAddress}
-                                              disabled={settingAddress}
+                                              onClick={handleActivateEns}
+                                              disabled={activatingEns}
                                               style={{
-                                                backgroundColor: settingAddress ? '#ccc' : '#977039',
+                                                backgroundColor: activatingEns ? '#ccc' : '#977039',
                                                 color: '#f9edcd',
                                                 border: 'none',
                                                 padding: '12px 24px',
                                                 fontSize: '1rem',
-                                                cursor: settingAddress ? 'not-allowed' : 'pointer',
+                                                cursor: activatingEns ? 'not-allowed' : 'pointer',
                                                 width: '100%',
-                                                opacity: settingAddress ? 0.6 : 1,
+                                                opacity: activatingEns ? 0.6 : 1,
                                                 fontWeight: 'bold'
                                               }}
                                             >
-                                              {settingAddress ? 'SETTING ADDRESS...' : 'SET ADDRESS RESOLUTION'}
+                                              {activatingEns ? 'ACTIVATING ENS...' : 'ACTIVATE ENS'}
                                             </button>
+                                          </div>
+                                        )}
+                                        
+                                        {subdomainState === 'FULLY_ACTIVE' && (
+                                          <div style={{
+                                            marginBottom: '20px',
+                                            padding: '15px',
+                                            backgroundColor: '#e6f7e6',
+                                            borderRadius: '8px',
+                                            border: '2px solid #2e7d32',
+                                            textAlign: 'center'
+                                          }}>
+                                            <p style={{
+                                              color: '#2e7d32',
+                                              fontSize: '0.9rem',
+                                              margin: 0,
+                                              fontWeight: 'bold'
+                                            }}>
+                                              ✅ Your subdomain is fully active and resolving to your address!
+                                            </p>
                                           </div>
                                         )}
                                       </div>
@@ -1159,16 +1089,15 @@ function Home () {
                                           lineHeight: '1.6'
                                         }}>
                                           <li><strong>Transaction 1:</strong> Claim your subdomain (creates the ENS record)</li>
-                                          <li><strong>Transaction 2:</strong> Set the resolver (if not already set) - this tells ENS where to look for your address</li>
-                                          <li><strong>Transaction 3:</strong> Set your address on the resolver (links your subdomain to your wallet address)</li>
+                                          <li><strong>Transaction 2:</strong> Activate ENS - this will set the resolver (if needed) and your address</li>
                                         </ul>
                                         <p style={{
                                           color: '#666',
-                                          fontSize: '0.8rem',
+                                          fontSize: '0.75rem',
                                           margin: '10px 0 0 0',
                                           fontStyle: 'italic'
                                         }}>
-                                          All transactions use optimized gas settings for the lowest cost.
+                                          Note: Activation may require 1-2 transactions depending on whether the resolver is already set. All transactions use optimized gas settings for the lowest cost.
                                         </p>
                                       </div>
                                     )}
