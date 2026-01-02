@@ -275,6 +275,12 @@ function GrandpaCoin() {
         title: 'Grandpa Ape #238 - Monty LeVine | Grandpa Coin',
         description: 'The newest resident has arrived at the Country Club, and although the others have not met him yet, Monty LeVine is causing quite a stir. Particularly with one resident. Monty is not a normal resident. He is Resident Entertainment.',
         image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-238`]?.image || defaultImage
+      },
+      '935': {
+        name: 'Caleb Hatch',
+        title: 'Grandpa Ape #935 - Caleb Hatch | Grandpa Coin',
+        description: 'Please welcome Caleb Hatch to the Country Club. Caleb grew up in a fishing village, where his parents ran a small fishing business. Caleb begged his father to take him out on expeditions, but his father always refused.',
+        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-935`]?.image || defaultImage
       }
     };
   }, [nftMetadata]);
@@ -668,7 +674,7 @@ function GrandpaCoin() {
     const searchParams = new URLSearchParams(location.search);
     const storyParam = searchParams.get('story');
     
-    if (storyParam && ['2945', '693', '4935', '1784', '2190', '238'].includes(storyParam)) {
+    if (storyParam && ['2945', '693', '4935', '1784', '2190', '238', '935'].includes(storyParam)) {
       setStoryTokenId(storyParam);
       setShowStoryModal(true);
       
@@ -1561,7 +1567,7 @@ function GrandpaCoin() {
                                                   Joined: {nft.joinedAtFormatted || new Date(nft.joinedAt * 1000).toLocaleDateString()}
                                                 </p>
                                                 <div style={{marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '4px'}}>
-                                                  {(nft.tokenId === '2945' || nft.tokenId === '693' || nft.tokenId === '4935' || nft.tokenId === '1784' || nft.tokenId === '2190' || nft.tokenId === '238') && (
+                                                  {(nft.tokenId === '2945' || nft.tokenId === '693' || nft.tokenId === '4935' || nft.tokenId === '1784' || nft.tokenId === '2190' || nft.tokenId === '238' || nft.tokenId === '935') && (
                                                     <button
                                                       onClick={() => {
                                                         setStoryTokenId(nft.tokenId);
@@ -1819,6 +1825,16 @@ function GrandpaCoin() {
                   marginBottom: '20px'
                 }}>
                   Monty LeVine
+                </h3>
+              )}
+              {storyTokenId === '935' && (
+                <h3 style={{
+                  color: 'black',
+                  fontSize: '1.5rem',
+                  fontStyle: 'italic',
+                  marginBottom: '20px'
+                }}>
+                  Caleb Hatch
                 </h3>
               )}
             </div>
@@ -2232,6 +2248,82 @@ function GrandpaCoin() {
                   <img
                     src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/238_dance.jpg"
                     alt="Monty LeVine Dance"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                </div>
+              </>
+            )}
+
+            {/* Story Text - 935 */}
+            {storyTokenId === '935' && (
+              <>
+                <div style={{
+                  color: '#1a1a1a',
+                  fontSize: '1.1rem',
+                  lineHeight: '1.8',
+                  marginBottom: '30px',
+                  textAlign: 'left',
+                  fontFamily: 'inherit'
+                }}>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    Please welcome Caleb Hatch to the Country Club. Caleb grew up in a fishing village, where his parents ran a small fishing business. Caleb begged his father to take him out on expeditions, but his father always refused. "There's things under the water you can't imagine, son" he would say. Until the day he just never came back.
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    Caleb swore to his mother that he would find out what happened, and went out on the sea every chance he got. What happened next depends on what you are willing to believe. About life. About fate. And about the digestive systems of enormous sea creatures.
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    As soon as he was of age, Caleb enlisted in the Navy. He was committed to his service, but his eye was always scanning that vast ocean, hoping to get his revenge.
+                  </p>
+                  <p style={{marginBottom: '20px', fontWeight: 'bold', color: '#1a1a1a'}}>
+                    Stop in and say hello to Caleb. You're guaranteed to get a whale of a tale from him.
+                  </p>
+                </div>
+
+                {/* Story Images - 935 */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                  gap: '20px',
+                  marginTop: '30px'
+                }}>
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/935_boat.jpg"
+                    alt="Caleb Hatch Boat"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/935_whale.jpg"
+                    alt="Caleb Hatch Whale"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/935_eye.jpg"
+                    alt="Caleb Hatch Eye"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/935_sailor.jpg"
+                    alt="Caleb Hatch Sailor"
                     style={{
                       width: '100%',
                       height: 'auto',
