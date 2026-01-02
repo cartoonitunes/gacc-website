@@ -484,9 +484,13 @@ function Home () {
       const registry = new web3.eth.Contract(ENS_REGISTRY_ABI_FULL, ENS_REGISTRY);
       let resolverAddress = await registry.methods.resolver(subdomainNode).call();
       
-      // If no resolver is set, set it first
-      if (!resolverAddress || resolverAddress === "0x0000000000000000000000000000000000000000") {
-        console.log(`No resolver set for ${subdomainName}, setting resolver first...`);
+      // If no resolver is set, or if it's set to a different resolver, set it to our resolver
+      if (!resolverAddress || resolverAddress === "0x0000000000000000000000000000000000000000" || resolverAddress.toLowerCase() !== RESOLVER.toLowerCase()) {
+        if (!resolverAddress || resolverAddress === "0x0000000000000000000000000000000000000000") {
+          console.log(`No resolver set for ${subdomainName}, setting resolver first...`);
+        } else {
+          console.log(`Resolver is set to ${resolverAddress} but should be ${RESOLVER}, updating resolver...`);
+        }
         
         // Check if the node is wrapped (owned by NameWrapper)
         const nodeOwner = await registry.methods.owner(subdomainNode).call();
