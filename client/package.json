@@ -19,6 +19,7 @@
     "chai-as-promised": "^7.1.1",
     "delegatecash": "^0.4.5",
     "dotenv": "^16.0.1",
+    "ethers": "^5.8.0",
     "ipfs-http-client": "^52.0.0",
     "jquery": "^3.6.0",
     "keccak256": "^1.0.6",
