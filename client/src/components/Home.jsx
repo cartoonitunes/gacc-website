@@ -429,8 +429,6 @@ function Home () {
       const registry = new web3.eth.Contract(ENS_REGISTRY_ABI_FULL, ENS_REGISTRY);
       let resolverAddress = await registry.methods.resolver(subdomainNode).call();
       
-      const gasPrice = await web3.eth.getGasPrice();
-      
       // Verify the resolver contract has code
       const resolverCode = await web3.eth.getCode(RESOLVER);
       if (!resolverCode || resolverCode === "0x") {
@@ -451,10 +449,10 @@ function Home () {
           from: account
         });
         
+        // Let wallet handle gas price (it will suggest appropriate values based on network conditions)
         const setResolverTx = await nameWrapper.methods.setResolver(subdomainNode, RESOLVER).send({
           from: account,
-          gas: Math.floor(setResolverGasEstimate * 1.1),
-          gasPrice: gasPrice
+          gas: Math.floor(setResolverGasEstimate * 1.1)
         });
         
         console.log(`Resolver set: ${setResolverTx.transactionHash}`);
@@ -473,10 +471,10 @@ function Home () {
           from: account
         });
         
+        // Let wallet handle gas price
         setAddrTx = await resolver.methods.setAddr(subdomainNode, userAddress).send({
           from: account,
-          gas: Math.floor(setAddrGasEstimate * 1.1),
-          gasPrice: gasPrice
+          gas: Math.floor(setAddrGasEstimate * 1.1)
         });
       } catch (legacyError) {
         // Fallback to coin-type version (coinType 60 = Ethereum)
@@ -488,10 +486,10 @@ function Home () {
           from: account
         });
         
+        // Let wallet handle gas price
         setAddrTx = await resolver.methods.setAddr(subdomainNode, coinType, addrBytes).send({
           from: account,
-          gas: Math.floor(setAddrGasEstimate * 1.1),
-          gasPrice: gasPrice
+          gas: Math.floor(setAddrGasEstimate * 1.1)
         });
       }
       
@@ -523,19 +521,16 @@ function Home () {
       // Normalize label to lowercase (ENS names are case-insensitive but hash-sensitive)
       const label = subdomainInput.trim().toLowerCase();
       
-      // Get current gas price from network (like Etherscan does)
-      const gasPrice = await web3.eth.getGasPrice();
-      
       // Estimate gas for accurate limit
       const gasEstimate = await contract.methods.claim(label).estimateGas({
         from: account
       });
       
-      // Use estimated gas with 10% buffer, and current network gas price
+      // Let wallet handle gas price (it will suggest appropriate values based on network conditions)
+      // Use estimated gas with 10% buffer
       const tx = await contract.methods.claim(label).send({
         from: account,
-        gas: Math.floor(gasEstimate * 1.1),
-        gasPrice: gasPrice
+        gas: Math.floor(gasEstimate * 1.1)
       });
 
       setClaimStatus(`✅ Success! Subdomain claimed: ${label}.thegrandpa.eth (${tx.transactionHash})`);
