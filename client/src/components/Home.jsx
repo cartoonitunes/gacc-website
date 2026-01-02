@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Web3 from "web3";
+import { ethers } from "ethers";
 import '../styles/style.css'
 
 
@@ -31,6 +32,65 @@ const SUBDOMAIN_CLAIMER_ABI = [
 // Contract address
 const SUBDOMAIN_CLAIMER_ADDRESS = "0x4E82641c6d4f24b066abF6E14DBB498476fcF656";
 
+// ENS Resolver for setting subdomain addresses
+const RESOLVER = "0xF29100983E058B709F3D539b0c765937B804AC15";
+const RESOLVER_SETADDR_ABI = [
+  {
+    "constant": false,
+    "inputs": [
+      {"name": "node", "type": "bytes32"},
+      {"name": "addr", "type": "address"}
+    ],
+    "name": "setAddr",
+    "outputs": [],
+    "type": "function"
+  }
+];
+
+// ENS NameWrapper for wrapped names
+const NAMEWRAPPER_ADDRESS = "0xD4416b13d2b3a9aBae7AcD5D6C2BbDBE25686401";
+const NAMEWRAPPER_ABI = [
+  {
+    "inputs": [
+      {"name": "node", "type": "bytes32"},
+      {"name": "resolver", "type": "address"}
+    ],
+    "name": "setResolver",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+];
+
+// ENS Registry ABI for setting resolver
+const ENS_REGISTRY_ABI_FULL = [
+  {
+    "constant": true,
+    "inputs": [{"name": "node", "type": "bytes32"}],
+    "name": "resolver",
+    "outputs": [{"name": "", "type": "address"}],
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {"name": "node", "type": "bytes32"},
+      {"name": "resolver", "type": "address"}
+    ],
+    "name": "setResolver",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [{"name": "node", "type": "bytes32"}],
+    "name": "owner",
+    "outputs": [{"name": "", "type": "address"}],
+    "type": "function"
+  }
+];
+const ENS_REGISTRY = "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
+
 function Home () {
 
   const [apeSelection, setApeSelection] = useState(null);
@@ -42,9 +102,11 @@ function Home () {
   const [ensName, setEnsName] = useState(null);
   const [subdomainInput, setSubdomainInput] = useState("");
   const [currentSubdomain, setCurrentSubdomain] = useState(null);
+  const [subdomainResolves, setSubdomainResolves] = useState(false);
   const [claiming, setClaiming] = useState(false);
   const [claimStatus, setClaimStatus] = useState("");
   const [loadingSubdomain, setLoadingSubdomain] = useState(false);
+  const [settingAddress, setSettingAddress] = useState(false);
 
   function isPositiveInteger(n) {
       return n >>> 0 === parseFloat(n);
@@ -221,12 +283,61 @@ function Home () {
       
       if (labelStr.length > 0 && labelStr !== "null" && labelStr !== "undefined") {
         setCurrentSubdomain(labelStr);
+        
+        // Check if the subdomain resolves to the user's address
+        try {
+          const subdomainName = `${labelStr}.thegrandpa.eth`;
+          
+          const ENS_REGISTRY = "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
+          const ENS_REGISTRY_ABI = [
+            {
+              "constant": true,
+              "inputs": [{"name": "node", "type": "bytes32"}],
+              "name": "resolver",
+              "outputs": [{"name": "", "type": "address"}],
+              "type": "function"
+            }
+          ];
+          
+          const RESOLVER_ABI = [
+            {
+              "constant": true,
+              "inputs": [{"name": "node", "type": "bytes32"}],
+              "name": "addr",
+              "outputs": [{"name": "", "type": "address"}],
+              "type": "function"
+            }
+          ];
+          
+          // Use ethers for canonical namehash (same as setSubdomainAddr)
+          const subdomainNode = ethers.utils.namehash(subdomainName);
+          const registry = new readWeb3.eth.Contract(ENS_REGISTRY_ABI, ENS_REGISTRY);
+          const resolverAddress = await registry.methods.resolver(subdomainNode).call();
+          
+          if (resolverAddress && resolverAddress !== "0x0000000000000000000000000000000000000000") {
+            const resolver = new readWeb3.eth.Contract(RESOLVER_ABI, resolverAddress);
+            const resolvedAddress = await resolver.methods.addr(subdomainNode).call();
+            
+            if (resolvedAddress && resolvedAddress !== "0x0000000000000000000000000000000000000000" && resolvedAddress.toLowerCase() === checksummedAddress.toLowerCase()) {
+              setSubdomainResolves(true);
+            } else {
+              setSubdomainResolves(false);
+            }
+          } else {
+            setSubdomainResolves(false);
+          }
+        } catch (resolveError) {
+          console.error("Error checking subdomain resolution:", resolveError);
+          setSubdomainResolves(false);
+        }
       } else {
         setCurrentSubdomain(null);
+        setSubdomainResolves(false);
       }
     } catch (error) {
       console.error("Error checking subdomain:", error);
       setCurrentSubdomain(null);
+      setSubdomainResolves(false);
     } finally {
       setLoadingSubdomain(false);
     }
@@ -358,6 +469,128 @@ function Home () {
     }
   }, [web3, account]);
 
+  // Set subdomain address resolution
+  const setSubdomainAddr = useCallback(async (subdomainLabel, userAddress) => {
+    if (!web3 || !account || !subdomainLabel) {
+      return;
+    }
+
+    try {
+      const subdomainName = `${subdomainLabel}.thegrandpa.eth`;
+      
+      // ✅ canonical ENS namehash
+      const subdomainNode = ethers.utils.namehash(subdomainName);
+      
+      const registry = new web3.eth.Contract(ENS_REGISTRY_ABI_FULL, ENS_REGISTRY);
+      let resolverAddress = await registry.methods.resolver(subdomainNode).call();
+      
+      // If no resolver is set, set it first
+      if (!resolverAddress || resolverAddress === "0x0000000000000000000000000000000000000000") {
+        console.log(`No resolver set for ${subdomainName}, setting resolver first...`);
+        
+        // Check if the node is wrapped (owned by NameWrapper)
+        const nodeOwner = await registry.methods.owner(subdomainNode).call();
+        console.log(`Node owner: ${nodeOwner}, Account: ${account}`);
+        
+        // Get current gas price
+        const gasPrice = await web3.eth.getGasPrice();
+        
+        // Verify the resolver contract has code (is a contract)
+        const resolverCode = await web3.eth.getCode(RESOLVER);
+        if (!resolverCode || resolverCode === "0x") {
+          throw new Error(`Resolver address ${RESOLVER} is not a contract or doesn't exist.`);
+        }
+        
+        console.log(`Resolver contract verified, setting resolver to ${RESOLVER}...`);
+        
+        // Check if name is wrapped (owned by NameWrapper)
+        const isWrapped = nodeOwner.toLowerCase() === NAMEWRAPPER_ADDRESS.toLowerCase();
+        
+        // Try to estimate gas first to catch any errors early
+        try {
+          let setResolverTx;
+          
+          if (isWrapped) {
+            // For wrapped names, use NameWrapper.setResolver()
+            console.log(`Name is wrapped, using NameWrapper.setResolver()...`);
+            const nameWrapper = new web3.eth.Contract(NAMEWRAPPER_ABI, NAMEWRAPPER_ADDRESS);
+            
+            const setResolverGasEstimate = await nameWrapper.methods.setResolver(subdomainNode, RESOLVER).estimateGas({
+              from: account
+            });
+            
+            console.log(`Gas estimate for NameWrapper.setResolver: ${setResolverGasEstimate}`);
+            
+            setResolverTx = await nameWrapper.methods.setResolver(subdomainNode, RESOLVER).send({
+              from: account,
+              gas: Math.floor(setResolverGasEstimate * 1.1),
+              gasPrice: gasPrice
+            });
+          } else {
+            // For unwrapped names, use ENS Registry.setResolver()
+            console.log(`Name is not wrapped, using ENS Registry.setResolver()...`);
+            
+            // Check if the connected account owns the node
+            if (nodeOwner.toLowerCase() !== account.toLowerCase()) {
+              throw new Error(`You don't have permission to set the resolver for this subdomain. The subdomain is owned by ${nodeOwner}, but your connected account is ${account}. Please connect the wallet that owns the subdomain.`);
+            }
+            
+            const setResolverGasEstimate = await registry.methods.setResolver(subdomainNode, RESOLVER).estimateGas({
+              from: account
+            });
+            
+            console.log(`Gas estimate for Registry.setResolver: ${setResolverGasEstimate}`);
+            
+            setResolverTx = await registry.methods.setResolver(subdomainNode, RESOLVER).send({
+              from: account,
+              gas: Math.floor(setResolverGasEstimate * 1.1),
+              gasPrice: gasPrice
+            });
+          }
+          
+          console.log(`Resolver set: ${setResolverTx.transactionHash}`);
+          resolverAddress = RESOLVER;
+        } catch (estimateError) {
+          console.error("Error estimating/setting resolver:", estimateError);
+          // Check if it's a revert reason
+          if (estimateError.reason) {
+            throw new Error(`Failed to set resolver: ${estimateError.reason}`);
+          } else if (estimateError.message && estimateError.message.includes("execution reverted")) {
+            throw new Error(`Failed to set resolver: The transaction was reverted. ${isWrapped ? 'Make sure you are the controller of this wrapped name.' : `Make sure you're connected with the wallet that owns the subdomain (${nodeOwner}).`}`);
+          } else if (estimateError.message) {
+            throw new Error(`Failed to set resolver: ${estimateError.message}`);
+          } else {
+            throw new Error(`Failed to set resolver. The transaction reverted.`);
+          }
+        }
+      }
+      
+      console.log(`Using resolver: ${resolverAddress} for node: ${subdomainNode} (${subdomainName})`);
+      
+      const resolver = new web3.eth.Contract(RESOLVER_SETADDR_ABI, resolverAddress);
+      
+      // Get current gas price from network
+      const gasPrice = await web3.eth.getGasPrice();
+      
+      // Estimate gas for accurate limit
+      const gasEstimate = await resolver.methods.setAddr(subdomainNode, userAddress).estimateGas({
+        from: account
+      });
+      
+      // Use estimated gas with 10% buffer, and current network gas price
+      const tx = await resolver.methods.setAddr(subdomainNode, userAddress).send({
+        from: account,
+        gas: Math.floor(gasEstimate * 1.1),
+        gasPrice: gasPrice
+      });
+      
+      return tx;
+    } catch (error) {
+      console.error("Error setting subdomain address:", error);
+      throw error;
+    }
+  }, [web3, account]);
+
   // Claim or switch subdomain
   const claimSubdomain = useCallback(async () => {
     if (!web3 || !account || !subdomainInput.trim()) {
@@ -394,7 +627,18 @@ function Home () {
         gasPrice: gasPrice
       });
 
-      setClaimStatus(`Success! Transaction: ${tx.transactionHash}`);
+      setClaimStatus(`✅ Transaction 1/3 Complete: Subdomain claimed! (${tx.transactionHash}) Setting resolver...`);
+      
+      // After claiming, set the address resolution
+      try {
+        setClaimStatus(`⏳ Transaction 2/3: Setting resolver and address...`);
+        const setAddrTx = await setSubdomainAddr(subdomainInput.trim(), account);
+        setClaimStatus(`✅ All Complete! Subdomain claimed and address set. Transactions: ${tx.transactionHash}, ${setAddrTx.transactionHash}`);
+      } catch (setAddrError) {
+        console.error("Error setting subdomain address:", setAddrError);
+        setClaimStatus(`⚠️ Subdomain claimed (${tx.transactionHash}), but failed to set address. You can set it manually using the button below.`);
+      }
+      
       setSubdomainInput("");
       
       // Refresh subdomain after a delay
@@ -415,7 +659,33 @@ function Home () {
     } finally {
       setClaiming(false);
     }
-  }, [web3, account, subdomainInput, checkCurrentSubdomain, checkSubdomainAvailable]);
+  }, [web3, account, subdomainInput, checkCurrentSubdomain, checkSubdomainAvailable, setSubdomainAddr]);
+
+  // Manually set subdomain address
+  const handleSetSubdomainAddress = useCallback(async () => {
+    if (!web3 || !account || !currentSubdomain) {
+      return;
+    }
+
+    setSettingAddress(true);
+    setClaimStatus("");
+
+    try {
+      setClaimStatus(`⏳ Setting resolver and address...`);
+      const tx = await setSubdomainAddr(currentSubdomain, account);
+      setClaimStatus(`✅ Success! Address resolution set. Transaction: ${tx.transactionHash}`);
+      
+      // Refresh subdomain after a delay
+      setTimeout(() => {
+        checkCurrentSubdomain(web3, account);
+      }, 3000);
+    } catch (error) {
+      console.error("Error setting subdomain address:", error);
+      setClaimStatus(`Error: ${error.message}`);
+    } finally {
+      setSettingAddress(false);
+    }
+  }, [web3, account, currentSubdomain, setSubdomainAddr, checkCurrentSubdomain]);
 
   // Check subdomain and resolve ENS when account and web3 are available
   useEffect(() => {
@@ -681,26 +951,105 @@ function Home () {
                                         </p>
                                       </div>
                                     ) : currentSubdomain && currentSubdomain.trim().length > 0 ? (
-                                      <div style={{
-                                        background: 'linear-gradient(135deg, #f9edcd 0%, #e8d9b0 100%)',
-                                        padding: '20px',
-                                        borderRadius: '10px',
-                                        marginBottom: '20px',
-                                        textAlign: 'center',
-                                        border: '3px solid #977039',
-                                        boxShadow: '0 4px 15px rgba(151, 112, 57, 0.2)'
-                                      }}>
-                                        <p style={{color: '#977039', fontSize: '0.9rem', marginBottom: '10px', fontWeight: 'bold', textTransform: 'uppercase'}}>Your Subdomain:</p>
-                                        <p style={{
-                                          color: '#977039', 
-                                          fontSize: '1.4rem', 
-                                          fontWeight: 'bold', 
-                                          margin: 0,
-                                          textShadow: '0 1px 2px rgba(0,0,0,0.1)',
-                                          wordBreak: 'break-word'
+                                      <div>
+                                        <div style={{
+                                          background: 'linear-gradient(135deg, #f9edcd 0%, #e8d9b0 100%)',
+                                          padding: '20px',
+                                          borderRadius: '10px',
+                                          marginBottom: '20px',
+                                          textAlign: 'center',
+                                          border: '3px solid #977039',
+                                          boxShadow: '0 4px 15px rgba(151, 112, 57, 0.2)'
                                         }}>
-                                          {currentSubdomain}.thegrandpa.eth
-                                        </p>
+                                          <p style={{color: '#977039', fontSize: '0.9rem', marginBottom: '10px', fontWeight: 'bold', textTransform: 'uppercase'}}>Your Subdomain:</p>
+                                          <p style={{
+                                            color: '#977039', 
+                                            fontSize: '1.4rem', 
+                                            fontWeight: 'bold', 
+                                            margin: 0,
+                                            textShadow: '0 1px 2px rgba(0,0,0,0.1)',
+                                            wordBreak: 'break-word'
+                                          }}>
+                                            {currentSubdomain}.thegrandpa.eth
+                                          </p>
+                                        </div>
+                                        
+                                        {!subdomainResolves && (
+                                          <div style={{
+                                            marginBottom: '20px',
+                                            padding: '15px',
+                                            backgroundColor: '#fff3cd',
+                                            borderRadius: '8px',
+                                            border: '2px solid #ffc107',
+                                            textAlign: 'center'
+                                          }}>
+                                            <p style={{
+                                              color: '#856404',
+                                              fontSize: '0.9rem',
+                                              margin: '0 0 12px 0',
+                                              fontWeight: 'bold'
+                                            }}>
+                                              Your subdomain is not yet resolved to your address.
+                                            </p>
+                                            
+                                            {/* Transaction explanation for setting address */}
+                                            <div style={{
+                                              marginBottom: '15px',
+                                              padding: '12px',
+                                              backgroundColor: '#fff9e6',
+                                              borderRadius: '6px',
+                                              border: '1px solid #ffc107',
+                                              textAlign: 'left'
+                                            }}>
+                                              <p style={{
+                                                color: '#856404',
+                                                fontSize: '0.85rem',
+                                                fontWeight: 'bold',
+                                                margin: '0 0 8px 0'
+                                              }}>
+                                                📝 What to Expect:
+                                              </p>
+                                              <ul style={{
+                                                color: '#856404',
+                                                fontSize: '0.8rem',
+                                                margin: '0',
+                                                paddingLeft: '20px',
+                                                lineHeight: '1.5'
+                                              }}>
+                                                <li><strong>Transaction 1:</strong> Set the resolver (if not already set) - tells ENS where to store your address</li>
+                                                <li><strong>Transaction 2:</strong> Set your address on the resolver - links your subdomain to your wallet</li>
+                                              </ul>
+                                              <p style={{
+                                                color: '#856404',
+                                                fontSize: '0.75rem',
+                                                margin: '8px 0 0 0',
+                                                fontStyle: 'italic'
+                                              }}>
+                                                Note: If the resolver is already set, you'll only sign one transaction.
+                                              </p>
+                                            </div>
+                                            
+                                            <button
+                                              className="bayc-button mint"
+                                              type="button"
+                                              onClick={handleSetSubdomainAddress}
+                                              disabled={settingAddress}
+                                              style={{
+                                                backgroundColor: settingAddress ? '#ccc' : '#977039',
+                                                color: '#f9edcd',
+                                                border: 'none',
+                                                padding: '12px 24px',
+                                                fontSize: '1rem',
+                                                cursor: settingAddress ? 'not-allowed' : 'pointer',
+                                                width: '100%',
+                                                opacity: settingAddress ? 0.6 : 1,
+                                                fontWeight: 'bold'
+                                              }}
+                                            >
+                                              {settingAddress ? 'SETTING ADDRESS...' : 'SET ADDRESS RESOLUTION'}
+                                            </button>
+                                          </div>
+                                        )}
                                       </div>
                                     ) : (
                                       <div style={{
@@ -780,6 +1129,45 @@ function Home () {
                                         {currentSubdomain ? 'Enter a new name to switch' : '1-63 characters, no spaces at start/end'}
                                       </p>
                                     </div>
+
+                                    {/* Transaction explanation for claiming */}
+                                    {!currentSubdomain && (
+                                      <div style={{
+                                        marginBottom: '20px',
+                                        padding: '15px',
+                                        backgroundColor: '#e8f4f8',
+                                        borderRadius: '8px',
+                                        border: '2px solid #83D8FC'
+                                      }}>
+                                        <p style={{
+                                          color: '#1a1a1a',
+                                          fontSize: '0.9rem',
+                                          fontWeight: 'bold',
+                                          margin: '0 0 10px 0'
+                                        }}>
+                                          📝 What to Expect:
+                                        </p>
+                                        <ul style={{
+                                          color: '#1a1a1a',
+                                          fontSize: '0.85rem',
+                                          margin: '0',
+                                          paddingLeft: '20px',
+                                          lineHeight: '1.6'
+                                        }}>
+                                          <li><strong>Transaction 1:</strong> Claim your subdomain (creates the ENS record)</li>
+                                          <li><strong>Transaction 2:</strong> Set the resolver (if not already set) - this tells ENS where to look for your address</li>
+                                          <li><strong>Transaction 3:</strong> Set your address on the resolver (links your subdomain to your wallet address)</li>
+                                        </ul>
+                                        <p style={{
+                                          color: '#666',
+                                          fontSize: '0.8rem',
+                                          margin: '10px 0 0 0',
+                                          fontStyle: 'italic'
+                                        }}>
+                                          All transactions use optimized gas settings for the lowest cost.
+                                        </p>
+                                      </div>
+                                    )}
 
                                     <button
                                       className="bayc-button mint"
