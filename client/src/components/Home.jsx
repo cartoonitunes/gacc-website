@@ -451,10 +451,25 @@ function Home () {
           from: account
         });
         
-        // Use exact gas estimate and let wallet handle gas price
+        // Get current block to calculate minimal gas price (like Etherscan)
+        const latestBlock = await web3.eth.getBlock('latest');
+        const baseFee = latestBlock.baseFeePerGas ? web3.utils.toBN(latestBlock.baseFeePerGas) : null;
+        
+        // Use minimal gas price: baseFee + 1 gwei priority (matching Etherscan's approach)
+        let gasPrice;
+        if (baseFee) {
+          const priorityFee = web3.utils.toBN(web3.utils.toWei('1', 'gwei'));
+          gasPrice = baseFee.add(priorityFee).toString();
+        } else {
+          const networkGasPrice = await web3.eth.getGasPrice();
+          gasPrice = networkGasPrice;
+        }
+        
+        // Use exact gas estimate with minimal gas price
         const setResolverTx = await nameWrapper.methods.setResolver(subdomainNode, RESOLVER).send({
           from: account,
-          gas: setResolverGasEstimate
+          gas: setResolverGasEstimate,
+          gasPrice: gasPrice
         });
         
         console.log(`Resolver set: ${setResolverTx.transactionHash}`);
@@ -466,6 +481,20 @@ function Home () {
       console.log(`Setting address on resolver...`);
       const resolver = new web3.eth.Contract(RESOLVER_SETADDR_ABI, resolverAddress);
       
+      // Get current block to calculate minimal gas price (like Etherscan)
+      const latestBlock = await web3.eth.getBlock('latest');
+      const baseFee = latestBlock.baseFeePerGas ? web3.utils.toBN(latestBlock.baseFeePerGas) : null;
+      
+      // Use minimal gas price: baseFee + 1 gwei priority (matching Etherscan's approach)
+      let gasPrice;
+      if (baseFee) {
+        const priorityFee = web3.utils.toBN(web3.utils.toWei('1', 'gwei'));
+        gasPrice = baseFee.add(priorityFee).toString();
+      } else {
+        const networkGasPrice = await web3.eth.getGasPrice();
+        gasPrice = networkGasPrice;
+      }
+      
       let setAddrTx;
       try {
         // Try legacy setAddr(node, address) first
@@ -474,10 +503,11 @@ function Home () {
           from: account
         });
         
-        // Use exact gas estimate and let wallet handle gas price
+        // Use exact gas estimate with minimal gas price
         setAddrTx = await resolver.methods.setAddr(subdomainNode, userAddress).send({
           from: account,
-          gas: setAddrGasEstimate
+          gas: setAddrGasEstimate,
+          gasPrice: gasPrice
         });
       } catch (legacyError) {
         // Fallback to coin-type version (coinType 60 = Ethereum)
@@ -490,10 +520,11 @@ function Home () {
           from: account
         });
         
-        // Use exact gas estimate and let wallet handle gas price
+        // Use exact gas estimate with minimal gas price
         setAddrTx = await resolver.methods.setAddr(subdomainNode, coinType, addrBytes).send({
           from: account,
-          gas: setAddrGasEstimate
+          gas: setAddrGasEstimate,
+          gasPrice: gasPrice
         });
       }
       
@@ -574,10 +605,27 @@ function Home () {
         from: account
       });
       
-      // Use exact gas estimate (no buffer) and let wallet handle gas price
+      // Get current block to calculate minimal gas price (like Etherscan)
+      const latestBlock = await web3.eth.getBlock('latest');
+      const baseFee = latestBlock.baseFeePerGas ? web3.utils.toBN(latestBlock.baseFeePerGas) : null;
+      
+      // Use minimal gas price: baseFee + 1 gwei priority (matching Etherscan's approach)
+      let gasPrice;
+      if (baseFee) {
+        // EIP-1559: baseFee + 1 gwei priority fee
+        const priorityFee = web3.utils.toBN(web3.utils.toWei('1', 'gwei'));
+        gasPrice = baseFee.add(priorityFee).toString();
+      } else {
+        // Legacy: use network gas price (fallback for older networks)
+        const networkGasPrice = await web3.eth.getGasPrice();
+        gasPrice = networkGasPrice;
+      }
+      
+      // Use exact gas estimate with minimal gas price to match Etherscan costs
       const tx = await contract.methods.claim(label).send({
         from: account,
-        gas: gasEstimate
+        gas: gasEstimate,
+        gasPrice: gasPrice
       });
 
       setClaimStatus(`✅ Success! Subdomain claimed: ${label}.thegrandpa.eth (${tx.transactionHash})`);

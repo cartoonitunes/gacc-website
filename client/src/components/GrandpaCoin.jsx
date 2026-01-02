@@ -612,14 +612,31 @@ function GrandpaCoin() {
         from: account
       });
       
-      // Use exact gas estimate (no buffer) and let wallet handle gas price
+      // Get current block to calculate minimal gas price (like Etherscan)
+      const latestBlock = await web3.eth.getBlock('latest');
+      const baseFee = latestBlock.baseFeePerGas ? web3.utils.toBN(latestBlock.baseFeePerGas) : null;
+      
+      // Use minimal gas price: baseFee + 1 gwei priority (matching Etherscan's approach)
+      let gasPrice;
+      if (baseFee) {
+        // EIP-1559: baseFee + 1 gwei priority fee
+        const priorityFee = web3.utils.toBN(web3.utils.toWei('1', 'gwei'));
+        gasPrice = baseFee.add(priorityFee).toString();
+      } else {
+        // Legacy: use network gas price (fallback for older networks)
+        const networkGasPrice = await web3.eth.getGasPrice();
+        gasPrice = networkGasPrice;
+      }
+      
+      // Use exact gas estimate with minimal gas price to match Etherscan costs
       const tx = await nftContract.methods.safeTransferFrom(
         account,
         COUNTRY_CLUB_ADDRESS,
         selectedTokenId
       ).send({
         from: account,
-        gas: gasEstimate
+        gas: gasEstimate,
+        gasPrice: gasPrice
       });
 
       setTransferStatus(`Success! Transaction: ${tx.transactionHash}`);
