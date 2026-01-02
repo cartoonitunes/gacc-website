@@ -504,6 +504,42 @@ function Home () {
     }
   }, [web3, account]);
 
+  // Validate ENS label format
+  const validateEnsLabel = useCallback((label) => {
+    if (!label || label.trim().length === 0) {
+      return { valid: false, error: "Subdomain name cannot be empty" };
+    }
+    
+    const trimmed = label.trim();
+    
+    // Check length (ENS labels max 63 characters)
+    if (trimmed.length > 63) {
+      return { valid: false, error: "Subdomain name must be 63 characters or less" };
+    }
+    
+    // Check for valid characters: alphanumeric and hyphens only
+    if (!/^[a-z0-9-]+$/i.test(trimmed)) {
+      return { valid: false, error: "Subdomain name can only contain letters, numbers, and hyphens" };
+    }
+    
+    // Cannot start or end with hyphen
+    if (trimmed.startsWith('-') || trimmed.endsWith('-')) {
+      return { valid: false, error: "Subdomain name cannot start or end with a hyphen" };
+    }
+    
+    // Cannot have consecutive hyphens
+    if (trimmed.includes('--')) {
+      return { valid: false, error: "Subdomain name cannot have consecutive hyphens" };
+    }
+    
+    // Cannot be only numbers (to avoid confusion with token IDs)
+    if (/^\d+$/.test(trimmed)) {
+      return { valid: false, error: "Subdomain name cannot be only numbers" };
+    }
+    
+    return { valid: true };
+  }, []);
+
   // Claim or switch subdomain
   const claimSubdomain = useCallback(async () => {
     if (!web3 || !account || !subdomainInput.trim()) {
@@ -515,11 +551,19 @@ function Home () {
     setClaimStatus("");
 
     try {
-      // Let the contract decide availability (correct for wrapped names)
-      const contract = new web3.eth.Contract(SUBDOMAIN_CLAIMER_ABI, SUBDOMAIN_CLAIMER_ADDRESS);
-      
       // Normalize label to lowercase (ENS names are case-insensitive but hash-sensitive)
       const label = subdomainInput.trim().toLowerCase();
+      
+      // Validate ENS label format
+      const validation = validateEnsLabel(label);
+      if (!validation.valid) {
+        setClaimStatus(`Error: ${validation.error}`);
+        setClaiming(false);
+        return;
+      }
+      
+      // Let the contract decide availability (correct for wrapped names)
+      const contract = new web3.eth.Contract(SUBDOMAIN_CLAIMER_ABI, SUBDOMAIN_CLAIMER_ADDRESS);
       
       // Estimate gas for accurate limit
       const gasEstimate = await contract.methods.claim(label).estimateGas({
@@ -555,7 +599,7 @@ function Home () {
     } finally {
       setClaiming(false);
     }
-  }, [web3, account, subdomainInput, checkCurrentSubdomain]);
+  }, [web3, account, subdomainInput, checkCurrentSubdomain, validateEnsLabel]);
 
   // Activate ENS (set resolver + addr)
   const handleActivateEns = useCallback(async () => {
