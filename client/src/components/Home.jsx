@@ -446,9 +446,15 @@ function Home () {
       if (needsResolver) {
         console.log(`Setting resolver to ${RESOLVER}...`);
         
-        // Let wallet handle gas estimation and pricing (it will suggest appropriate values)
-        const setResolverTx = await nameWrapper.methods.setResolver(subdomainNode, RESOLVER).send({
+        // Estimate gas for accurate limit (no buffer)
+        const setResolverGasEstimate = await nameWrapper.methods.setResolver(subdomainNode, RESOLVER).estimateGas({
           from: account
+        });
+        
+        // Use exact gas estimate and let wallet handle gas price
+        const setResolverTx = await nameWrapper.methods.setResolver(subdomainNode, RESOLVER).send({
+          from: account,
+          gas: setResolverGasEstimate
         });
         
         console.log(`Resolver set: ${setResolverTx.transactionHash}`);
@@ -463,9 +469,15 @@ function Home () {
       let setAddrTx;
       try {
         // Try legacy setAddr(node, address) first
-        // Let wallet handle gas estimation and pricing
-        setAddrTx = await resolver.methods.setAddr(subdomainNode, userAddress).send({
+        // Estimate gas for accurate limit (no buffer)
+        const setAddrGasEstimate = await resolver.methods.setAddr(subdomainNode, userAddress).estimateGas({
           from: account
+        });
+        
+        // Use exact gas estimate and let wallet handle gas price
+        setAddrTx = await resolver.methods.setAddr(subdomainNode, userAddress).send({
+          from: account,
+          gas: setAddrGasEstimate
         });
       } catch (legacyError) {
         // Fallback to coin-type version (coinType 60 = Ethereum)
@@ -473,9 +485,15 @@ function Home () {
         const coinType = 60; // Ethereum
         const addrBytes = web3.eth.abi.encodeParameter('address', userAddress);
         
-        // Let wallet handle gas estimation and pricing
-        setAddrTx = await resolver.methods.setAddr(subdomainNode, coinType, addrBytes).send({
+        // Estimate gas for accurate limit (no buffer)
+        const setAddrGasEstimate = await resolver.methods.setAddr(subdomainNode, coinType, addrBytes).estimateGas({
           from: account
+        });
+        
+        // Use exact gas estimate and let wallet handle gas price
+        setAddrTx = await resolver.methods.setAddr(subdomainNode, coinType, addrBytes).send({
+          from: account,
+          gas: setAddrGasEstimate
         });
       }
       
@@ -551,10 +569,15 @@ function Home () {
       // Let the contract decide availability (correct for wrapped names)
       const contract = new web3.eth.Contract(SUBDOMAIN_CLAIMER_ABI, SUBDOMAIN_CLAIMER_ADDRESS);
       
-      // Let wallet handle gas estimation and pricing (it will suggest appropriate values)
-      // Don't add buffer - let the wallet handle it to match Etherscan costs
-      const tx = await contract.methods.claim(label).send({
+      // Estimate gas for accurate limit (no buffer to match Etherscan)
+      const gasEstimate = await contract.methods.claim(label).estimateGas({
         from: account
+      });
+      
+      // Use exact gas estimate (no buffer) and let wallet handle gas price
+      const tx = await contract.methods.claim(label).send({
+        from: account,
+        gas: gasEstimate
       });
 
       setClaimStatus(`✅ Success! Subdomain claimed: ${label}.thegrandpa.eth (${tx.transactionHash})`);
