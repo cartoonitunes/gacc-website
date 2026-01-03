@@ -1390,24 +1390,22 @@ function Home () {
                               <p className="common-p" style={{color: '#977039'}}><span className="bayc-color bold-text" style={{color: '#977039'}}>SWIRL</span> <span className="font-italic" style={{color: 'black', textAlign: 'left'}}>CEO AND CHIEF DJ&nbsp; <a href="https://twitter.com/SwirlOne"><i className="fa fa-twitter" style={{color: 'black'}} /></a></span></p>
                               <p className="common-p" style={{color: '#977039'}}><span className="bayc-color bold-text" style={{color: '#977039'}}>CARTOON</span> <span className="font-italic" style={{color: 'black'}}>CODE MONKEY&nbsp; <a href="https://twitter.com/cartoonitunes"><i className="fa fa-twitter" style={{color: 'black'}} /></a></span></p>
                               <p className="common-p" style={{color: '#977039'}}><span className="bayc-color bold-text" style={{color: '#977039'}}>DARK</span> <span className="font-italic" style={{color: 'black'}}>ALL THINGS DESIGN&nbsp; <a href="https://twitter.com/StudioDarkk"><i className="fa fa-twitter" style={{color: 'black'}} /></a></span></p>
-                              <p className="common-p" style={{color: '#977039'}}><span className="bayc-color bold-text" style={{color: '#977039'}}>DANTEV8</span> <span className="font-italic" style={{color: 'black'}}>GRANDPA CHRONICLER&nbsp; <a href="https://x.com/dementions8"><i className="fa fa-twitter" style={{color: 'black'}} /></a></span></p>
                             </div>
                             <div className="my-lg-auto col-lg-4 col-12 offset-lg-1">
                               <div className="common-container">
                                 <div className="row">
-                                  <div className="pb-2 pr-2 col-6">
-                                    <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/swirl.png'} alt="swirl" aria-label="swirl" style={{borderRadius: '5px'}} />
-                                  </div>
-                                  <div className="pb-2 pl-2 col-6">
-                                    <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/cartoon.png'} alt="cartoon" aria-label="cartoon" style={{borderRadius: '5px'}} />
+                                  <div className="pb-2 col-12" style={{overflow: 'hidden'}}>
+                                    <div style={{width: '100%', paddingBottom: '50%', position: 'relative', borderRadius: '5px', overflow: 'hidden'}}>
+                                      <img src={process.env.PUBLIC_URL + '/assets/images/swirl.png'} alt="swirl" aria-label="swirl" style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 70%', borderRadius: '5px'}} />
+                                    </div>
                                   </div>
                                 </div>
                                 <div className="row">
                                   <div className="pt-2 pr-2 col-6">
-                                    <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/dark.png'} alt="dark" aria-label="dark" style={{borderRadius: '5px'}} />
+                                    <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/cartoon.png'} alt="cartoon" aria-label="cartoon" style={{borderRadius: '5px'}} />
                                   </div>
                                   <div className="pt-2 pl-2 col-6">
-                                    <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/dantev8.jpg'} alt="dantev8" aria-label="dantev8" style={{borderRadius: '5px'}} />
+                                    <img className="img-fluid" src={process.env.PUBLIC_URL + '/assets/images/dark.png'} alt="dark" aria-label="dark" style={{borderRadius: '5px'}} />
                                   </div>
                                 </div>
                               </div>
