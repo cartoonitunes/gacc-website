@@ -285,13 +285,13 @@ function GrandpaCoin() {
       '3836': {
         name: 'Walter Bramblewick',
         title: 'Grandpa Ape #3836 - Walter Bramblewick | Grandpa Coin',
-        description: 'I'd ask you to visit Walter Bramblewick at the Country Club, but he's probably sleeping. Before blessing us with his endearing presence, Walter was a curator of oddities and antiquities.',
+        description: "I'd ask you to visit Walter Bramblewick at the Country Club, but he's probably sleeping. Before blessing us with his endearing presence, Walter was a curator of oddities and antiquities.",
         image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-3836`]?.image || defaultImage
       },
       '1092': {
         name: 'Broderick West',
         title: 'Grandpa Ape #1092 - Broderick West | Grandpa Coin',
-        description: 'Broderick West is the newly hired mechanic at the GACC Country Club. He is…nice enough. Okay he's an a$$hole, but he's great with a wrench!',
+        description: "Broderick West is the newly hired mechanic at the GACC Country Club. He is…nice enough. Okay he's an a$$hole, but he's great with a wrench!",
         image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-1092`]?.image || defaultImage
       }
     };
