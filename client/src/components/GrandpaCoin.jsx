@@ -281,6 +281,18 @@ function GrandpaCoin() {
         title: 'Grandpa Ape #935 - Caleb Hatch | Grandpa Coin',
         description: 'Please welcome Caleb Hatch to the Country Club. Caleb grew up in a fishing village, where his parents ran a small fishing business. Caleb begged his father to take him out on expeditions, but his father always refused.',
         image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-935`]?.image || defaultImage
+      },
+      '3836': {
+        name: 'Walter Bramblewick',
+        title: 'Grandpa Ape #3836 - Walter Bramblewick | Grandpa Coin',
+        description: 'I'd ask you to visit Walter Bramblewick at the Country Club, but he's probably sleeping. Before blessing us with his endearing presence, Walter was a curator of oddities and antiquities.',
+        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-3836`]?.image || defaultImage
+      },
+      '1092': {
+        name: 'Broderick West',
+        title: 'Grandpa Ape #1092 - Broderick West | Grandpa Coin',
+        description: 'Broderick West is the newly hired mechanic at the GACC Country Club. He is…nice enough. Okay he's an a$$hole, but he's great with a wrench!',
+        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-1092`]?.image || defaultImage
       }
     };
   }, [nftMetadata]);
@@ -687,7 +699,7 @@ function GrandpaCoin() {
     const searchParams = new URLSearchParams(location.search);
     const storyParam = searchParams.get('story');
     
-    if (storyParam && ['2945', '693', '4935', '1784', '2190', '238', '935'].includes(storyParam)) {
+    if (storyParam && ['2945', '693', '4935', '1784', '2190', '238', '935', '3836', '1092'].includes(storyParam)) {
       setStoryTokenId(storyParam);
       setShowStoryModal(true);
       
@@ -1580,7 +1592,7 @@ function GrandpaCoin() {
                                                   Joined: {nft.joinedAtFormatted || new Date(nft.joinedAt * 1000).toLocaleDateString()}
                                                 </p>
                                                 <div style={{marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '4px'}}>
-                                                  {(nft.tokenId === '2945' || nft.tokenId === '693' || nft.tokenId === '4935' || nft.tokenId === '1784' || nft.tokenId === '2190' || nft.tokenId === '238' || nft.tokenId === '935') && (
+                                                  {(nft.tokenId === '2945' || nft.tokenId === '693' || nft.tokenId === '4935' || nft.tokenId === '1784' || nft.tokenId === '2190' || nft.tokenId === '238' || nft.tokenId === '935' || nft.tokenId === '3836' || nft.tokenId === '1092') && (
                                                     <button
                                                       onClick={() => {
                                                         setStoryTokenId(nft.tokenId);
@@ -1848,6 +1860,26 @@ function GrandpaCoin() {
                   marginBottom: '20px'
                 }}>
                   Caleb Hatch
+                </h3>
+              )}
+              {storyTokenId === '3836' && (
+                <h3 style={{
+                  color: 'black',
+                  fontSize: '1.5rem',
+                  fontStyle: 'italic',
+                  marginBottom: '20px'
+                }}>
+                  Walter Bramblewick
+                </h3>
+              )}
+              {storyTokenId === '1092' && (
+                <h3 style={{
+                  color: 'black',
+                  fontSize: '1.5rem',
+                  fontStyle: 'italic',
+                  marginBottom: '20px'
+                }}>
+                  Broderick West
                 </h3>
               )}
             </div>
@@ -2337,6 +2369,145 @@ function GrandpaCoin() {
                   <img
                     src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/935_sailor.jpg"
                     alt="Caleb Hatch Sailor"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                </div>
+              </>
+            )}
+
+            {/* Story Text - 3836 */}
+            {storyTokenId === '3836' && (
+              <>
+                <div style={{
+                  color: '#1a1a1a',
+                  fontSize: '1.1rem',
+                  lineHeight: '1.8',
+                  marginBottom: '30px',
+                  textAlign: 'left',
+                  fontFamily: 'inherit'
+                }}>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    I'd ask you to visit Walter Bramblewick at the Country Club, but he's probably sleeping. Before blessing us with his endearing presence, Walter was a curator of oddities and antiquities. He had gotten so many, he decided to open his own shop.
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    Unfortunately, he never sold a single item. Walter just couldn't bear to part with any of his treasures. He used any excuse he could to close the store early, and even when it was open he often spent his time tinkering with his latest find in his workshop so the customers could never find him to complete a purchase.
+                  </p>
+                  <p style={{marginBottom: '20px', fontWeight: 'bold', color: '#1a1a1a'}}>
+                    Walter is a wonderful ape. He is always willing to fix things around the facility. When he's awake, that is!
+                  </p>
+                </div>
+
+                {/* Story Images - 3836 */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                  gap: '20px',
+                  marginTop: '30px'
+                }}>
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/3836_store.jpg"
+                    alt="Walter Bramblewick Store"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/3836_fix.jpg"
+                    alt="Walter Bramblewick Fixing"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/3836_antique.jpg"
+                    alt="Walter Bramblewick Antique"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/3836_sleep.jpg"
+                    alt="Walter Bramblewick Sleeping"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                </div>
+              </>
+            )}
+
+            {/* Story Text - 1092 */}
+            {storyTokenId === '1092' && (
+              <>
+                <div style={{
+                  color: '#1a1a1a',
+                  fontSize: '1.1rem',
+                  lineHeight: '1.8',
+                  marginBottom: '30px',
+                  textAlign: 'left',
+                  fontFamily: 'inherit'
+                }}>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    Broderick West is the newly hired mechanic at the GACC Country Club. He is…nice enough. Okay he's an a$$hole, but he's great with a wrench! No worries. He's just as happy to keep to himself and his broken machines.
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    If you do have to interact with old Brody, don't piss him off. Especially if you plan on taking out one of the golf carts afterwards. Your brakes just might not work as well as you hope.
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    Broderick was offered a room in the Country Club, but he insisted on making his living quarters in an empty garage at the far end of the grounds. When he's not cranking wrenches, you can hear him cranking the throttle on his custom motorbike or cranking out reps on his pull-up bar.
+                  </p>
+                  <p style={{marginBottom: '20px', fontWeight: 'bold', color: '#1a1a1a'}}>
+                    You know what? Just avoid Broderick, ok? Just…stay away from him all together.
+                  </p>
+                </div>
+
+                {/* Story Images - 1092 */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                  gap: '20px',
+                  marginTop: '30px'
+                }}>
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/1092_bike.jpg"
+                    alt="Broderick West Bike"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/1092_ride.jpg"
+                    alt="Broderick West Ride"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/1092_strong.jpg"
+                    alt="Broderick West Strong"
                     style={{
                       width: '100%',
                       height: 'auto',
