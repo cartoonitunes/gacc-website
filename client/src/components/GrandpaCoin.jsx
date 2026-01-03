@@ -293,6 +293,12 @@ function GrandpaCoin() {
         title: 'Grandpa Ape #1092 - Broderick West | Grandpa Coin',
         description: "Broderick West is the newly hired mechanic at the GACC Country Club. He is…nice enough. Okay he's an a$$hole, but he's great with a wrench!",
         image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-1092`]?.image || defaultImage
+      },
+      '4270': {
+        name: 'Earl Bergman',
+        title: 'Grandpa Ape #4270 - Earl Bergman | Grandpa Coin',
+        description: "This is Earl Bergman. Earl is…different. Although he presents as a hypochondriac, Earl is actually a conspiracy nut. His prevailing theory has something to do with the water supply.",
+        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-4270`]?.image || defaultImage
       }
     };
   }, [nftMetadata]);
@@ -699,7 +705,7 @@ function GrandpaCoin() {
     const searchParams = new URLSearchParams(location.search);
     const storyParam = searchParams.get('story');
     
-    if (storyParam && ['2945', '693', '4935', '1784', '2190', '238', '935', '3836', '1092'].includes(storyParam)) {
+    if (storyParam && ['2945', '693', '4935', '1784', '2190', '238', '935', '3836', '1092', '4270'].includes(storyParam)) {
       setStoryTokenId(storyParam);
       setShowStoryModal(true);
       
@@ -1592,7 +1598,7 @@ function GrandpaCoin() {
                                                   Joined: {nft.joinedAtFormatted || new Date(nft.joinedAt * 1000).toLocaleDateString()}
                                                 </p>
                                                 <div style={{marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '4px'}}>
-                                                  {(nft.tokenId === '2945' || nft.tokenId === '693' || nft.tokenId === '4935' || nft.tokenId === '1784' || nft.tokenId === '2190' || nft.tokenId === '238' || nft.tokenId === '935' || nft.tokenId === '3836' || nft.tokenId === '1092') && (
+                                                  {(nft.tokenId === '2945' || nft.tokenId === '693' || nft.tokenId === '4935' || nft.tokenId === '1784' || nft.tokenId === '2190' || nft.tokenId === '238' || nft.tokenId === '935' || nft.tokenId === '3836' || nft.tokenId === '1092' || nft.tokenId === '4270') && (
                                                     <button
                                                       onClick={() => {
                                                         setStoryTokenId(nft.tokenId);
@@ -1880,6 +1886,16 @@ function GrandpaCoin() {
                   marginBottom: '20px'
                 }}>
                   Broderick West
+                </h3>
+              )}
+              {storyTokenId === '4270' && (
+                <h3 style={{
+                  color: 'black',
+                  fontSize: '1.5rem',
+                  fontStyle: 'italic',
+                  marginBottom: '20px'
+                }}>
+                  Earl Bergman
                 </h3>
               )}
             </div>
@@ -2508,6 +2524,89 @@ function GrandpaCoin() {
                   <img
                     src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/1092_strong.jpg"
                     alt="Broderick West Strong"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                </div>
+              </>
+            )}
+
+            {/* Story Text - 4270 */}
+            {storyTokenId === '4270' && (
+              <>
+                <div style={{
+                  color: '#1a1a1a',
+                  fontSize: '1.1rem',
+                  lineHeight: '1.8',
+                  marginBottom: '30px',
+                  textAlign: 'left',
+                  fontFamily: 'inherit'
+                }}>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    This is Earl Bergman. Earl is…different. Although he presents as a hypochondriac, Earl is actually a conspiracy nut. His prevailing theory has something to do with the water supply.
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    It's unclear what it is about the water he is troubled by, but he has his own method of inspecting it. Water he deems "Clear of all agents" is bagged and used in his personal IV system of hydration.
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    He stays in his room most of the day doing…well who knows what, but when he does stroll around he is sure to offer plenty of unsolicited advice.
+                  </p>
+                </div>
+
+                {/* Story Images - 4270 */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                  gap: '20px',
+                  marginTop: '30px'
+                }}>
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/4270_exam.jpg"
+                    alt="Earl Bergman Exam"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/4270_hospital.jpg"
+                    alt="Earl Bergman Hospital"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/4270_map.jpg"
+                    alt="Earl Bergman Map"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/4270_sciency.jpg"
+                    alt="Earl Bergman Science"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/4270_safety.jpg"
+                    alt="Earl Bergman Safety"
                     style={{
                       width: '100%',
                       height: 'auto',
