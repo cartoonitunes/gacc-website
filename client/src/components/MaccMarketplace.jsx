@@ -24,6 +24,9 @@ function MaccMarketplace () {
               <a href="https://www.instagram.com/grandpaapecountryclubofficial">
               <i className="fa fa-instagram social-icon pr-lg-0" />
               </a>
+              <a href="mailto:thegrandpacoin@gmail.com">
+              <i className="fa fa-envelope social-icon pr-lg-0" />
+              </a>
           </div>
           </div>
       </nav>

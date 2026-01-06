@@ -14,7 +14,7 @@ function Landing () {
                   <div className="container">
                     <div className="mb-5 mb-lg-0 row">
                       <div className="col-lg-4 col-12 offset-lg-4"><img className="img-fluid d-block mx-auto custom-logo pt-4" src={process.env.PUBLIC_URL + '/assets/images/GACC-Banner-Black-V6.png'} alt="gacc header logo" width="300px" height="300px" /></div>
-                      <div className="d-none d-lg-flex justify-content-end social-icons col-lg-4"><a href="https://discord.gg/8uuhkZ2TA2"><i className="fa fa-discord-alt black-social-icon pr-lg-0" /></a><a href="https://twitter.com/GrandpaApeCC"><i className="fa fa-twitter black-social-icon pr-lg-0" /></a><a href="https://www.instagram.com/grandpaapecountryclubofficial"><i className="fa fa-instagram black-social-icon pr-lg-0" /></a></div>
+                      <div className="d-none d-lg-flex justify-content-end social-icons col-lg-4"><a href="https://discord.gg/8uuhkZ2TA2"><i className="fa fa-discord-alt black-social-icon pr-lg-0" /></a><a href="https://twitter.com/GrandpaApeCC"><i className="fa fa-twitter black-social-icon pr-lg-0" /></a><a href="https://www.instagram.com/grandpaapecountryclubofficial"><i className="fa fa-instagram black-social-icon pr-lg-0" /></a><a href="mailto:thegrandpacoin@gmail.com"><i className="fa fa-envelope black-social-icon pr-lg-0" /></a></div>
                       <div className="px-0 col-12">
                         <div className="mb-4 mb-lg-5 container">
                           <div className="row">
@@ -50,7 +50,7 @@ function Landing () {
                   <div className="col-12 col-lg-4 order-first"><img className="img-fluid footer-logo" src="https://lh3.googleusercontent.com/n9HKrkgouw_PsI79-XDrbfeomqcpVDXwDuJTKykWQjxVIOitQeDongPHwap1SbsFb_X0mVyoNGzztJPIV776N0kmnFkApZa-JBxyMA=s0" alt="logo" /></div>
                   <div className="order-last my-auto text-center col-lg-4 col-sm-12 col-12">
                     <div className="row">
-                      <div className="text-lg-right col-sm-12 col-12"><a href="https://discord.gg/8uuhkZ2TA2"><i className="fa fa-discord-alt black-social-icon pr-lg-0" /></a><a href="https://twitter.com/GrandpaApeCC"><i className="fa fa-twitter black-social-icon pr-lg-0" /></a><a href="https://www.instagram.com/grandpaapecountryclubofficial"><i className="fa fa-instagram black-social-icon pr-lg-0" /></a></div>
+                      <div className="text-lg-right col-sm-12 col-12"><a href="https://discord.gg/8uuhkZ2TA2"><i className="fa fa-discord-alt black-social-icon pr-lg-0" /></a><a href="https://twitter.com/GrandpaApeCC"><i className="fa fa-twitter black-social-icon pr-lg-0" /></a><a href="https://www.instagram.com/grandpaapecountryclubofficial"><i className="fa fa-instagram black-social-icon pr-lg-0" /></a><a href="mailto:thegrandpacoin@gmail.com"><i className="fa fa-envelope black-social-icon pr-lg-0" /></a></div>
                       <div className="col-lg-12 col-sm-6 col-6">
                         <p className="copyright text-right"><span className="copy-left" style={{color: 'black'}}>© 2023 Grandpa Ape Country Club</span></p>
                       </div>

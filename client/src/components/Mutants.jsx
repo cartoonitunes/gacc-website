@@ -592,6 +592,9 @@ function Mutants() {
               <a href="https://www.instagram.com/grandpaapecountryclubofficial">
               <i className="fa fa-instagram social-icon pr-lg-0" />
               </a>
+              <a href="mailto:thegrandpacoin@gmail.com">
+              <i className="fa fa-envelope social-icon pr-lg-0" />
+              </a>
           </div>
           </div>
       </nav>
@@ -805,6 +808,9 @@ function Mutants() {
                       </a>
                       <a href="https://www.instagram.com/grandpaapecountryclubofficial">
                         <i className="fa fa-instagram social-icon pr-lg-0" />
+                      </a>
+                      <a href="mailto:thegrandpacoin@gmail.com">
+                        <i className="fa fa-envelope social-icon pr-lg-0" />
                       </a>
                     </div>
                     <div className="col-lg-12 col-sm-6 col-6">
