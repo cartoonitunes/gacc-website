@@ -770,6 +770,7 @@ function GrandpaCoin() {
                 <a href="https://discord.gg/8uuhkZ2TA2"><i className="fa fa-discord-alt black-social-icon pr-lg-0" /></a>
                 <a href="https://twitter.com/GrandpaApeCC"><i className="fa fa-twitter black-social-icon pr-lg-0" /></a>
                 <a href="https://www.instagram.com/grandpaapecountryclubofficial"><i className="fa fa-instagram black-social-icon pr-lg-0" /></a>
+                <a href="mailto:thegrandpacoin@gmail.com"><i className="fa fa-envelope black-social-icon pr-lg-0" /></a>
               </div>
             </div>
           </nav>
@@ -1690,6 +1691,7 @@ function GrandpaCoin() {
                       <a href="https://discord.gg/8uuhkZ2TA2"><i className="fa fa-discord-alt black-social-icon pr-lg-0" /></a>
                       <a href="https://twitter.com/GrandpaApeCC"><i className="fa fa-twitter black-social-icon pr-lg-0" /></a>
                       <a href="https://www.instagram.com/grandpaapecountryclubofficial"><i className="fa fa-instagram black-social-icon pr-lg-0" /></a>
+                      <a href="mailto:thegrandpacoin@gmail.com"><i className="fa fa-envelope black-social-icon pr-lg-0" /></a>
                     </div>
                     <div className="col-lg-12 col-sm-6 col-6">
                       <p className="copyright text-right"><span className="copy-left" style={{color: 'black'}}>© 2023 Grandpa Ape Country Club</span></p>
