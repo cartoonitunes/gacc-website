@@ -299,6 +299,12 @@ function GrandpaCoin() {
         title: 'Grandpa Ape #4270 - Earl Bergman | Grandpa Coin',
         description: "This is Earl Bergman. Earl is…different. Although he presents as a hypochondriac, Earl is actually a conspiracy nut. His prevailing theory has something to do with the water supply.",
         image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-4270`]?.image || defaultImage
+      },
+      '2308': {
+        name: 'Norman Pike',
+        title: 'Grandpa Ape #2308 - Norman Pike | Grandpa Coin',
+        description: "Say hello to Norman Pike, the latest retiree at the GACC Country Club. Whether that's his actual name depends on what you've heard and what you choose to believe.",
+        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-2308`]?.image || defaultImage
       }
     };
   }, [nftMetadata]);
@@ -705,7 +711,7 @@ function GrandpaCoin() {
     const searchParams = new URLSearchParams(location.search);
     const storyParam = searchParams.get('story');
     
-    if (storyParam && ['2945', '693', '4935', '1784', '2190', '238', '935', '3836', '1092', '4270'].includes(storyParam)) {
+    if (storyParam && ['2945', '693', '4935', '1784', '2190', '238', '935', '3836', '1092', '4270', '2308'].includes(storyParam)) {
       setStoryTokenId(storyParam);
       setShowStoryModal(true);
       
@@ -1599,7 +1605,7 @@ function GrandpaCoin() {
                                                   Joined: {nft.joinedAtFormatted || new Date(nft.joinedAt * 1000).toLocaleDateString()}
                                                 </p>
                                                 <div style={{marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '4px'}}>
-                                                  {(nft.tokenId === '2945' || nft.tokenId === '693' || nft.tokenId === '4935' || nft.tokenId === '1784' || nft.tokenId === '2190' || nft.tokenId === '238' || nft.tokenId === '935' || nft.tokenId === '3836' || nft.tokenId === '1092' || nft.tokenId === '4270') && (
+                                                  {(nft.tokenId === '2945' || nft.tokenId === '693' || nft.tokenId === '4935' || nft.tokenId === '1784' || nft.tokenId === '2190' || nft.tokenId === '238' || nft.tokenId === '935' || nft.tokenId === '3836' || nft.tokenId === '1092' || nft.tokenId === '4270' || nft.tokenId === '2308') && (
                                                     <button
                                                       onClick={() => {
                                                         setStoryTokenId(nft.tokenId);
@@ -1898,6 +1904,16 @@ function GrandpaCoin() {
                   marginBottom: '20px'
                 }}>
                   Earl Bergman
+                </h3>
+              )}
+              {storyTokenId === '2308' && (
+                <h3 style={{
+                  color: 'black',
+                  fontSize: '1.5rem',
+                  fontStyle: 'italic',
+                  marginBottom: '20px'
+                }}>
+                  Norman Pike
                 </h3>
               )}
             </div>
@@ -2609,6 +2625,82 @@ function GrandpaCoin() {
                   <img
                     src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/4270_safety.jpg"
                     alt="Earl Bergman Safety"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                </div>
+              </>
+            )}
+
+            {/* Story Text - 2308 */}
+            {storyTokenId === '2308' && (
+              <>
+                <div style={{
+                  color: '#1a1a1a',
+                  fontSize: '1.1rem',
+                  lineHeight: '1.8',
+                  marginBottom: '30px',
+                  textAlign: 'left',
+                  fontFamily: 'inherit'
+                }}>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    Say hello to Norman Pike, the latest retiree at the GACC Country Club. Whether that's his actual name depends on what you've heard and what you choose to believe. You see, some say Norman once ran an underground casino and sports betting club that ran afoul of some nasty pieces of business.
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    They say he took his revenge on them when they raided and shut down his club and sports book, and that he spent the last thirty years in witness protection. But those are just rumors.
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    At some point, Norm worked for the city as a Risk Assessment Specialist. That much seems true, as he can often be seen strolling the grounds "just noticing stuff" but he never mentions anything about any of it. He just mutters what sounds like ODDS to himself and moves on.
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    All in all, Norman is a nice enough resident. Just don't be offended if he doesn't respond when you talk to him. He has probably already determined your life expectancy and deemed a potential friendship too short to be worth making the effort.
+                  </p>
+                </div>
+
+                {/* Story Images - 2308 */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                  gap: '20px',
+                  marginTop: '30px'
+                }}>
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2308_cards.jpg"
+                    alt="Norman Pike Cards"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2308_hall.jpg"
+                    alt="Norman Pike Hall"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2308_talk.jpg"
+                    alt="Norman Pike Talk"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2308_buttons.jpg"
+                    alt="Norman Pike Buttons"
                     style={{
                       width: '100%',
                       height: 'auto',
