@@ -305,6 +305,12 @@ function GrandpaCoin() {
         title: 'Grandpa Ape #2308 - Norman Pike | Grandpa Coin',
         description: "Say hello to Norman Pike, the latest retiree at the GACC Country Club. Whether that's his actual name depends on what you've heard and what you choose to believe.",
         image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-2308`]?.image || defaultImage
+      },
+      '194': {
+        name: 'Douglas Holloway',
+        title: 'Grandpa Ape #194 - Douglas Holloway | Grandpa Coin',
+        description: "Douglas Holloway was once the most successful Private Investigator of his time. Drawn into a nightmare case, Holloway became obsessed and threw his professionalism out the window. Along with his stellar reputation.",
+        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-194`]?.image || defaultImage
       }
     };
   }, [nftMetadata]);
@@ -711,7 +717,7 @@ function GrandpaCoin() {
     const searchParams = new URLSearchParams(location.search);
     const storyParam = searchParams.get('story');
     
-    if (storyParam && ['2945', '693', '4935', '1784', '2190', '238', '935', '3836', '1092', '4270', '2308'].includes(storyParam)) {
+    if (storyParam && ['2945', '693', '4935', '1784', '2190', '238', '935', '3836', '1092', '4270', '2308', '194'].includes(storyParam)) {
       setStoryTokenId(storyParam);
       setShowStoryModal(true);
       
@@ -1605,7 +1611,7 @@ function GrandpaCoin() {
                                                   Joined: {nft.joinedAtFormatted || new Date(nft.joinedAt * 1000).toLocaleDateString()}
                                                 </p>
                                                 <div style={{marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '4px'}}>
-                                                  {(nft.tokenId === '2945' || nft.tokenId === '693' || nft.tokenId === '4935' || nft.tokenId === '1784' || nft.tokenId === '2190' || nft.tokenId === '238' || nft.tokenId === '935' || nft.tokenId === '3836' || nft.tokenId === '1092' || nft.tokenId === '4270' || nft.tokenId === '2308') && (
+                                                  {(nft.tokenId === '2945' || nft.tokenId === '693' || nft.tokenId === '4935' || nft.tokenId === '1784' || nft.tokenId === '2190' || nft.tokenId === '238' || nft.tokenId === '935' || nft.tokenId === '3836' || nft.tokenId === '1092' || nft.tokenId === '4270' || nft.tokenId === '2308' || nft.tokenId === '194') && (
                                                     <button
                                                       onClick={() => {
                                                         setStoryTokenId(nft.tokenId);
@@ -1914,6 +1920,16 @@ function GrandpaCoin() {
                   marginBottom: '20px'
                 }}>
                   Norman Pike
+                </h3>
+              )}
+              {storyTokenId === '194' && (
+                <h3 style={{
+                  color: 'black',
+                  fontSize: '1.5rem',
+                  fontStyle: 'italic',
+                  marginBottom: '20px'
+                }}>
+                  Douglas Holloway
                 </h3>
               )}
             </div>
@@ -2701,6 +2717,59 @@ function GrandpaCoin() {
                   <img
                     src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2308_buttons.jpg"
                     alt="Norman Pike Buttons"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                </div>
+              </>
+            )}
+
+            {/* Story Text - 194 */}
+            {storyTokenId === '194' && (
+              <>
+                <div style={{
+                  color: '#1a1a1a',
+                  fontSize: '1.1rem',
+                  lineHeight: '1.8',
+                  marginBottom: '30px',
+                  textAlign: 'left',
+                  fontFamily: 'inherit'
+                }}>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    Douglas Holloway was once the most successful Private Investigator of his time. Drawn into a nightmare case, Holloway became obsessed and threw his professionalism out the window. Along with his stellar reputation.
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    Holloway turned his frustration into a book, <em>The Last Banana</em>, but unfortunately very few bought it after critics ripped it. The book was called "A clumsy and self serving attempt at retribution."
+                  </p>
+                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
+                    Still, Holloway stands by his actions and by every word in the book.
+                  </p>
+                </div>
+
+                {/* Story Images - 194 */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                  gap: '20px',
+                  marginTop: '30px'
+                }}>
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/194_sign.jpg"
+                    alt="Douglas Holloway Sign"
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                    }}
+                  />
+                  <img
+                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/194_read.jpg"
+                    alt="Douglas Holloway Reading"
                     style={{
                       width: '100%',
                       height: 'auto',
