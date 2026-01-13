@@ -181,7 +181,9 @@ function GrandpaCoin() {
   const [transferStatus, setTransferStatus] = useState("");
   const [showStoryModal, setShowStoryModal] = useState(false);
   const [storyTokenId, setStoryTokenId] = useState(null); // Track which token's story to show
-  
+  const [apiStories, setApiStories] = useState({}); // Stories from API
+  const [loadingStories, setLoadingStories] = useState(false);
+
   // DexScreener and market data state
   const [dexData, setDexData] = useState(null);
   const [floorPrice, setFloorPrice] = useState(null);
@@ -236,84 +238,46 @@ function GrandpaCoin() {
     updateMetaTag('description', description);
   }, []);
 
-  // Story data for meta tags - use useMemo to compute based on nftMetadata
+  // Fetch stories from API
+  const fetchStories = useCallback(async () => {
+    setLoadingStories(true);
+    try {
+      const response = await fetch('/api/nft-stories');
+      const data = await response.json();
+
+      if (data.success && data.stories) {
+        // Convert array to object keyed by tokenId
+        const storiesMap = {};
+        data.stories.forEach(story => {
+          storiesMap[story.tokenId] = story;
+        });
+        setApiStories(storiesMap);
+      }
+    } catch (error) {
+      console.error('Error fetching stories:', error);
+    } finally {
+      setLoadingStories(false);
+    }
+  }, []);
+
+  // Story data for meta tags - computed from API stories and nftMetadata
   const storyData = React.useMemo(() => {
     const defaultImage = 'https://lh3.googleusercontent.com/n9HKrkgouw_PsI79-XDrbfeomqcpVDXwDuJTKykWQjxVIOitQeDongPHwap1SbsFb_X0mVyoNGzztJPIV776N0kmnFkApZa-JBxyMA=s0';
-    return {
-      '2945': {
-        name: 'Reginald Baker',
-        title: 'Grandpa Ape #2945 - Reginald Baker | Grandpa Coin',
-        description: 'Reginald Baker never goes anywhere without a smile and his 1st Armored Division military cap. Even though his time in the service left him confined to a wheelchair, Reggie wears his scars like badges of honor.',
-        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-2945`]?.image || defaultImage
-      },
-      '693': {
-        name: 'Freddy McGrady',
-        title: 'Grandpa Ape #693 - Freddy McGrady | Grandpa Coin',
-        description: 'Freddy McGrady was on the verge of becoming the next great prizefighter. Two wins away from a title fight, Fred took the punch every fighter dreads. It put his lights out, ended his boxing career, and caused a steady and unrelenting drooling condition.',
-        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-693`]?.image || defaultImage
-      },
-      '4935': {
-        name: 'Terrance Lawrence',
-        title: 'Grandpa Ape #4935 - Terrance Lawrence | Grandpa Coin',
-        description: 'If you recognize the Country Club\'s newest resident, it may be because you were going 26 in a 25 down Pine Street where Terrance Lawrence has worked as a crossing guard for the last 28 years, and were served up one serious tongue lashing.',
-        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-4935`]?.image || defaultImage
-      },
-      '1784': {
-        name: 'Otis',
-        title: 'Grandpa Ape #1784 - Otis | Grandpa Coin',
-        description: 'Sadly, very little is known about the Country Club\'s newest resident, and so far he\'s been keeping to himself. But you know old Reggie is going to keep the door open to him.',
-        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-1784`]?.image || defaultImage
-      },
-      '2190': {
-        name: 'Henderson Pritchett',
-        title: 'Grandpa Ape #2190 - Henderson Pritchett | Grandpa Coin',
-        description: 'Today we welcome our newest resident, Henderson Pritchett. Henderson was a world renowned trophy hunter turned reality television star. His show, Nature\'s Assassin, ended in controversy when a contestant went missing and hasn\'t been seen since.',
-        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-2190`]?.image || defaultImage
-      },
-      '238': {
-        name: 'Monty LeVine',
-        title: 'Grandpa Ape #238 - Monty LeVine | Grandpa Coin',
-        description: 'The newest resident has arrived at the Country Club, and although the others have not met him yet, Monty LeVine is causing quite a stir. Particularly with one resident. Monty is not a normal resident. He is Resident Entertainment.',
-        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-238`]?.image || defaultImage
-      },
-      '935': {
-        name: 'Caleb Hatch',
-        title: 'Grandpa Ape #935 - Caleb Hatch | Grandpa Coin',
-        description: 'Please welcome Caleb Hatch to the Country Club. Caleb grew up in a fishing village, where his parents ran a small fishing business. Caleb begged his father to take him out on expeditions, but his father always refused.',
-        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-935`]?.image || defaultImage
-      },
-      '3836': {
-        name: 'Walter Bramblewick',
-        title: 'Grandpa Ape #3836 - Walter Bramblewick | Grandpa Coin',
-        description: "I'd ask you to visit Walter Bramblewick at the Country Club, but he's probably sleeping. Before blessing us with his endearing presence, Walter was a curator of oddities and antiquities.",
-        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-3836`]?.image || defaultImage
-      },
-      '1092': {
-        name: 'Broderick West',
-        title: 'Grandpa Ape #1092 - Broderick West | Grandpa Coin',
-        description: "Broderick West is the newly hired mechanic at the GACC Country Club. He is…nice enough. Okay he's an a$$hole, but he's great with a wrench!",
-        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-1092`]?.image || defaultImage
-      },
-      '4270': {
-        name: 'Earl Bergman',
-        title: 'Grandpa Ape #4270 - Earl Bergman | Grandpa Coin',
-        description: "This is Earl Bergman. Earl is…different. Although he presents as a hypochondriac, Earl is actually a conspiracy nut. His prevailing theory has something to do with the water supply.",
-        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-4270`]?.image || defaultImage
-      },
-      '2308': {
-        name: 'Norman Pike',
-        title: 'Grandpa Ape #2308 - Norman Pike | Grandpa Coin',
-        description: "Say hello to Norman Pike, the latest retiree at the GACC Country Club. Whether that's his actual name depends on what you've heard and what you choose to believe.",
-        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-2308`]?.image || defaultImage
-      },
-      '194': {
-        name: 'Douglas Holloway',
-        title: 'Grandpa Ape #194 - Douglas Holloway | Grandpa Coin',
-        description: "Douglas Holloway was once the most successful Private Investigator of his time. Drawn into a nightmare case, Holloway became obsessed and threw his professionalism out the window. Along with his stellar reputation.",
-        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-194`]?.image || defaultImage
-      }
-    };
-  }, [nftMetadata]);
+
+    // Convert apiStories to storyData format with NFT images
+    const stories = {};
+    Object.keys(apiStories).forEach(tokenId => {
+      const apiStory = apiStories[tokenId];
+      stories[tokenId] = {
+        name: apiStory.name,
+        title: apiStory.title,
+        description: apiStory.description,
+        image: nftMetadata[`${GACC_COLLECTION_ADDRESS}-${tokenId}`]?.image || defaultImage
+      };
+    });
+
+    return stories;
+  }, [apiStories, nftMetadata]);
 
   const fetchNftMetadata = useCallback(async (nfts) => {
     setLoadingMetadata(true);
@@ -692,7 +656,8 @@ function GrandpaCoin() {
   useEffect(() => {
     loadContractData();
     fetchMarketData();
-  }, [loadContractData, fetchMarketData]);
+    fetchStories();
+  }, [loadContractData, fetchMarketData, fetchStories]);
 
   // Calculate estimated ETH value when we have all the data
   useEffect(() => {
@@ -716,11 +681,14 @@ function GrandpaCoin() {
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const storyParam = searchParams.get('story');
-    
-    if (storyParam && ['2945', '693', '4935', '1784', '2190', '238', '935', '3836', '1092', '4270', '2308', '194'].includes(storyParam)) {
+
+    // Check if story exists in storyData (for meta tags) or apiStories (for content)
+    const hasStory = storyData[storyParam] || apiStories[storyParam];
+
+    if (storyParam && hasStory) {
       setStoryTokenId(storyParam);
       setShowStoryModal(true);
-      
+
       // Update meta tags for the story
       const story = storyData[storyParam];
       if (story) {
@@ -737,7 +705,7 @@ function GrandpaCoin() {
       const defaultUrl = `${window.location.origin}${location.pathname}`;
       updateMetaTags(defaultTitle, defaultDescription, defaultImage, defaultUrl);
     }
-  }, [location.search, location.pathname, updateMetaTags, storyData, nftMetadata]);
+  }, [location.search, location.pathname, updateMetaTags, storyData, nftMetadata, apiStories]);
 
   // Update meta tags when story modal opens/closes or storyTokenId changes
   useEffect(() => {
@@ -1611,7 +1579,7 @@ function GrandpaCoin() {
                                                   Joined: {nft.joinedAtFormatted || new Date(nft.joinedAt * 1000).toLocaleDateString()}
                                                 </p>
                                                 <div style={{marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '4px'}}>
-                                                  {(nft.tokenId === '2945' || nft.tokenId === '693' || nft.tokenId === '4935' || nft.tokenId === '1784' || nft.tokenId === '2190' || nft.tokenId === '238' || nft.tokenId === '935' || nft.tokenId === '3836' || nft.tokenId === '1092' || nft.tokenId === '4270' || nft.tokenId === '2308' || nft.tokenId === '194') && (
+                                                  {(storyData[nft.tokenId] || apiStories[nft.tokenId]) && (
                                                     <button
                                                       onClick={() => {
                                                         setStoryTokenId(nft.tokenId);
@@ -1812,130 +1780,21 @@ function GrandpaCoin() {
               }}>
                 Grandpa Ape #{storyTokenId}
               </h2>
-              {storyTokenId === '2945' && (
+              {/* Dynamic header from API */}
+              {apiStories[storyTokenId] && (
                 <h3 style={{
                   color: 'black',
                   fontSize: '1.5rem',
                   fontStyle: 'italic',
                   marginBottom: '20px'
                 }}>
-                  Reginald Baker
-                </h3>
-              )}
-              {storyTokenId === '693' && (
-                <h3 style={{
-                  color: 'black',
-                  fontSize: '1.5rem',
-                  fontStyle: 'italic',
-                  marginBottom: '20px'
-                }}>
-                  Freddy McGrady
-                </h3>
-              )}
-              {storyTokenId === '4935' && (
-                <h3 style={{
-                  color: 'black',
-                  fontSize: '1.5rem',
-                  fontStyle: 'italic',
-                  marginBottom: '20px'
-                }}>
-                  Terrance Lawrence
-                </h3>
-              )}
-              {storyTokenId === '1784' && (
-                <h3 style={{
-                  color: 'black',
-                  fontSize: '1.5rem',
-                  fontStyle: 'italic',
-                  marginBottom: '20px'
-                }}>
-                  Otis
-                </h3>
-              )}
-              {storyTokenId === '2190' && (
-                <h3 style={{
-                  color: 'black',
-                  fontSize: '1.5rem',
-                  fontStyle: 'italic',
-                  marginBottom: '20px'
-                }}>
-                  Henderson Pritchett
-                </h3>
-              )}
-              {storyTokenId === '238' && (
-                <h3 style={{
-                  color: 'black',
-                  fontSize: '1.5rem',
-                  fontStyle: 'italic',
-                  marginBottom: '20px'
-                }}>
-                  Monty LeVine
-                </h3>
-              )}
-              {storyTokenId === '935' && (
-                <h3 style={{
-                  color: 'black',
-                  fontSize: '1.5rem',
-                  fontStyle: 'italic',
-                  marginBottom: '20px'
-                }}>
-                  Caleb Hatch
-                </h3>
-              )}
-              {storyTokenId === '3836' && (
-                <h3 style={{
-                  color: 'black',
-                  fontSize: '1.5rem',
-                  fontStyle: 'italic',
-                  marginBottom: '20px'
-                }}>
-                  Walter Bramblewick
-                </h3>
-              )}
-              {storyTokenId === '1092' && (
-                <h3 style={{
-                  color: 'black',
-                  fontSize: '1.5rem',
-                  fontStyle: 'italic',
-                  marginBottom: '20px'
-                }}>
-                  Broderick West
-                </h3>
-              )}
-              {storyTokenId === '4270' && (
-                <h3 style={{
-                  color: 'black',
-                  fontSize: '1.5rem',
-                  fontStyle: 'italic',
-                  marginBottom: '20px'
-                }}>
-                  Earl Bergman
-                </h3>
-              )}
-              {storyTokenId === '2308' && (
-                <h3 style={{
-                  color: 'black',
-                  fontSize: '1.5rem',
-                  fontStyle: 'italic',
-                  marginBottom: '20px'
-                }}>
-                  Norman Pike
-                </h3>
-              )}
-              {storyTokenId === '194' && (
-                <h3 style={{
-                  color: 'black',
-                  fontSize: '1.5rem',
-                  fontStyle: 'italic',
-                  marginBottom: '20px'
-                }}>
-                  Douglas Holloway
+                  {apiStories[storyTokenId].name}
                 </h3>
               )}
             </div>
 
-            {/* Story Text - 2945 */}
-            {storyTokenId === '2945' && (
+            {/* Dynamic Story Rendering from API */}
+            {apiStories[storyTokenId] && (
               <>
                 <div style={{
                   color: '#1a1a1a',
@@ -1945,839 +1804,77 @@ function GrandpaCoin() {
                   textAlign: 'left',
                   fontFamily: 'inherit'
                 }}>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    Reginald Baker never goes anywhere without a smile and his 1st Armored Division military cap. Even though his time in the service left him confined to a wheelchair and permanently impaired vision due to unremovable shrapnel in his right eye, Reggie wears his scars like badges of honor.
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    Rumor has it, the story of his last mission was almost turned into a major motion picture by a big time director, but Reggie refused to share the details of his famous tank raid.
-                  </p>
-                  <p style={{marginBottom: '20px', fontStyle: 'italic', color: '#333'}}>
-                    "That's a story for the fellas that were there only," his friends heard him say.
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    After the service, Reggie developed a passion for gardening, eventually opening his own Garden Center called Petal to the Metal Plants. Every Memorial Day, he hired local youths to put free flowers on the graves of every former soldier he could find.
-                  </p>
-                  <p style={{marginBottom: '20px', fontWeight: 'bold', color: '#1a1a1a'}}>
-                    The Country Club is honored to have such a wonderful Ape as one of its very first residents. It is definitely a much happier place for having Reggie call it home.
-                  </p>
+                  {apiStories[storyTokenId].storyContent.map((paragraph, index) => {
+                    // Parse markdown: **bold**, *italic*
+                    const parseMarkdown = (text) => {
+                      const parts = [];
+                      let currentIndex = 0;
+                      let key = 0;
+
+                      // Match **bold** and *italic*
+                      const regex = /(\*\*\*([^*]+)\*\*\*|\*\*([^*]+)\*\*|\*([^*]+)\*)/g;
+                      let match;
+
+                      while ((match = regex.exec(text)) !== null) {
+                        // Add text before the match
+                        if (match.index > currentIndex) {
+                          parts.push(text.substring(currentIndex, match.index));
+                        }
+
+                        // Add the formatted text
+                        if (match[2]) {
+                          // ***bold italic***
+                          parts.push(<strong key={key++}><em>{match[2]}</em></strong>);
+                        } else if (match[3]) {
+                          // **bold**
+                          parts.push(<strong key={key++}>{match[3]}</strong>);
+                        } else if (match[4]) {
+                          // *italic*
+                          parts.push(<em key={key++}>{match[4]}</em>);
+                        }
+
+                        currentIndex = match.index + match[0].length;
+                      }
+
+                      // Add remaining text
+                      if (currentIndex < text.length) {
+                        parts.push(text.substring(currentIndex));
+                      }
+
+                      return parts.length > 0 ? parts : text;
+                    };
+
+                    return (
+                      <p key={index} style={{marginBottom: '20px', color: '#1a1a1a', fontWeight: paragraph.includes('**') && !paragraph.includes('***') ? 'bold' : 'normal'}}>
+                        {parseMarkdown(paragraph)}
+                      </p>
+                    );
+                  })}
                 </div>
 
-                {/* Story Images - 2945 */}
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                  gap: '20px',
-                  marginTop: '30px'
-                }}>
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2945_window.jpg"
-                    alt="Reginald Baker Window"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2945_comic.jpg"
-                    alt="Reginald Baker Comic"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2945_entry.jpg"
-                    alt="Reginald Baker Entry"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                </div>
-              </>
-            )}
-
-            {/* Story Text - 693 */}
-            {storyTokenId === '693' && (
-              <>
-                <div style={{
-                  color: '#1a1a1a',
-                  fontSize: '1.1rem',
-                  lineHeight: '1.8',
-                  marginBottom: '30px',
-                  textAlign: 'left',
-                  fontFamily: 'inherit'
-                }}>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    Freddy McGrady was on the verge of becoming the next great prizefighter. Two wins away from a title fight, Fred took the punch every fighter dreads. It put his lights out, ended his boxing career, and caused a steady and unrelenting drooling condition. Tough break.
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    After he hung up the gloves, Freddy turned his focus to his other great passion—Freshwater Fishing. He tried, unsuccessfully I must add, to create Freshwater Freddy's Fishing Tours. Unfortunately, things like permits, a lack of well stocked fishing holes, and that unsightly drool proved too much for the business to attract customers.
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    These days, loud noises and bright lights are a bit much for old Fred. He prefers the peace and quiet of the Country Club, and loves to engage in games requiring blindfolds, of which the facility has a surprisingly good amount. If you can stomach a little drool, ok it's A LOT of drool, please stop by and hello to Freddy!
-                  </p>
-                </div>
-
-                {/* Story Images - 693 */}
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                  gap: '20px',
-                  marginTop: '30px'
-                }}>
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/693_box.jpg"
-                    alt="Freddy McGrady Boxing"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/693_fish_hd.jpg"
-                    alt="Freddy McGrady Fishing"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/693_helper.jpg"
-                    alt="Freddy McGrady Helper"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/693_fishing.jpg"
-                    alt="Freddy McGrady Fishing Scene"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/693_pin.jpg"
-                    alt="Freddy McGrady Pin"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                </div>
-              </>
-            )}
-
-            {/* Story Text - 4935 */}
-            {storyTokenId === '4935' && (
-              <>
-                <div style={{
-                  color: '#1a1a1a',
-                  fontSize: '1.1rem',
-                  lineHeight: '1.8',
-                  marginBottom: '30px',
-                  textAlign: 'left',
-                  fontFamily: 'inherit'
-                }}>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    If you recognize the Country Club's newest resident, it may be because you were going 26 in a 25 down Pine Street where Terrance Lawrence has worked as a crossing guard for the last 28 years, and were served up one serious tongue lashing. Bet you didn't do that twice!
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    Anyway, these days Terrence, Terry to his friends—of which he has none, can be found ringing the bell at the service desk, ready to register a new complaint or suggest an improvement. The staff has already learned to hide when he approaches, and his latest demand was for the addition of reflective signage to another resident's wheel chair. The request was denied, but Terrence is far from done with that issue. Those who have argued with him in the past have claimed he has a way of hypnotizing you with his stare, causing you to give in to his demands.
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    He is also campaigning for the construction of a Pickleball Court and League at the County Club. Not because he wants to play. Terrence wants to be the umpire.
-                  </p>
-                  <p style={{marginBottom: '20px', fontWeight: 'bold', color: '#1a1a1a'}}>
-                    We hope to see you at The Country Club soon. You might want to steer clear of Mr. Lawrence, though.
-                  </p>
-                </div>
-
-                {/* Story Images - 4935 */}
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                  gap: '20px',
-                  marginTop: '30px'
-                }}>
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/4935_stop.jpg"
-                    alt="Terrance Lawrence Stop Sign"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/4935_bell.jpg"
-                    alt="Terrance Lawrence Bell"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/4935_pickle.jpg"
-                    alt="Terrance Lawrence Pickleball"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                </div>
-              </>
-            )}
-
-            {/* Story Text - 1784 */}
-            {storyTokenId === '1784' && (
-              <>
-                <div style={{
-                  color: '#1a1a1a',
-                  fontSize: '1.1rem',
-                  lineHeight: '1.8',
-                  marginBottom: '30px',
-                  textAlign: 'left',
-                  fontFamily: 'inherit'
-                }}>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    Sadly, very little is known about the Country Club's newest resident, and so far he's been keeping to himself. But you know old Reggie is going to keep the door open to him. There's some speculation that Otis used to be a Jazz musician. Other rumors have him once owning a bar somewhere. Only time will tell, as Otis ain't talking'.
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    Country Club staff, upon notification from Terrance, have found Otis wandering around the back parking lot of the facility at night. When asked what he is doing, Otis simply shrugs, gives a sad smile, and shuffles inside.
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    Like Terrance, he listed NONE on his Expected Visitors Intake Documents page, though I suspect it's for different reasons. Let's hope Otis finds his stay at the Country Club to be a happier place than wherever he's been before.
-                  </p>
-                </div>
-
-                {/* Story Images - 1784 */}
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                  gap: '20px',
-                  marginTop: '30px'
-                }}>
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/1784_club.jpg"
-                    alt="Otis Club"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/1784_sad.jpg"
-                    alt="Otis Sad"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                </div>
-              </>
-            )}
-
-            {/* Story Text - 2190 */}
-            {storyTokenId === '2190' && (
-              <>
-                <div style={{
-                  color: '#1a1a1a',
-                  fontSize: '1.1rem',
-                  lineHeight: '1.8',
-                  marginBottom: '30px',
-                  textAlign: 'left',
-                  fontFamily: 'inherit'
-                }}>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    Today we welcome our newest resident, Henderson Pritchett. Henderson was a world renowned trophy hunter turned reality television star. His show, <em>Nature's Assassin</em>, ended in controversy when a contestant went missing and hasn't been seen since. Henderson denied any involvement and was eventually cleared of any wrongdoing, but the show simply couldn't recover from the scandal.
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    Henderson tried to rebound by opening an amusement park with rides and attractions based on his famous adventures, but after multiple rides broke down, the insurance became too costly to maintain.
-                  </p>
-                  <p style={{marginBottom: '20px', fontWeight: 'bold', color: '#1a1a1a'}}>
-                    Henderson arrived at the Country Club appearing totally defeated. Let's hope his string of bad luck turns around soon.
-                  </p>
-                </div>
-
-                {/* Story Images - 2190 */}
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                  gap: '20px',
-                  marginTop: '30px'
-                }}>
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2190_welcome.jpeg"
-                    alt="Henderson Pritchett Welcome"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2190_body.jpg"
-                    alt="Henderson Pritchett Body"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2190_car.jpg"
-                    alt="Henderson Pritchett Car"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2190_army.jpg"
-                    alt="Henderson Pritchett Army"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2190_club.jpg"
-                    alt="Henderson Pritchett Club"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                </div>
-              </>
-            )}
-
-            {/* Story Text - 238 */}
-            {storyTokenId === '238' && (
-              <>
-                <div style={{
-                  color: '#1a1a1a',
-                  fontSize: '1.1rem',
-                  lineHeight: '1.8',
-                  marginBottom: '30px',
-                  textAlign: 'left',
-                  fontFamily: 'inherit'
-                }}>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    The newest resident has arrived at the Country Club, and although the others have not met him yet, Monty LeVine is causing quite a stir. Particularly with one resident.
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    You see, Monty is not a normal resident. He is <em>Resident Entertainment</em>. This means that he lives on the premises, but his living expenses are waived in exchange for the services Monty provides. This has really raised the ire of Terrance, as he has been trying to secure a similar deal for himself, though nobody is asking for the services he has been providing.
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    Monty was a big deal on the disco scene back in the day. He claims to have been the "Secret Lover" of many of the famous movie starlets of the time, but those claims have never been substantiated. He made a living as a party host on cruise ships, had a short run as a DJ at a swanky nightclub, and put out a collection of instructional dance videos. Unfortunately, he insisted that those only be recorded on laser disc, a format he saw as the wave of the future.
-                  </p>
-                  <p style={{marginBottom: '20px', fontWeight: 'bold', color: '#1a1a1a'}}>
-                    Pop in and join the fun with our newest resident. I'm sure those Open Mic nights will really be something.
-                  </p>
-                </div>
-
-                {/* Story Images - 238 */}
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                  gap: '20px',
-                  marginTop: '30px'
-                }}>
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/238_angry.jpg"
-                    alt="Monty LeVine Angry"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/238_star.jpeg"
-                    alt="Monty LeVine Star"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/238_dance.jpg"
-                    alt="Monty LeVine Dance"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                </div>
-              </>
-            )}
-
-            {/* Story Text - 935 */}
-            {storyTokenId === '935' && (
-              <>
-                <div style={{
-                  color: '#1a1a1a',
-                  fontSize: '1.1rem',
-                  lineHeight: '1.8',
-                  marginBottom: '30px',
-                  textAlign: 'left',
-                  fontFamily: 'inherit'
-                }}>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    Please welcome Caleb Hatch to the Country Club. Caleb grew up in a fishing village, where his parents ran a small fishing business. Caleb begged his father to take him out on expeditions, but his father always refused. "There's things under the water you can't imagine, son" he would say. Until the day he just never came back.
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    Caleb swore to his mother that he would find out what happened, and went out on the sea every chance he got. What happened next depends on what you are willing to believe. About life. About fate. And about the digestive systems of enormous sea creatures.
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    As soon as he was of age, Caleb enlisted in the Navy. He was committed to his service, but his eye was always scanning that vast ocean, hoping to get his revenge.
-                  </p>
-                  <p style={{marginBottom: '20px', fontWeight: 'bold', color: '#1a1a1a'}}>
-                    Stop in and say hello to Caleb. You're guaranteed to get a whale of a tale from him.
-                  </p>
-                </div>
-
-                {/* Story Images - 935 */}
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                  gap: '20px',
-                  marginTop: '30px'
-                }}>
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/935_boat.jpg"
-                    alt="Caleb Hatch Boat"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/935_whale.jpg"
-                    alt="Caleb Hatch Whale"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/935_eye.jpg"
-                    alt="Caleb Hatch Eye"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/935_sailor.jpg"
-                    alt="Caleb Hatch Sailor"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                </div>
-              </>
-            )}
-
-            {/* Story Text - 3836 */}
-            {storyTokenId === '3836' && (
-              <>
-                <div style={{
-                  color: '#1a1a1a',
-                  fontSize: '1.1rem',
-                  lineHeight: '1.8',
-                  marginBottom: '30px',
-                  textAlign: 'left',
-                  fontFamily: 'inherit'
-                }}>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    I'd ask you to visit Walter Bramblewick at the Country Club, but he's probably sleeping. Before blessing us with his endearing presence, Walter was a curator of oddities and antiquities. He had gotten so many, he decided to open his own shop.
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    Unfortunately, he never sold a single item. Walter just couldn't bear to part with any of his treasures. He used any excuse he could to close the store early, and even when it was open he often spent his time tinkering with his latest find in his workshop so the customers could never find him to complete a purchase.
-                  </p>
-                  <p style={{marginBottom: '20px', fontWeight: 'bold', color: '#1a1a1a'}}>
-                    Walter is a wonderful ape. He is always willing to fix things around the facility. When he's awake, that is!
-                  </p>
-                </div>
-
-                {/* Story Images - 3836 */}
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                  gap: '20px',
-                  marginTop: '30px'
-                }}>
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/3836_store.jpg"
-                    alt="Walter Bramblewick Store"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/3836_fix.jpg"
-                    alt="Walter Bramblewick Fixing"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/3836_antique.jpg"
-                    alt="Walter Bramblewick Antique"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/3836_sleep.jpg"
-                    alt="Walter Bramblewick Sleeping"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                </div>
-              </>
-            )}
-
-            {/* Story Text - 1092 */}
-            {storyTokenId === '1092' && (
-              <>
-                <div style={{
-                  color: '#1a1a1a',
-                  fontSize: '1.1rem',
-                  lineHeight: '1.8',
-                  marginBottom: '30px',
-                  textAlign: 'left',
-                  fontFamily: 'inherit'
-                }}>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    Broderick West is the newly hired mechanic at the GACC Country Club. He is…nice enough. Okay he's an a$$hole, but he's great with a wrench! No worries. He's just as happy to keep to himself and his broken machines.
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    If you do have to interact with old Brody, don't piss him off. Especially if you plan on taking out one of the golf carts afterwards. Your brakes just might not work as well as you hope.
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    Broderick was offered a room in the Country Club, but he insisted on making his living quarters in an empty garage at the far end of the grounds. When he's not cranking wrenches, you can hear him cranking the throttle on his custom motorbike or cranking out reps on his pull-up bar.
-                  </p>
-                  <p style={{marginBottom: '20px', fontWeight: 'bold', color: '#1a1a1a'}}>
-                    You know what? Just avoid Broderick, ok? Just…stay away from him all together.
-                  </p>
-                </div>
-
-                {/* Story Images - 1092 */}
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                  gap: '20px',
-                  marginTop: '30px'
-                }}>
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/1092_bike.jpg"
-                    alt="Broderick West Bike"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/1092_ride.jpg"
-                    alt="Broderick West Ride"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/1092_strong.jpg"
-                    alt="Broderick West Strong"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                </div>
-              </>
-            )}
-
-            {/* Story Text - 4270 */}
-            {storyTokenId === '4270' && (
-              <>
-                <div style={{
-                  color: '#1a1a1a',
-                  fontSize: '1.1rem',
-                  lineHeight: '1.8',
-                  marginBottom: '30px',
-                  textAlign: 'left',
-                  fontFamily: 'inherit'
-                }}>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    This is Earl Bergman. Earl is…different. Although he presents as a hypochondriac, Earl is actually a conspiracy nut. His prevailing theory has something to do with the water supply.
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    It's unclear what it is about the water he is troubled by, but he has his own method of inspecting it. Water he deems "Clear of all agents" is bagged and used in his personal IV system of hydration.
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    He stays in his room most of the day doing…well who knows what, but when he does stroll around he is sure to offer plenty of unsolicited advice.
-                  </p>
-                </div>
-
-                {/* Story Images - 4270 */}
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                  gap: '20px',
-                  marginTop: '30px'
-                }}>
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/4270_exam.jpg"
-                    alt="Earl Bergman Exam"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/4270_hospital.jpg"
-                    alt="Earl Bergman Hospital"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/4270_map.jpg"
-                    alt="Earl Bergman Map"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/4270_sciency.jpg"
-                    alt="Earl Bergman Science"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/4270_safety.jpg"
-                    alt="Earl Bergman Safety"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                </div>
-              </>
-            )}
-
-            {/* Story Text - 2308 */}
-            {storyTokenId === '2308' && (
-              <>
-                <div style={{
-                  color: '#1a1a1a',
-                  fontSize: '1.1rem',
-                  lineHeight: '1.8',
-                  marginBottom: '30px',
-                  textAlign: 'left',
-                  fontFamily: 'inherit'
-                }}>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    Say hello to Norman Pike, the latest retiree at the GACC Country Club. Whether that's his actual name depends on what you've heard and what you choose to believe. You see, some say Norman once ran an underground casino and sports betting club that ran afoul of some nasty pieces of business.
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    They say he took his revenge on them when they raided and shut down his club and sports book, and that he spent the last thirty years in witness protection. But those are just rumors.
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    At some point, Norm worked for the city as a Risk Assessment Specialist. That much seems true, as he can often be seen strolling the grounds "just noticing stuff" but he never mentions anything about any of it. He just mutters what sounds like ODDS to himself and moves on.
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    All in all, Norman is a nice enough resident. Just don't be offended if he doesn't respond when you talk to him. He has probably already determined your life expectancy and deemed a potential friendship too short to be worth making the effort.
-                  </p>
-                </div>
-
-                {/* Story Images - 2308 */}
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                  gap: '20px',
-                  marginTop: '30px'
-                }}>
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2308_cards.jpg"
-                    alt="Norman Pike Cards"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2308_hall.jpg"
-                    alt="Norman Pike Hall"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2308_talk.jpg"
-                    alt="Norman Pike Talk"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/2308_buttons.jpg"
-                    alt="Norman Pike Buttons"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                </div>
-              </>
-            )}
-
-            {/* Story Text - 194 */}
-            {storyTokenId === '194' && (
-              <>
-                <div style={{
-                  color: '#1a1a1a',
-                  fontSize: '1.1rem',
-                  lineHeight: '1.8',
-                  marginBottom: '30px',
-                  textAlign: 'left',
-                  fontFamily: 'inherit'
-                }}>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    Douglas Holloway was once the most successful Private Investigator of his time. Drawn into a nightmare case, Holloway became obsessed and threw his professionalism out the window. Along with his stellar reputation.
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    Holloway turned his frustration into a book, <em>The Last Banana</em>, but unfortunately very few bought it after critics ripped it. The book was called "A clumsy and self serving attempt at retribution."
-                  </p>
-                  <p style={{marginBottom: '20px', color: '#1a1a1a'}}>
-                    Still, Holloway stands by his actions and by every word in the book.
-                  </p>
-                </div>
-
-                {/* Story Images - 194 */}
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                  gap: '20px',
-                  marginTop: '30px'
-                }}>
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/194_sign.jpg"
-                    alt="Douglas Holloway Sign"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                  <img
-                    src="https://gaccdiscordimages.s3.us-east-1.amazonaws.com/194_read.jpg"
-                    alt="Douglas Holloway Reading"
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                      borderRadius: '10px',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
-                    }}
-                  />
-                </div>
+                {/* Story Images from API */}
+                {apiStories[storyTokenId].images && apiStories[storyTokenId].images.length > 0 && (
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                    gap: '20px',
+                    marginTop: '30px'
+                  }}>
+                    {apiStories[storyTokenId].images.map((image, index) => (
+                      <img
+                        key={index}
+                        src={image.url}
+                        alt={image.alt}
+                        style={{
+                          width: '100%',
+                          height: 'auto',
+                          borderRadius: '10px',
+                          boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
               </>
             )}
           </div>

@@ -20,6 +20,7 @@ const PORT = process.env.PORT || 3001;
 const gakc_ranks = require('./ranks/gakc.js');
 const macc_ranks = require('./ranks/macc.js');
 const gacc_ranks = require('./ranks/gacc.js');
+const nftStories = require('./data/nft-stories.json');
 
 const app = express();
 
@@ -671,6 +672,54 @@ app.get("/api/gacc-floor-price", async (req, res) => {
     return res.status(500).json({ 
       error: 'Failed to fetch floor price',
       details: error.message 
+    });
+  }
+});
+
+// NFT Stories endpoints
+app.get("/api/nft-stories", (_req, res) => {
+  try {
+    // Convert object to array and sort by tokenId
+    const storiesArray = Object.values(nftStories).sort((a, b) =>
+      parseInt(a.tokenId) - parseInt(b.tokenId)
+    );
+
+    return res.json({
+      success: true,
+      stories: storiesArray
+    });
+  } catch (error) {
+    console.error('Error fetching stories:', error);
+    return res.status(500).json({
+      success: false,
+      error: 'Failed to fetch stories',
+      details: error.message
+    });
+  }
+});
+
+app.get("/api/nft-stories/:tokenId", (req, res) => {
+  try {
+    const { tokenId } = req.params;
+    const story = nftStories[tokenId];
+
+    if (!story) {
+      return res.status(404).json({
+        success: false,
+        error: 'Story not found for this token ID'
+      });
+    }
+
+    return res.json({
+      success: true,
+      story: story
+    });
+  } catch (error) {
+    console.error('Error fetching story:', error);
+    return res.status(500).json({
+      success: false,
+      error: 'Failed to fetch story',
+      details: error.message
     });
   }
 });
