@@ -89,9 +89,21 @@
     "title": "Grandpa Ape #1092 - Broderick West | Grandpa Coin",
     "description": "Broderick West is the newly hired mechanic at the GACC Country Club. He is…nice enough. Okay he's an a$$hole, but he's great with a wrench!",
     "storyContent": [
-      "Broderick West is the newly hired mechanic at the GACC Country Club. He is…nice enough. Okay he's an a$$hole, but he's great with a wrench!"
+      "Broderick West is the newly hired mechanic at the GACC Country Club. He is…nice enough. Okay he's an a$$hole, but he's great with a wrench! No worries. He's just as happy to keep to himself and his broken machines.",
+      "If you do have to interact with old Brody, don't piss him off. Especially if you plan on taking out one of the golf carts afterwards. Your brakes just might not work as well as you hope.",
+      "Broderick was offered a room in the Country Club, but he insisted on making his living quarters in an empty garage at the far end of the grounds. When he's not cranking wrenches, you can hear him cranking the throttle on his custom motorbike or cranking out reps on his pull-up bar.",
+      "**You know what? Just avoid Broderick, ok? Just…stay away from him all together.**"
     ],
-    "images": []
+    "images": [
+      {
+        "url": "https://gaccdiscordimages.s3.us-east-1.amazonaws.com/1092_bike.jpg",
+        "alt": "Broderick West Bike"
+      },
+      {
+        "url": "https://gaccdiscordimages.s3.us-east-1.amazonaws.com/1092_ride.jpg",
+        "alt": "Broderick West Ride"
+      }
+    ]
   },
   "3836": {
     "tokenId": "3836",
@@ -99,9 +111,20 @@
     "title": "Grandpa Ape #3836 - Walter Bramblewick | Grandpa Coin",
     "description": "I'd ask you to visit Walter Bramblewick at the Country Club, but he's probably sleeping. Before blessing us with his endearing presence, Walter was a curator of oddities and antiquities.",
     "storyContent": [
-      "I'd ask you to visit Walter Bramblewick at the Country Club, but he's probably sleeping. Before blessing us with his endearing presence, Walter was a curator of oddities and antiquities."
+      "I'd ask you to visit Walter Bramblewick at the Country Club, but he's probably sleeping. Before blessing us with his endearing presence, Walter was a curator of oddities and antiquities. He had gotten so many, he decided to open his own shop.",
+      "Unfortunately, he never sold a single item. Walter just couldn't bear to part with any of his treasures. He used any excuse he could to close the store early, and even when it was open he often spent his time tinkering with his latest find in his workshop so the customers could never find him to complete a purchase.",
+      "**Walter is a wonderful ape. He is always willing to fix things around the facility. When he's awake, that is!**"
     ],
-    "images": []
+    "images": [
+      {
+        "url": "https://gaccdiscordimages.s3.us-east-1.amazonaws.com/3836_store.jpg",
+        "alt": "Walter Bramblewick Store"
+      },
+      {
+        "url": "https://gaccdiscordimages.s3.us-east-1.amazonaws.com/3836_fix.jpg",
+        "alt": "Walter Bramblewick Fix"
+      }
+    ]
   },
   "2945": {
     "tokenId": "2945",
