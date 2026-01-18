@@ -1515,7 +1515,7 @@ function GrandpaCoin() {
                                       </p>
                                     )}
                                     <div className="row">
-                                      {nftList.slice(0, 12).map((nft, index) => {
+                                      {nftList.slice(0, 18).map((nft, index) => {
                                         const metadataKey = `${nft.collection}-${nft.tokenId}`;
                                         const metadata = nftMetadata[metadataKey];
                                         const senderInfo = nftSenders[metadataKey];
@@ -1635,9 +1635,9 @@ function GrandpaCoin() {
                                         );
                                       })}
                                     </div>
-                                    {nftList.length > 12 && (
+                                    {nftList.length > 18 && (
                                       <p style={{color: '#666', fontSize: '0.9rem', marginTop: '15px', textAlign: 'center'}}>
-                                        Showing first 12 of {nftList.length} members
+                                        Showing first 18 of {nftList.length} members
                                       </p>
                                     )}
                                   </div>
