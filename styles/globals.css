@@ -20,12 +20,12 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  h1 { font-size: 2.5rem; }
-  h2 { font-size: 2rem; }
-  h3 { font-size: 1.75rem; }
-  h4 { font-size: 1.5rem; }
-  h5 { font-size: 1.25rem; }
-  h6 { font-size: 1rem; }
+  :where(h1) { font-size: 2.5rem; }
+  :where(h2) { font-size: 2rem; }
+  :where(h3) { font-size: 1.75rem; }
+  :where(h4) { font-size: 1.5rem; }
+  :where(h5) { font-size: 1.25rem; }
+  :where(h6) { font-size: 1rem; }
 
   img {
     max-width: 100%;
@@ -53,15 +53,14 @@
     background-color: #f9edcd;
     color: #000;
   }
-  .home-page h1, .home-page h2, .home-page h3, .home-page h4, .home-page h5, .home-page h6,
-  .home-page p, .home-page span, .home-page label, .home-page a, .home-page li, .home-page div {
+  :where(.home-page) :where(h1, h2, h3, h4, h5, h6, p, span, label, a, li, div) {
     color: #000;
   }
-  .home-page input {
+  :where(.home-page) input {
     background-color: #272626;
     color: #fff;
   }
-  .home-page input::placeholder {
+  :where(.home-page) input::placeholder {
     color: #dbdbdb;
   }
 }
@@ -314,43 +313,43 @@
     transition: 0.3s;
   }
 
-  .home-page .common-title,
-  .home-page .common-sub-title,
-  .home-page .common-p,
-  .home-page .common-sub-p,
-  .home-page .bold-text,
-  .home-page .buy-ape-title,
-  .home-page .welcome-title,
-  .home-page .caption,
-  .home-page .copyright {
+  :where(.home-page) .common-title,
+  :where(.home-page) .common-sub-title,
+  :where(.home-page) .common-p,
+  :where(.home-page) .common-sub-p,
+  :where(.home-page) .bold-text,
+  :where(.home-page) .buy-ape-title,
+  :where(.home-page) .welcome-title,
+  :where(.home-page) .caption,
+  :where(.home-page) .copyright {
     color: #000;
   }
-  .home-page .bayc-color,
-  .home-page .goal {
+  :where(.home-page) .bayc-color,
+  :where(.home-page) .goal {
     color: #977039;
   }
-  .home-page .link {
+  :where(.home-page) .link {
     color: #977039;
   }
-  .home-page .link:hover {
+  :where(.home-page) .link:hover {
     color: #000;
   }
-  .home-page .gray-line {
+  :where(.home-page) .gray-line {
     border-bottom: 1px solid #3b3b3b;
   }
-  .home-page .social-icon {
+  :where(.home-page) .social-icon {
     color: #000;
   }
-  .home-page .social-icon:hover {
+  :where(.home-page) .social-icon:hover {
     color: #bfc500;
   }
-  .home-page .line {
+  :where(.home-page) .line {
     border-bottom: 1px solid #000;
   }
-  .home-page .black-social-icon {
+  :where(.home-page) .black-social-icon {
     color: #000;
   }
-  .home-page .black-social-icon:hover {
+  :where(.home-page) .black-social-icon:hover {
     color: #bfc500;
   }
 }
