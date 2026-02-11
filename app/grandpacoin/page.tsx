@@ -188,11 +188,17 @@ export default function GrandpaCoinPage() {
         {/* Chart */}
         <div id="chart" className="mb-10">
           <h2 className="common-title mb-4" style={{ color: 'black' }}>GRANDPA COIN CHART</h2>
-          <div className="relative w-full" style={{ paddingBottom: '125%' }}>
+          <style>{`
+            #geckoterminal-embed { position: relative; width: 100%; padding-bottom: 125%; }
+            @media (min-width: 1400px) { #geckoterminal-embed { padding-bottom: 65%; } }
+            #geckoterminal-embed iframe { position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: 0; }
+          `}</style>
+          <div id="geckoterminal-embed">
             <iframe
-              className="absolute inset-0 w-full h-full border-0"
-              title="GeckoTerminal GRANDPA / WETH"
-              src={`https://www.geckoterminal.com/eth/pools/0x21e6a491c887eb906846c212a280ad5e10ce0250?embed=1&info=0&swaps=0`}
+              height="100%"
+              width="100%"
+              title="Embed GRANDPA / WETH 1%"
+              src="https://www.geckoterminal.com/eth/pools/0xc2f9673849ea38fae55c29e18e797f36b18a3078?embed=1&info=1&swaps=1&grayscale=0&light_chart=0&chart_type=price&resolution=15m"
               allow="clipboard-write"
               allowFullScreen
             />
