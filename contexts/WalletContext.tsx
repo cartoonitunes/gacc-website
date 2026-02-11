@@ -94,7 +94,9 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     };
 
     const handleChainChanged = () => {
-      window.location.reload();
+      if (account) {
+        window.location.reload();
+      }
     };
 
     ethereum.on('accountsChanged', handleAccountsChanged);
@@ -104,7 +106,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       ethereum.removeListener('accountsChanged', handleAccountsChanged);
       ethereum.removeListener('chainChanged', handleChainChanged);
     };
-  }, [reset]);
+  }, [reset, account]);
 
   return (
     <WalletContext.Provider

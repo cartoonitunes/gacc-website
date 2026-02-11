@@ -14,10 +14,6 @@ interface ApiStory {
   images?: { url: string; alt: string }[];
 }
 
-interface StoryCardProps {
-  nftMetadata: Record<string, { name?: string; image?: string }>;
-}
-
 const gold = '#977039';
 
 function parseMarkdown(text: string): ReactNode[] {
@@ -48,10 +44,11 @@ function parseMarkdown(text: string): ReactNode[] {
   return parts.length > 0 ? parts : [text];
 }
 
-export default function StoryCard({ nftMetadata }: StoryCardProps) {
+export default function StoryCard() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [apiStories, setApiStories] = useState<Record<string, ApiStory>>({});
+  const [nftMetadata, setNftMetadata] = useState<Record<string, { name?: string; image?: string }>>({});
   const [showStoryModal, setShowStoryModal] = useState(false);
   const [storyTokenId, setStoryTokenId] = useState<string | null>(null);
 
@@ -65,6 +62,24 @@ export default function StoryCard({ nftMetadata }: StoryCardProps) {
           map[story.tokenId] = story;
         });
         setApiStories(map);
+
+        const nftBatch = data.stories.map((s: ApiStory) => ({
+          contractAddress: GACC_COLLECTION_ADDRESS,
+          tokenId: s.tokenId,
+        }));
+        const metaRes = await fetch('/api/nft-metadata-batch', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nfts: nftBatch }),
+        });
+        if (metaRes.ok) {
+          const metaData = await metaRes.json();
+          const metaMap: Record<string, { name?: string; image?: string }> = {};
+          metaData.results?.forEach((r: any) => {
+            if (r.metadata) metaMap[`${r.contractAddress}-${r.tokenId}`] = r.metadata;
+          });
+          setNftMetadata(metaMap);
+        }
       }
     } catch (err) {
       console.error('Error fetching stories:', err);
