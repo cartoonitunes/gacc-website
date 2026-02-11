@@ -427,7 +427,7 @@ export default function CountryClubGallery() {
                   <p style={{ color: gray }} className="text-sm mb-4 text-center">Loading NFT images...</p>
                 )}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {nftList.slice(0, 18).map((nft, index) => {
+                  {nftList.map((nft, index) => {
                     const metadataKey = `${nft.collection}-${nft.tokenId}`;
                     const metadata = nftMetadata[metadataKey];
                     const senderInfo = nftSenders[metadataKey];
@@ -499,9 +499,6 @@ export default function CountryClubGallery() {
                     );
                   })}
                 </div>
-                {nftList.length > 18 && (
-                  <p style={{ color: gray }} className="text-sm mt-4 text-center">Showing first 18 of {nftList.length} members</p>
-                )}
               </div>
             )}
           </div>
