@@ -140,3 +140,4 @@ dist/
 
 # Legacy (original code preserved in master branch history)
 _legacy/
+.vercel

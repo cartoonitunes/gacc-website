@@ -18,6 +18,8 @@ interface StoryCardProps {
   nftMetadata: Record<string, { name?: string; image?: string }>;
 }
 
+const gold = '#977039';
+
 function parseMarkdown(text: string): ReactNode[] {
   const parts: ReactNode[] = [];
   let currentIndex = 0;
@@ -93,8 +95,43 @@ export default function StoryCard({ nftMetadata }: StoryCardProps) {
     router.push(`/grandpacoin?story=${tokenId}`);
   };
 
+  const storyList = useMemo(() => Object.values(apiStories), [apiStories]);
+
   return (
     <>
+      {storyList.length > 0 && (
+        <div id="stories" className="mb-10">
+          <h2 className="common-title mb-6" style={{ color: 'black' }}>STORIES</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {storyList.map((story) => {
+              const metaKey = `${GACC_COLLECTION_ADDRESS}-${story.tokenId}`;
+              const meta = nftMetadata[metaKey];
+              return (
+                <button
+                  key={story.tokenId}
+                  type="button"
+                  onClick={() => openStory(story.tokenId)}
+                  className="bg-white p-4 rounded-lg shadow-md text-center hover:shadow-lg transition-shadow cursor-pointer text-left"
+                >
+                  {meta?.image && (
+                    <img
+                      src={meta.image}
+                      alt={`Grandpa Ape #${story.tokenId}`}
+                      className="w-full h-auto rounded-lg mb-3"
+                      loading="lazy"
+                    />
+                  )}
+                  <h4 style={{ color: gold }} className="text-sm font-bold mb-1">
+                    Grandpa Ape #{story.tokenId}
+                  </h4>
+                  <p style={{ color: 'black' }} className="text-xs italic">{story.name}</p>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {showStoryModal && storyTokenId && apiStories[storyTokenId] && (
         <div
           className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-5 overflow-y-auto"
@@ -106,7 +143,8 @@ export default function StoryCard({ nftMetadata }: StoryCardProps) {
           >
             <button
               onClick={closeModal}
-              className="absolute top-4 right-4 bg-[#977039] text-white rounded-full w-9 h-9 flex items-center justify-center font-bold text-xl"
+              className="absolute top-4 right-4 rounded-full w-9 h-9 flex items-center justify-center font-bold text-xl"
+              style={{ backgroundColor: gold, color: 'white' }}
             >
               x
             </button>
@@ -116,16 +154,17 @@ export default function StoryCard({ nftMetadata }: StoryCardProps) {
                 <img
                   src={nftMetadata[`${GACC_COLLECTION_ADDRESS}-${storyTokenId}`].image}
                   alt={`Grandpa Ape #${storyTokenId}`}
-                  className="max-w-[300px] w-full h-auto rounded-lg mb-4 mx-auto border-3 border-[#977039]"
+                  className="max-w-[300px] w-full h-auto rounded-lg mb-4 mx-auto"
+                  style={{ borderWidth: '3px', borderStyle: 'solid', borderColor: gold }}
                 />
               )}
-              <h2 className="text-[#977039] text-3xl font-bold mb-3">Grandpa Ape #{storyTokenId}</h2>
-              <h3 className="text-black text-xl italic">{apiStories[storyTokenId].name}</h3>
+              <h2 style={{ color: gold }} className="text-3xl font-bold mb-3">Grandpa Ape #{storyTokenId}</h2>
+              <h3 style={{ color: 'black' }} className="text-xl italic">{apiStories[storyTokenId].name}</h3>
             </div>
 
             <div className="text-lg leading-relaxed mb-8">
               {apiStories[storyTokenId].storyContent.map((paragraph, index) => (
-                <p key={index} className="mb-5 text-gray-900">{parseMarkdown(paragraph)}</p>
+                <p key={index} style={{ color: '#111827' }} className="mb-5">{parseMarkdown(paragraph)}</p>
               ))}
             </div>
 

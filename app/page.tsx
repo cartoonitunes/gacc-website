@@ -1,5 +1,7 @@
 'use client';
 
+import { Navbar } from '@/components/layout/Navbar';
+import { Footer } from '@/components/layout/Footer';
 import HeroSection from '@/components/home/HeroSection';
 import RankLookup from '@/components/home/RankLookup';
 import SubdomainManager from '@/components/home/SubdomainManager';
@@ -9,38 +11,42 @@ import TeamSection from '@/components/home/TeamSection';
 
 export default function HomePage() {
   return (
-    <div className="bg-[#f9edcd] min-h-screen">
+    <div className="home-page min-h-screen">
+      <Navbar variant="light" />
+
       <HeroSection />
 
-      <div className="px-4 mt-4">
-        <hr className="border-gray-300 mb-10" />
+      <div className="common-container px-4">
+        <hr className="gray-line mb-5" />
       </div>
 
       <RankLookup />
 
-      <div className="px-4">
-        <hr className="border-gray-300 mb-10" />
+      <div className="common-container px-4">
+        <hr className="gray-line mb-5" />
       </div>
 
       <SubdomainManager />
 
-      <div className="px-4">
-        <hr className="border-gray-300 mb-10" />
+      <div className="common-container px-4">
+        <hr className="gray-line mb-5" />
       </div>
 
       <RoadmapSection />
 
-      <div className="px-4">
-        <hr className="border-gray-300 mb-10" />
+      <div className="common-container px-4">
+        <hr className="gray-line mb-5" />
       </div>
 
       <GallerySection />
 
-      <div className="px-4">
-        <hr className="border-gray-300 mb-10" />
+      <div className="common-container px-4">
+        <hr className="gray-line mb-5" />
       </div>
 
       <TeamSection />
+
+      <Footer variant="light" />
     </div>
   );
 }

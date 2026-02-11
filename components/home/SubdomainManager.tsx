@@ -201,15 +201,15 @@ export default function SubdomainManager() {
   }, [signer, account, currentSubdomain, checkCurrentSubdomain]);
 
   return (
-    <section className="px-4 mb-10">
-      <h2 className="text-2xl font-bold text-black mb-3">THE GRANDPA SUBDOMAINS</h2>
-      <p className="text-black text-base leading-relaxed">
+    <section className="common-container px-4 mb-5">
+      <h2 className="common-title" style={{ color: 'black' }}>THE GRANDPA SUBDOMAINS</h2>
+      <p className="common-p" style={{ color: 'black' }}>
         Claim your <strong className="text-[#977039]">thegrandpa.eth</strong> subdomain! Own a piece of the Grandpa Ape Country Club identity on the Ethereum Name Service (ENS). Your subdomain will be yours forever, letting you show your grandpa pride wherever you go.
       </p>
-      <p className="text-black text-base leading-relaxed mt-3">
+      <p className="common-p mt-3" style={{ color: 'black' }}>
         Each wallet can claim one subdomain under <strong className="text-[#977039]">thegrandpa.eth</strong>. Once claimed, you can switch to a new name anytime, but your previous subdomain will be released.
       </p>
-      <p className="text-black text-base leading-relaxed mt-3">
+      <p className="common-p mt-3" style={{ color: 'black' }}>
         Connect your wallet to start! To set your grandpa ENS as your primary name head to the{' '}
         <a
           href="https://app.ens.domains/thegrandpa.eth?tab=subnames"
@@ -220,7 +220,7 @@ export default function SubdomainManager() {
           ENS subdomain page
         </a>{' '}and find yours.
       </p>
-      <p className="text-black text-sm mt-4 mb-0">
+      <p className="common-sub-p mt-4 mb-0" style={{ color: 'black' }}>
         <strong className="text-[#977039]">Contract:</strong>{' '}
         <a
           href="https://etherscan.io/address/0x4E82641c6d4f24b066abF6E14DBB498476fcF656"
