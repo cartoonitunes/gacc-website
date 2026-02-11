@@ -134,3 +134,9 @@ dist
 client/build/
 build/
 dist/
+
+# Claude Code
+.claude/
+
+# Legacy (original code preserved in master branch history)
+_legacy/

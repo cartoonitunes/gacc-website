@@ -1,34 +1,31 @@
 {
-    "name": "gacc-website",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "type": "commonjs",
-    "scripts": {
-        "begin": "npm run build && node server/index.js",
-        "start": "NODE_OPTIONS='--experimental-json-modules --experimental-modules' node server/index.js",
-        "heroku-postbuild": "cd client && npm install && npm run build && rm -rf node_modules"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "@alch/alchemy-web3": "^1.1.9",
-        "body-parser": "^1.19.2",
-        "dotenv": "^16.0.0",
-        "express": "^4.17.3",
-        "keccak256": "^1.0.6",
-        "merkletreejs": "^0.2.31",
-        "node-fetch": "^2.7.0",
-        "path": "^0.12.7",
-        "pg": "^8.7.3",
-        "pg-hstore": "^2.3.4",
-        "sequelize": "^6.17.0",
-        "sequelize-cli": "^6.4.1",
-        "web3": "1.7.1",
-        "web3-eth-contract": "1.7.1"
-    },
-    "engines": {
-        "node": "16.13.1"
-    }
+  "name": "gacc-website",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "extract-data": "node scripts/extract-data.mjs"
+  },
+  "dependencies": {
+    "next": "^14.2.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "ethers": "^6.13.0",
+    "merkletreejs": "^0.4.0",
+    "keccak256": "^1.0.6",
+    "@vercel/kv": "^2.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "@types/react": "^18.3.0",
+    "@types/node": "^20.14.0",
+    "tailwindcss": "^3.4.0",
+    "postcss": "^8.4.0",
+    "autoprefixer": "^10.4.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.2.0"
+  }
 }
