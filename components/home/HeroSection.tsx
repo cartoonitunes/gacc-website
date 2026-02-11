@@ -5,13 +5,13 @@ import Image from 'next/image';
 export default function HeroSection() {
   return (
     <section>
-      <div className="mb-8 lg:mb-10">
+      <div>
         <Image
           src="/assets/images/GACC_COVER-2.png"
           alt="GACC Cover"
           width={1920}
           height={600}
-          className="w-full h-auto"
+          className="w-full h-auto block"
           priority
         />
       </div>

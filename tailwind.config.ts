@@ -14,7 +14,7 @@ const config: Config = {
         'gacc-gold': '#DAA520',
       },
       fontFamily: {
-        sans: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', '"Noto Sans"', '"Liberation Sans"', 'sans-serif'],
+        sans: ['"Montserrat"', 'sans-serif'],
       },
     },
   },

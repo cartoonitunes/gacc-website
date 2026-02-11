@@ -237,7 +237,7 @@ export default function GrandpaCoinPage() {
 
         {/* Stories */}
         <Suspense fallback={null}>
-          <StoryCard nftMetadata={{}} />
+          <StoryCard />
         </Suspense>
       </div>
 
