@@ -26,6 +26,11 @@ interface PriceDisplayProps {
   additionalWalletBalance: string | null;
 }
 
+const gold = '#977039';
+const gray = '#6b7280';
+
+export { DEX_PAIR, GRANDPA_COIN_ADDRESS };
+
 export default function PriceDisplay({ vaultBalance, additionalWalletBalance }: PriceDisplayProps) {
   const [dexData, setDexData] = useState<DexData | null>(null);
   const [floorPrice, setFloorPrice] = useState<number | null>(null);
@@ -69,31 +74,29 @@ export default function PriceDisplay({ vaultBalance, additionalWalletBalance }: 
     }
   }, [dexData, vaultBalance, additionalWalletBalance]);
 
-  const ethAmount = '0.05';
-
   return (
     <div>
       {loadingMarketData ? (
         <div className="text-center py-5">
-          <p className="text-gray-500">Loading market data...</p>
+          <p style={{ color: gray }}>Loading market data...</p>
         </div>
       ) : dexData && (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
           <div className="bg-white p-5 rounded-lg shadow-md text-center">
-            <h3 className="text-[#977039] text-sm font-bold mb-3">Price (USD)</h3>
-            <p className="text-black text-xl font-bold">${parseFloat(dexData.priceUsd || '0').toFixed(6)}</p>
+            <h3 style={{ color: gold }} className="text-sm font-bold mb-3">Price (USD)</h3>
+            <p style={{ color: 'black' }} className="text-xl font-bold">${parseFloat(dexData.priceUsd || '0').toFixed(6)}</p>
           </div>
           <div className="bg-white p-5 rounded-lg shadow-md text-center">
-            <h3 className="text-[#977039] text-sm font-bold mb-3">24h Volume</h3>
-            <p className="text-black text-xl font-bold">${formatNumber(dexData.volume?.h24 || 0, 2)}</p>
+            <h3 style={{ color: gold }} className="text-sm font-bold mb-3">24h Volume</h3>
+            <p style={{ color: 'black' }} className="text-xl font-bold">${formatNumber(dexData.volume?.h24 || 0, 2)}</p>
           </div>
           <div className="bg-white p-5 rounded-lg shadow-md text-center">
-            <h3 className="text-[#977039] text-sm font-bold mb-3">Liquidity</h3>
-            <p className="text-black text-xl font-bold">${formatNumber(dexData.liquidity?.usd || 0, 2)}</p>
+            <h3 style={{ color: gold }} className="text-sm font-bold mb-3">Liquidity</h3>
+            <p style={{ color: 'black' }} className="text-xl font-bold">${formatNumber(dexData.liquidity?.usd || 0, 2)}</p>
           </div>
           <div className="bg-white p-5 rounded-lg shadow-md text-center">
-            <h3 className="text-[#977039] text-sm font-bold mb-3">24h Change</h3>
-            <p className={`text-xl font-bold ${(dexData.priceChange?.h24 || 0) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            <h3 style={{ color: gold }} className="text-sm font-bold mb-3">24h Change</h3>
+            <p className="text-xl font-bold" style={{ color: (dexData.priceChange?.h24 || 0) >= 0 ? '#16a34a' : '#dc2626' }}>
               {(dexData.priceChange?.h24 || 0) >= 0 ? '+' : ''}{(dexData.priceChange?.h24 || 0).toFixed(2)}%
             </p>
           </div>
@@ -102,31 +105,33 @@ export default function PriceDisplay({ vaultBalance, additionalWalletBalance }: 
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         <div className="bg-white p-8 rounded-lg shadow-md text-center">
-          <h3 className="text-[#977039] text-lg font-bold mb-4">GACC Floor Price</h3>
+          <h3 style={{ color: gold }} className="text-lg font-bold mb-4">GACC Floor Price</h3>
           {floorPrice !== null ? (
-            <p className="text-black text-2xl font-bold">{formatNumber(floorPrice, 4)} ETH</p>
+            <p style={{ color: 'black' }} className="text-2xl font-bold">{formatNumber(floorPrice, 4)} ETH</p>
           ) : (
-            <p className="text-gray-500">Loading...</p>
+            <p style={{ color: gray }}>Loading...</p>
           )}
         </div>
         <div className="bg-white p-8 rounded-lg shadow-md text-center">
-          <h3 className="text-[#977039] text-lg font-bold mb-4">Estimated ETH (Vault + Bot)</h3>
+          <h3 style={{ color: gold }} className="text-lg font-bold mb-4">Estimated ETH (Vault + Bot)</h3>
           {estimatedEth !== null ? (
-            <p className="text-black text-2xl font-bold">{formatNumber(estimatedEth, 4)} ETH</p>
+            <p style={{ color: 'black' }} className="text-2xl font-bold">{formatNumber(estimatedEth, 4)} ETH</p>
           ) : (
-            <p className="text-gray-500">Calculating...</p>
+            <p style={{ color: gray }}>Calculating...</p>
           )}
-          <p className="text-gray-500 text-sm mt-3 italic">(5% haircut for gas &amp; slippage)</p>
+          <p style={{ color: gray }} className="text-sm mt-3 italic">(5% haircut for gas &amp; slippage)</p>
         </div>
       </div>
 
       {floorPrice !== null && estimatedEth !== null && (
         <div className="bg-white p-8 rounded-lg shadow-md mt-5">
-          <h3 className="text-[#977039] text-lg font-bold mb-5 text-center">Progress to Next NFT Purchase</h3>
-          <div className="w-full h-12 bg-[#f9edcd] rounded-full overflow-hidden relative border-2 border-[#977039] mb-4">
+          <h3 style={{ color: gold }} className="text-lg font-bold mb-5 text-center">Progress to Next NFT Purchase</h3>
+          <div className="w-full h-12 bg-[#f9edcd] rounded-full overflow-hidden relative mb-4" style={{ border: `2px solid ${gold}` }}>
             <div
-              className="h-full bg-gradient-to-br from-[#977039] to-[#7a5a2e] flex items-center justify-center text-[#f9edcd] font-bold text-sm transition-all duration-500"
+              className="h-full flex items-center justify-center font-bold text-sm transition-all duration-500"
               style={{
+                background: `linear-gradient(to bottom right, ${gold}, #7a5a2e)`,
+                color: '#f9edcd',
                 width: `${Math.min((estimatedEth / floorPrice) * 100, 100)}%`,
                 minWidth: estimatedEth > 0 ? '60px' : '0px',
               }}
@@ -134,48 +139,13 @@ export default function PriceDisplay({ vaultBalance, additionalWalletBalance }: 
               {estimatedEth >= floorPrice ? 'Ready!' : `${((estimatedEth / floorPrice) * 100).toFixed(1)}%`}
             </div>
           </div>
-          <div className="flex justify-between text-sm text-[#977039] font-medium">
+          <div className="flex justify-between text-sm font-medium" style={{ color: gold }}>
             <span>0 ETH</span>
             <span className="font-bold text-base">{estimatedEth.toFixed(4)} ETH / {floorPrice.toFixed(4)} ETH</span>
             <span>{floorPrice.toFixed(4)} ETH</span>
           </div>
         </div>
       )}
-
-      <div id="chart" className="mt-10">
-        <h2 className="text-2xl font-bold text-black mb-3">GRANDPA COIN CHART</h2>
-        <div className="relative w-full" style={{ paddingBottom: '125%' }}>
-          <iframe
-            className="absolute inset-0 w-full h-full border-0"
-            title="Embed GRANDPA / WETH 1%"
-            src={`https://www.geckoterminal.com/eth/pools/${DEX_PAIR}?embed=1&info=1&swaps=1&grayscale=0&light_chart=0&chart_type=price&resolution=15m`}
-            allow="clipboard-write"
-            allowFullScreen
-          />
-        </div>
-      </div>
-
-      <hr className="border-gray-300 my-10" />
-
-      <div id="buy-grandpacoin">
-        <div className="bg-white p-4 flex flex-col lg:flex-row items-center gap-4 rounded">
-          <div className="lg:w-3/12">
-            <h3 className="text-xl font-bold text-black">BUY GRANDPA COIN</h3>
-          </div>
-          <div className="lg:w-4/12 lg:ml-4">
-            <p className="text-black text-sm">Swap ETH for $GRANDPA on Uniswap. Connect your wallet and complete the swap on Uniswap&apos;s secure interface.</p>
-          </div>
-          <div className="lg:w-2/12 lg:ml-auto">
-            <a
-              href={`https://app.uniswap.org/#/swap?exactField=input&exactAmount=${ethAmount}&inputCurrency=ETH&outputCurrency=${GRANDPA_COIN_ADDRESS}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <button className="bg-[#83D8FC] text-black font-bold py-2 px-6 rounded w-full" type="button">SWAP ON UNISWAP</button>
-            </a>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

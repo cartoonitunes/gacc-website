@@ -83,52 +83,55 @@ export default function TokenStats({ onDataLoaded }: { onDataLoaded?: (data: Tok
   }, [loadContractData]);
 
   if (loading) {
-    return <p className="text-black text-base">Loading token data...</p>;
+    return <p style={{ color: 'black' }} className="text-base">Loading token data...</p>;
   }
+
+  const gold = '#977039';
+  const gray = '#6b7280';
 
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <div className="bg-white p-8 rounded-lg shadow-md text-center">
-          <h3 className="text-[#977039] text-lg font-bold mb-4">Total Supply</h3>
-          <p className="text-black text-2xl font-bold">{formatNumber(totalSupply, 0)} $GRANDPA</p>
+          <h3 style={{ color: gold }} className="text-lg font-bold mb-4">Total Supply</h3>
+          <p style={{ color: 'black' }} className="text-2xl font-bold">{formatNumber(totalSupply, 0)} $GRANDPA</p>
         </div>
         <div className="bg-white p-8 rounded-lg shadow-md text-center">
-          <h3 className="text-[#977039] text-lg font-bold mb-4">Total Burned</h3>
-          <p className="text-black text-2xl font-bold">{formatNumber(totalBurned, 0)} $GRANDPA</p>
-          <p className="text-gray-500 text-base mt-2">
+          <h3 style={{ color: gold }} className="text-lg font-bold mb-4">Total Burned</h3>
+          <p style={{ color: 'black' }} className="text-2xl font-bold">{formatNumber(totalBurned, 0)} $GRANDPA</p>
+          <p style={{ color: gray }} className="text-base mt-2">
             ({totalBurned ? ((parseFloat(totalBurned) / 100000000) * 100).toFixed(2) : '0.00'}%)
           </p>
         </div>
         <div className="bg-white p-8 rounded-lg shadow-md text-center">
-          <h3 className="text-[#977039] text-lg font-bold mb-4">In Strategy Vault</h3>
-          <p className="text-black text-2xl font-bold">
+          <h3 style={{ color: gold }} className="text-lg font-bold mb-4">In Strategy Vault</h3>
+          <p style={{ color: 'black' }} className="text-2xl font-bold">
             {formatNumber(
               (parseFloat(vaultBalance || '0') + parseFloat(additionalWalletBalance || '0')).toFixed(2)
             )} $GRANDPA
           </p>
           <div className="mt-3 flex flex-col gap-1">
-            <a href={`https://etherscan.io/address/${STRATEGY_VAULT_ADDRESS}`} target="_blank" rel="noopener noreferrer" className="text-[#977039] text-sm underline">Vault</a>
-            <a href={`https://etherscan.io/address/${ADDITIONAL_WALLET_ADDRESS}`} target="_blank" rel="noopener noreferrer" className="text-[#977039] text-sm underline">Bot</a>
+            <a href={`https://etherscan.io/address/${STRATEGY_VAULT_ADDRESS}`} target="_blank" rel="noopener noreferrer" style={{ color: gold }} className="text-sm underline">Vault</a>
+            <a href={`https://etherscan.io/address/${ADDITIONAL_WALLET_ADDRESS}`} target="_blank" rel="noopener noreferrer" style={{ color: gold }} className="text-sm underline">Bot</a>
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         <div className="bg-white p-8 rounded-lg shadow-md text-center">
-          <h3 className="text-[#977039] text-lg font-bold mb-4">Buy Tax</h3>
-          <p className="text-black text-4xl font-bold my-3">6%</p>
-          <p className="text-gray-500 mt-3">No team fee.</p>
+          <h3 style={{ color: gold }} className="text-lg font-bold mb-4">Buy Tax</h3>
+          <p style={{ color: 'black' }} className="text-4xl font-bold my-3">6%</p>
+          <p style={{ color: gray }} className="mt-3">No team fee.</p>
         </div>
         <div className="bg-white p-8 rounded-lg shadow-md text-center">
-          <h3 className="text-[#977039] text-lg font-bold mb-4">Sell Tax</h3>
-          <p className="text-black text-4xl font-bold my-3">0%</p>
-          <p className="text-gray-500 mt-3">No sell tax</p>
+          <h3 style={{ color: gold }} className="text-lg font-bold mb-4">Sell Tax</h3>
+          <p style={{ color: 'black' }} className="text-4xl font-bold my-3">0%</p>
+          <p style={{ color: gray }} className="mt-3">No sell tax</p>
         </div>
       </div>
 
       <div className="mt-8 text-center py-8">
-        <h3 className="text-[#977039] text-xl font-bold mb-6">Contract Addresses</h3>
+        <h3 style={{ color: gold }} className="text-xl font-bold mb-6">Contract Addresses</h3>
         <div className="flex flex-col gap-5 max-w-3xl mx-auto">
           {[
             { label: 'Grandpa Coin', address: GRANDPA_COIN_ADDRESS },
@@ -136,8 +139,8 @@ export default function TokenStats({ onDataLoaded }: { onDataLoaded?: (data: Tok
             { label: 'Country Club', address: '0xf4C84ed6302b9214C63890cdA6d9f3a08cBCb410' },
           ].map(({ label, address }) => (
             <div key={address}>
-              <p className="text-gray-500 font-bold mb-2">{label}</p>
-              <a href={`https://etherscan.io/address/${address}`} target="_blank" rel="noopener noreferrer" className="text-[#977039] break-all underline">
+              <p style={{ color: gray }} className="font-bold mb-2">{label}</p>
+              <a href={`https://etherscan.io/address/${address}`} target="_blank" rel="noopener noreferrer" style={{ color: gold }} className="break-all underline">
                 {address}
               </a>
             </div>

@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { WalletProvider } from '@/contexts/WalletContext';
-import { Navbar } from '@/components/layout/Navbar';
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {
@@ -31,9 +30,16 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/fork-awesome@1.1.7/css/fork-awesome.min.css"
+          integrity="sha256-gsmEoJAws/Kd3CjuOQzLie5Q3yshhvmo7YNtBG7aaEY="
+          crossOrigin="anonymous"
+        />
+      </head>
       <body>
         <WalletProvider>
-          <Navbar />
           {children}
         </WalletProvider>
       </body>

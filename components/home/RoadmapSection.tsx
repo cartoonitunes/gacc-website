@@ -16,34 +16,43 @@ const roadmapItems = [
 
 export default function RoadmapSection() {
   return (
-    <section id="roadmap" className="px-4 mb-10">
+    <section id="roadmap" className="common-container px-4 mb-5">
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="lg:w-8/12">
-          <h2 className="text-2xl font-bold text-black mb-3">THE FRONT NINE</h2>
-          <p className="text-black text-base">We&apos;re in this for the long haul.</p>
-          <p className="text-black text-base mb-6">
+          <h2 className="common-title" style={{ color: 'black' }}>THE FRONT NINE</h2>
+          <p className="common-p" style={{ color: 'black' }}>We&apos;re in this for the long haul.</p>
+          <p className="common-p mb-6" style={{ color: 'black' }}>
             Just like the front nine of a golf course, our roadmap is a set of holes were working to complete and achieve together. Where the back nine takes us, only time will tell!
           </p>
 
           {roadmapItems.map((item) => (
-            <div key={item.num} className="flex items-center gap-4 mb-2">
-              <div className="w-10 h-10 flex items-center justify-center">
-                <span className="text-[#977039] font-bold text-lg">{item.num}</span>
+            <div key={item.num} className="flex items-start gap-4 mb-2">
+              <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center">
+                <span className="goal text-lg">{item.num}</span>
               </div>
-              <p className={`text-black text-sm flex-1 ${item.done ? 'line-through' : ''}`}>
+              <p className={`common-p flex-1 ${item.done ? 'line-through' : ''}`} style={{ color: 'black' }}>
                 {item.text}
               </p>
             </div>
           ))}
         </div>
         <div className="lg:w-3/12 lg:ml-auto my-auto">
-          <Image
-            src="/assets/images/Road_Map.png"
-            alt="roadmap"
-            width={400}
-            height={400}
-            className="rounded-md w-full"
-          />
+          <div className="shirt-container mx-auto rounded-md overflow-hidden">
+            <Image
+              src="/assets/images/Road_Map.png"
+              alt="roadmap"
+              width={400}
+              height={400}
+              className="shirt-mask"
+            />
+            <Image
+              src="/assets/images/Road_Map.png"
+              alt="roadmap"
+              width={400}
+              height={400}
+              className="shirt"
+            />
+          </div>
         </div>
       </div>
     </section>

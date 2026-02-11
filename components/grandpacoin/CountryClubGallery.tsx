@@ -42,13 +42,16 @@ interface SenderMap {
   [key: string]: SenderInfo;
 }
 
+const gold = '#977039';
+const gray = '#6b7280';
+
 function NftImage({ imageUrl, nftName, loading: isLoading }: { imageUrl: string | null; nftName: string; loading: boolean }) {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
   if (!imageUrl || imageError) {
     return (
-      <div className="w-full h-[200px] rounded-lg mb-3 bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
+      <div className="w-full h-[200px] rounded-lg mb-3 bg-gray-100 flex items-center justify-center text-sm" style={{ color: gray }}>
         {isLoading ? 'Loading...' : 'No image'}
       </div>
     );
@@ -57,7 +60,7 @@ function NftImage({ imageUrl, nftName, loading: isLoading }: { imageUrl: string 
   return (
     <div className="relative w-full mb-3">
       {!imageLoaded && (
-        <div className="w-full h-[200px] rounded-lg bg-gray-100 flex items-center justify-center text-gray-400 text-sm absolute inset-0">
+        <div className="w-full h-[200px] rounded-lg bg-gray-100 flex items-center justify-center text-sm absolute inset-0" style={{ color: gray }}>
           Loading...
         </div>
       )}
@@ -229,8 +232,8 @@ export default function CountryClubGallery() {
   return (
     <div>
       <div id="deposit-nft" className="mb-10">
-        <h2 className="text-2xl font-bold text-black mb-3">DEPOSIT NFT TO COUNTRY CLUB</h2>
-        <p className="text-black text-base mb-4">
+        <h2 className="common-title mb-3" style={{ color: 'black' }}>DEPOSIT NFT TO COUNTRY CLUB</h2>
+        <p className="common-p mb-4" style={{ color: 'black' }}>
           Connect your wallet and deposit an approved NFT to the Country Club. Once deposited, your NFT will be enshrined eternally and cannot be removed.
         </p>
 
@@ -239,21 +242,22 @@ export default function CountryClubGallery() {
             <button
               type="button"
               onClick={connectWallet}
-              className="bg-[#977039] text-white font-bold py-4 px-8 rounded text-lg"
+              style={{ backgroundColor: gold, color: 'white' }}
+              className="font-bold py-4 px-8 rounded text-lg"
             >
               CONNECT WALLET
             </button>
-            <p className="text-gray-500 text-sm mt-4">Connect your wallet to deposit NFTs to the Country Club</p>
+            <p style={{ color: gray }} className="text-sm mt-4">Connect your wallet to deposit NFTs to the Country Club</p>
           </div>
         ) : (
           <div className="bg-white p-8 rounded-lg shadow-md">
             <div className="mb-5">
-              <p className="text-gray-500 text-sm mb-1">Connected Wallet:</p>
-              <p className="text-black font-bold">{account?.slice(0, 6)}...{account?.slice(-4)}</p>
+              <p style={{ color: gray }} className="text-sm mb-1">Connected Wallet:</p>
+              <p style={{ color: 'black' }} className="font-bold">{account?.slice(0, 6)}...{account?.slice(-4)}</p>
             </div>
 
             <div className="mb-5">
-              <label className="text-[#977039] font-bold block mb-2">Select Collection:</label>
+              <label style={{ color: gold }} className="font-bold block mb-2">Select Collection:</label>
               <select
                 value={selectedCollection}
                 onChange={async (e) => {
@@ -262,7 +266,8 @@ export default function CountryClubGallery() {
                   setSelectedNft(null);
                   if (e.target.value) await loadUserNfts(e.target.value);
                 }}
-                className="w-full p-3 rounded border-2 border-[#977039] bg-white text-black"
+                className="w-full p-3 rounded bg-white"
+                style={{ color: 'black', borderWidth: '2px', borderColor: gold }}
               >
                 <option value="">-- Select a collection --</option>
                 <option value={GACC_COLLECTION_ADDRESS}>Grandpa Ape Country Club</option>
@@ -271,7 +276,7 @@ export default function CountryClubGallery() {
 
             {selectedCollection && userNfts[selectedCollection] && (
               <div className="mb-5">
-                <label className="text-[#977039] font-bold block mb-2">Select NFT:</label>
+                <label style={{ color: gold }} className="font-bold block mb-2">Select NFT:</label>
                 <select
                   value={selectedTokenId}
                   onChange={(e) => {
@@ -279,7 +284,8 @@ export default function CountryClubGallery() {
                     const nft = userNfts[selectedCollection]?.find((n: any) => n.tokenId === e.target.value);
                     setSelectedNft(nft || null);
                   }}
-                  className="w-full p-3 rounded border-2 border-[#977039] bg-white text-black"
+                  className="w-full p-3 rounded bg-white"
+                  style={{ color: 'black', borderWidth: '2px', borderColor: gold }}
                 >
                   <option value="">-- Select an NFT --</option>
                   {userNfts[selectedCollection].map((nft: any) => (
@@ -292,27 +298,29 @@ export default function CountryClubGallery() {
             {selectedNft && (
               <>
                 <div className="mb-5 p-5 bg-[#f9edcd] rounded-lg text-center">
-                  <h3 className="text-[#977039] text-lg mb-4">Preview</h3>
+                  <h3 style={{ color: gold }} className="text-lg mb-4">Preview</h3>
                   {selectedNft.image && (
                     <img
                       src={selectedNft.image}
                       alt={selectedNft.name}
-                      className="max-w-[300px] w-full h-auto rounded-lg mb-4 mx-auto border-2 border-[#977039]"
+                      className="max-w-[300px] w-full h-auto rounded-lg mb-4 mx-auto"
+                      style={{ borderWidth: '2px', borderColor: gold }}
                     />
                   )}
-                  <p className="text-black font-bold mb-1">{selectedNft.name}</p>
+                  <p style={{ color: 'black' }} className="font-bold mb-1">{selectedNft.name}</p>
                 </div>
                 <div className="text-center">
                   <button
                     type="button"
                     onClick={transferToCountryClub}
                     disabled={transferring}
-                    className="bg-[#977039] text-white font-bold py-4 px-10 rounded text-lg disabled:opacity-60 disabled:cursor-not-allowed"
+                    style={{ backgroundColor: gold, color: 'white' }}
+                    className="font-bold py-4 px-10 rounded text-lg disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {transferring ? 'TRANSFERRING...' : 'DEPOSIT TO COUNTRY CLUB'}
                   </button>
                   {transferStatus && (
-                    <p className={`text-sm mt-4 ${transferStatus.includes('Error') ? 'text-red-600' : 'text-green-700'}`}>
+                    <p className={`text-sm mt-4 ${transferStatus.includes('Error') ? 'text-red-600' : 'text-green-700'}`} style={{ color: transferStatus.includes('Error') ? '#dc2626' : '#15803d' }}>
                       {transferStatus}
                     </p>
                   )}
@@ -323,32 +331,32 @@ export default function CountryClubGallery() {
         )}
       </div>
 
-      <hr className="border-gray-300 mb-10" />
+      <hr className="gray-line mb-10" />
 
       <div id="country-club">
-        <h2 className="text-2xl font-bold text-black mb-3">THE COUNTRY CLUB</h2>
-        <p className="text-black text-base mb-4">
+        <h2 className="common-title mb-3" style={{ color: 'black' }}>THE COUNTRY CLUB</h2>
+        <p className="common-p mb-4" style={{ color: 'black' }}>
           NFTs purchased by the Strategy Vault bot are automatically sent to the Country Club contract, where they are enshrined eternally and cannot be removed. These NFTs represent the permanent treasury of the Grandpa Ape ecosystem.
         </p>
 
         {loading ? (
-          <p className="text-black">Loading Country Club data...</p>
+          <p style={{ color: 'black' }}>Loading Country Club data...</p>
         ) : (
           <div>
             <div className="bg-white p-5 rounded-lg shadow-md mb-5">
-              <h3 className="text-[#977039] text-xl mb-3">
+              <h3 style={{ color: gold }} className="text-xl mb-3">
                 Country Club Members: {countryClubMembers || 'None Yet!'}
               </h3>
-              <a href={`https://etherscan.io/address/${COUNTRY_CLUB_ADDRESS}`} target="_blank" rel="noopener noreferrer" className="text-[#977039] text-sm">
+              <a href={`https://etherscan.io/address/${COUNTRY_CLUB_ADDRESS}`} target="_blank" rel="noopener noreferrer" style={{ color: gold }} className="text-sm">
                 View Contract on Etherscan
               </a>
             </div>
 
             {nftList.length > 0 && (
               <div>
-                <h3 className="text-black text-lg font-bold mb-4">Recent Additions</h3>
+                <h3 style={{ color: 'black' }} className="text-lg font-bold mb-4">Recent Additions</h3>
                 {loadingMetadata && (
-                  <p className="text-gray-500 text-sm mb-4 text-center">Loading NFT images...</p>
+                  <p style={{ color: gray }} className="text-sm mb-4 text-center">Loading NFT images...</p>
                 )}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {nftList.slice(0, 18).map((nft, index) => {
@@ -361,19 +369,20 @@ export default function CountryClubGallery() {
                     return (
                       <div key={index} className="bg-white p-4 rounded-lg shadow-md flex flex-col">
                         <NftImage imageUrl={imageUrl} nftName={nftName} loading={loadingMetadata} />
-                        <h4 className="text-[#977039] text-sm font-bold mb-2 min-h-[40px] flex items-center justify-center text-center">
+                        <h4 style={{ color: gold }} className="text-sm font-bold mb-2 min-h-[40px] flex items-center justify-center text-center">
                           {nftName}
                         </h4>
                         <div className="mt-auto pt-3">
-                          <p className="text-gray-500 text-xs mb-1">Source: {nft.source}</p>
+                          <p style={{ color: gray }} className="text-xs mb-1">Source: {nft.source}</p>
                           {senderInfo && (
-                            <p className="text-gray-500 text-xs mb-1">
+                            <p style={{ color: gray }} className="text-xs mb-1">
                               From:{' '}
                               <a
                                 href={`https://etherscan.io/address/${senderInfo.sender}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-[#977039] underline"
+                                style={{ color: gold }}
+                                className="underline"
                                 title={senderInfo.sender}
                               >
                                 {senderInfo.senderLabel || senderInfo.senderEntity || `${senderInfo.sender.slice(0, 6)}...${senderInfo.sender.slice(-4)}`}
@@ -381,15 +390,16 @@ export default function CountryClubGallery() {
                             </p>
                           )}
                           {loadingSenders && !senderInfo && (
-                            <p className="text-gray-400 text-xs italic mb-1">Loading sender...</p>
+                            <p style={{ color: '#9ca3af' }} className="text-xs italic mb-1">Loading sender...</p>
                           )}
-                          <p className="text-gray-500 text-xs">Joined: {nft.joinedAtFormatted}</p>
+                          <p style={{ color: gray }} className="text-xs">Joined: {nft.joinedAtFormatted}</p>
                           <div className="mt-2 flex flex-col gap-1">
                             <a
                               href={`https://opensea.io/assets/ethereum/${nft.collection}/${nft.tokenId}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-[#977039] text-xs underline"
+                              style={{ color: gold }}
+                              className="text-xs underline"
                             >
                               View on OpenSea
                             </a>
@@ -398,7 +408,8 @@ export default function CountryClubGallery() {
                                 href={`https://etherscan.io/tx/${senderInfo.transactionHash}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-[#977039] text-xs underline"
+                                style={{ color: gold }}
+                                className="text-xs underline"
                               >
                                 View Transaction
                               </a>
@@ -410,7 +421,7 @@ export default function CountryClubGallery() {
                   })}
                 </div>
                 {nftList.length > 18 && (
-                  <p className="text-gray-500 text-sm mt-4 text-center">Showing first 18 of {nftList.length} members</p>
+                  <p style={{ color: gray }} className="text-sm mt-4 text-center">Showing first 18 of {nftList.length} members</p>
                 )}
               </div>
             )}
