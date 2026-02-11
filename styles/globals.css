@@ -4,15 +4,33 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,700&family=Nosifer&display=swap');
 
+/* Override Tailwind preflight — match Bootstrap 5 system font stack */
 body {
   background-color: #000;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 * {
   color: #fff;
+}
+
+/* Restore heading sizes killed by Tailwind preflight */
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.75rem; }
+h4 { font-size: 1.5rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1rem; }
+
+/* img-fluid equivalent — all images responsive by default */
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 .common-container {
@@ -92,8 +110,8 @@ body {
   border: 0;
   font-weight: 700;
   font-size: 16px;
-  padding: 12px 24px;
-  margin: auto;
+  padding: 5%;
+  margin: auto auto;
   transition: 0.3s;
   cursor: pointer;
 }
@@ -133,7 +151,6 @@ input {
   background-color: #272626;
   border: 0;
   padding: 10px;
-  width: 80%;
   margin-top: 10px;
   color: #fff;
   caret-color: auto;
@@ -151,6 +168,7 @@ input:focus {
   color: #fff;
   padding: 20px 10px;
   transition: 0.3s;
+  font-size: 18px;
 }
 .social-icon:hover {
   caret-color: transparent;
@@ -160,6 +178,7 @@ input:focus {
   color: black;
   padding: 20px 10px;
   transition: 0.3s;
+  font-size: 18px;
 }
 .black-social-icon:hover {
   color: #bfc500;
@@ -283,12 +302,25 @@ div.imageItem {
   transition: 0.3s;
 }
 
-/* Home page — cream background with black text */
+/* Home page + GrandpaCoin — cream background with black text */
 .home-page {
   background-color: #f9edcd;
 }
-.home-page,
-.home-page * {
+/* Use lower specificity so inline styles and Tailwind utilities can override */
+.home-page {
+  color: #000;
+}
+.home-page .common-title,
+.home-page .common-sub-title,
+.home-page .common-p,
+.home-page .common-sub-p,
+.home-page .bold-text,
+.home-page .buy-ape-title,
+.home-page .welcome-title,
+.home-page .caption,
+.home-page .copyright,
+.home-page h1, .home-page h2, .home-page h3, .home-page h4, .home-page h5, .home-page h6,
+.home-page p, .home-page span, .home-page label, .home-page a, .home-page li, .home-page div {
   color: #000;
 }
 .home-page .bayc-color,
@@ -319,9 +351,6 @@ div.imageItem {
 }
 .home-page .line {
   border-bottom: 1px solid #000;
-}
-.home-page .copyright {
-  color: #000;
 }
 .home-page .black-social-icon {
   color: #000;
