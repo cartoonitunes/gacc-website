@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { kv } from '@vercel/kv';
+import { kv } from '@/lib/kv';
 import revealedMetadata from '@/data/metadata/revealed-kittens.json';
 import hiddenMetadata from '@/data/metadata/hidden-kittens.json';
 
