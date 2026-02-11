@@ -6,7 +6,6 @@ import Link from 'next/link';
 import TokenStats, { type TokenData } from '@/components/grandpacoin/TokenStats';
 import PriceDisplay, { GRANDPA_COIN_ADDRESS } from '@/components/grandpacoin/PriceDisplay';
 import CountryClubGallery from '@/components/grandpacoin/CountryClubGallery';
-import StoryCard from '@/components/grandpacoin/StoryCard';
 import { ConnectWallet } from '@/components/shared/ConnectWallet';
 import { Footer } from '@/components/layout/Footer';
 
@@ -237,13 +236,8 @@ export default function GrandpaCoinPage() {
         <hr className="gray-line mb-10" />
 
         {/* Country Club */}
-        <CountryClubGallery />
-
-        <hr className="gray-line mb-10" />
-
-        {/* Stories */}
         <Suspense fallback={null}>
-          <StoryCard />
+          <CountryClubGallery />
         </Suspense>
       </div>
 

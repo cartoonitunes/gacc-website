@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, ReactNode } from 'react';
 import { Contract, JsonRpcProvider } from 'ethers';
 import { useWallet } from '@/contexts/WalletContext';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const COUNTRY_CLUB_ADDRESS = '0xf4C84ed6302b9214C63890cdA6d9f3a08cBCb410';
 const GACC_COLLECTION_ADDRESS = '0x4B103d07C18798365946E76845EDC6b565779402';
@@ -42,8 +43,34 @@ interface SenderMap {
   [key: string]: SenderInfo;
 }
 
+interface ApiStory {
+  tokenId: string;
+  name: string;
+  title: string;
+  description: string;
+  storyContent: string[];
+  images?: { url: string; alt: string }[];
+}
+
 const gold = '#977039';
 const gray = '#6b7280';
+
+function parseMarkdown(text: string): ReactNode[] {
+  const parts: ReactNode[] = [];
+  let currentIndex = 0;
+  let key = 0;
+  const regex = /(\*\*\*([^*]+)\*\*\*|\*\*([^*]+)\*\*|\*([^*]+)\*)/g;
+  let match;
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > currentIndex) parts.push(text.substring(currentIndex, match.index));
+    if (match[2]) parts.push(<strong key={key++}><em>{match[2]}</em></strong>);
+    else if (match[3]) parts.push(<strong key={key++}>{match[3]}</strong>);
+    else if (match[4]) parts.push(<em key={key++}>{match[4]}</em>);
+    currentIndex = match.index + match[0].length;
+  }
+  if (currentIndex < text.length) parts.push(text.substring(currentIndex));
+  return parts.length > 0 ? parts : [text];
+}
 
 function NftImage({ imageUrl, nftName, loading: isLoading }: { imageUrl: string | null; nftName: string; loading: boolean }) {
   const [imageError, setImageError] = useState(false);
@@ -85,6 +112,8 @@ function getReadProvider() {
 
 export default function CountryClubGallery() {
   const { account, signer, isConnected, connectWallet } = useWallet();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [nftList, setNftList] = useState<NftMember[]>([]);
   const [nftMetadata, setNftMetadata] = useState<NftMetadataMap>({});
@@ -94,12 +123,30 @@ export default function CountryClubGallery() {
   const [loadingMetadata, setLoadingMetadata] = useState(false);
   const [loadingSenders, setLoadingSenders] = useState(false);
 
+  const [apiStories, setApiStories] = useState<Record<string, ApiStory>>({});
+  const [showStoryModal, setShowStoryModal] = useState(false);
+  const [storyTokenId, setStoryTokenId] = useState<string | null>(null);
+
   const [selectedCollection, setSelectedCollection] = useState('');
   const [selectedTokenId, setSelectedTokenId] = useState('');
   const [selectedNft, setSelectedNft] = useState<any>(null);
   const [userNfts, setUserNfts] = useState<Record<string, any[]>>({});
   const [transferring, setTransferring] = useState(false);
   const [transferStatus, setTransferStatus] = useState('');
+
+  const fetchStories = useCallback(async () => {
+    try {
+      const res = await fetch('/api/nft-stories');
+      const data = await res.json();
+      if (data.success && data.stories) {
+        const map: Record<string, ApiStory> = {};
+        data.stories.forEach((story: ApiStory) => { map[story.tokenId] = story; });
+        setApiStories(map);
+      }
+    } catch (err) {
+      console.error('Error fetching stories:', err);
+    }
+  }, []);
 
   const fetchNftMetadata = useCallback(async (nfts: NftMember[]) => {
     setLoadingMetadata(true);
@@ -185,7 +232,28 @@ export default function CountryClubGallery() {
 
   useEffect(() => {
     loadContractData();
-  }, [loadContractData]);
+    fetchStories();
+  }, [loadContractData, fetchStories]);
+
+  useEffect(() => {
+    const storyParam = searchParams.get('story');
+    if (storyParam && apiStories[storyParam]) {
+      setStoryTokenId(storyParam);
+      setShowStoryModal(true);
+    }
+  }, [searchParams, apiStories]);
+
+  const openStory = (tokenId: string) => {
+    setStoryTokenId(tokenId);
+    setShowStoryModal(true);
+    router.push(`/grandpacoin?story=${tokenId}`);
+  };
+
+  const closeStoryModal = () => {
+    setShowStoryModal(false);
+    setStoryTokenId(null);
+    router.push('/grandpacoin');
+  };
 
   const loadUserNfts = useCallback(async (collectionAddress: string) => {
     if (!account) return;
@@ -320,7 +388,7 @@ export default function CountryClubGallery() {
                     {transferring ? 'TRANSFERRING...' : 'DEPOSIT TO COUNTRY CLUB'}
                   </button>
                   {transferStatus && (
-                    <p className={`text-sm mt-4 ${transferStatus.includes('Error') ? 'text-red-600' : 'text-green-700'}`} style={{ color: transferStatus.includes('Error') ? '#dc2626' : '#15803d' }}>
+                    <p className="text-sm mt-4" style={{ color: transferStatus.includes('Error') ? '#dc2626' : '#15803d' }}>
                       {transferStatus}
                     </p>
                   )}
@@ -365,6 +433,7 @@ export default function CountryClubGallery() {
                     const senderInfo = nftSenders[metadataKey];
                     const imageUrl = metadata?.image || null;
                     const nftName = metadata?.name || `${nft.collection === GACC_COLLECTION_ADDRESS ? 'GACC' : 'NFT'} #${nft.tokenId}`;
+                    const hasStory = !!apiStories[nft.tokenId];
 
                     return (
                       <div key={index} className="bg-white p-4 rounded-lg shadow-md flex flex-col">
@@ -394,6 +463,16 @@ export default function CountryClubGallery() {
                           )}
                           <p style={{ color: gray }} className="text-xs">Joined: {nft.joinedAtFormatted}</p>
                           <div className="mt-2 flex flex-col gap-1">
+                            {hasStory && (
+                              <button
+                                type="button"
+                                onClick={() => openStory(nft.tokenId)}
+                                style={{ backgroundColor: gold, color: 'white' }}
+                                className="text-xs font-bold py-2 px-4 rounded cursor-pointer border-0 mb-1"
+                              >
+                                Story
+                              </button>
+                            )}
                             <a
                               href={`https://opensea.io/assets/ethereum/${nft.collection}/${nft.tokenId}`}
                               target="_blank"
@@ -428,6 +507,58 @@ export default function CountryClubGallery() {
           </div>
         )}
       </div>
+
+      {showStoryModal && storyTokenId && apiStories[storyTokenId] && (
+        <div
+          className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-5 overflow-y-auto"
+          onClick={(e) => { if (e.target === e.currentTarget) closeStoryModal(); }}
+        >
+          <div
+            className="bg-[#f9edcd] rounded-2xl p-8 max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={closeStoryModal}
+              className="absolute top-4 right-4 rounded-full w-9 h-9 flex items-center justify-center font-bold text-xl"
+              style={{ backgroundColor: gold, color: 'white' }}
+            >
+              x
+            </button>
+
+            <div className="text-center mb-8">
+              {nftMetadata[`${GACC_COLLECTION_ADDRESS}-${storyTokenId}`]?.image && (
+                <img
+                  src={nftMetadata[`${GACC_COLLECTION_ADDRESS}-${storyTokenId}`].image}
+                  alt={`Grandpa Ape #${storyTokenId}`}
+                  className="max-w-[300px] w-full h-auto rounded-lg mb-4 mx-auto"
+                  style={{ borderWidth: '3px', borderStyle: 'solid', borderColor: gold }}
+                />
+              )}
+              <h2 style={{ color: gold }} className="text-3xl font-bold mb-3">Grandpa Ape #{storyTokenId}</h2>
+              <h3 style={{ color: 'black' }} className="text-xl italic">{apiStories[storyTokenId].name}</h3>
+            </div>
+
+            <div className="text-lg leading-relaxed mb-8">
+              {apiStories[storyTokenId].storyContent.map((paragraph, index) => (
+                <p key={index} style={{ color: '#111827' }} className="mb-5">{parseMarkdown(paragraph)}</p>
+              ))}
+            </div>
+
+            {apiStories[storyTokenId].images && apiStories[storyTokenId].images!.length > 0 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-8">
+                {apiStories[storyTokenId].images!.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image.url}
+                    alt={image.alt}
+                    className="w-full h-auto rounded-lg shadow-lg"
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
