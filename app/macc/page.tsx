@@ -372,7 +372,7 @@ export default function MACCPage() {
       <Navbar variant="dark" />
 
       {/* Cover Image */}
-      <div>
+      <div className="common-container px-4">
         <img src="/assets/images/MACC_COVER.png" className="w-full" alt="MACC Cover" />
       </div>
 

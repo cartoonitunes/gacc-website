@@ -5,7 +5,7 @@ import Image from 'next/image';
 export default function HeroSection() {
   return (
     <section>
-      <div>
+      <div className="common-container px-4">
         <Image
           src="/assets/images/GACC_COVER-2.png"
           alt="GACC Cover"
