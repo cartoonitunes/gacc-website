@@ -37,7 +37,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           integrity="sha256-gsmEoJAws/Kd3CjuOQzLie5Q3yshhvmo7YNtBG7aaEY="
           crossOrigin="anonymous"
         />
-        <script src="https://inlay.dev/s.js" data-key="sa_698d357475ba9f6d640e2a69e1422a385d83aa53ea58a31f" async></script>
+        <link rel="llms-txt" href="https://inlay.dev/api/llms/sa_698d357475ba9f6d640e2a69e1422a385d83aa53ea58a31f" />
+        <link rel="mcp-manifest" type="application/json" href="https://inlay.dev/api/mcp/sa_698d357475ba9f6d640e2a69e1422a385d83aa53ea58a31f/manifest" />
+        <script src="https://inlay.dev/api/script/s.js" data-key="sa_698d357475ba9f6d640e2a69e1422a385d83aa53ea58a31f" async></script>
       </head>
       <body>
         <WalletProvider>
