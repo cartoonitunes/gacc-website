@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ConnectWallet } from '@/components/shared/ConnectWallet';
+import { UserNav } from '@/components/layout/UserNav';
 
 const NAV_LINKS = [
   { href: '/', label: 'HOME' },
@@ -81,6 +82,7 @@ export function Navbar({ variant = 'light' }: { variant?: 'light' | 'dark' }) {
             ))}
           </div>
           <ConnectWallet />
+          <UserNav />
         </div>
       </div>
 
@@ -111,6 +113,7 @@ export function Navbar({ variant = 'light' }: { variant?: 'light' | 'dark' }) {
             ))}
           </div>
           <ConnectWallet />
+          <UserNav />
         </div>
       )}
     </nav>

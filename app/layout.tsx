@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { WalletProvider } from '@/contexts/WalletContext';
+import { SessionProvider } from '@/components/providers/SessionProvider';
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {
@@ -42,9 +43,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script src="https://inlay.dev/api/script/s.js" data-key="sa_698d357475ba9f6d640e2a69e1422a385d83aa53ea58a31f" async></script>
       </head>
       <body>
-        <WalletProvider>
-          {children}
-        </WalletProvider>
+        <SessionProvider>
+          <WalletProvider>
+            {children}
+          </WalletProvider>
+        </SessionProvider>
       </body>
     </html>
   );

@@ -8,6 +8,9 @@ const nextConfig = {
       { protocol: 'https', hostname: 'gakc.s3.amazonaws.com' },
       { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
       { protocol: 'https', hostname: 'i.giphy.com' },
+      { protocol: 'https', hostname: 'cdn.discordapp.com' },
+      { protocol: 'https', hostname: 'nft-cdn.alchemy.com' },
+      { protocol: 'https', hostname: 'res.cloudinary.com' },
     ],
   },
 };
