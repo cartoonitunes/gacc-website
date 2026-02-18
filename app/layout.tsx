@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'Grandpa Ape Country Club',
     description:
       'A limited NFT collection where the token itself doubles as your membership to the country club. The club is open! Ape in with us.',
