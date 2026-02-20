@@ -4,6 +4,7 @@ import { SessionProvider } from '@/components/providers/SessionProvider';
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://grandpaapecountryclub.com'),
   title: 'Grandpa Ape Country Club (GACC)',
   description:
     'The Grandpa Ape Country Club (GACC) is a collection of 5,000 unique Grandpa Ape NFTs, unique digital collectibles living on the Ethereum blockchain.',
