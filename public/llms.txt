@@ -1,0 +1,42 @@
+# Grandpa Ape Country Club (GACC)
+
+> The Grandpa Ape Country Club is a collection of 5,000 unique Grandpa Ape NFTs on the Ethereum blockchain. Your NFT doubles as your membership to the country club.
+
+## Collections
+
+### GACC (Grandpa Ape Country Club)
+- 5,000 unique Grandpa Ape NFTs on Ethereum
+- Contract: 0x495f947276749Ce646f68AC8c248420045cb7b5e (OpenSea Shared Storefront)
+- OpenSea: https://opensea.io/collection/grandpa-ape-country-club
+- Features: Rank lookup, subdomain manager, member dashboard
+
+### MACC (Mutant Ape Country Club)
+- Up to 10,000 Mutant Ape NFTs created by exposing Grandpa Apes to mutant serum
+- Derivative collection of GACC
+
+### GAKC (Grandpa Ape Kitten Club)
+- Companion kitten collection
+- Kittens can be bred and earn Lunagem tokens
+
+## Tokens
+
+### GrandpaCoin ($GRANDPA)
+- ERC-20 governance and utility token for the GACC ecosystem
+- Chain: Ethereum mainnet
+- Use: Ecosystem utility, community rewards
+
+## Links
+
+- Website: https://grandpaapecountryclub.com
+- Twitter: https://twitter.com/GrandpaApeCC
+- Discord: https://discord.gg/8uuhkZ2TA2
+- Instagram: https://www.instagram.com/grandpaapecountryclubofficial
+- GitHub: https://github.com/cartoonitunes
+
+## Pages
+
+- Home: https://grandpaapecountryclub.com
+- GrandpaCoin: https://grandpaapecountryclub.com/grandpacoin
+- MACC: https://grandpaapecountryclub.com/macc
+- Kitten Club: https://grandpaapecountryclub.com/kitten-club
+- Dashboard: https://grandpaapecountryclub.com/dashboard

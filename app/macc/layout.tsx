@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { maccCollectionJsonLd } from '@/components/seo/structured-data';
 
 export const metadata: Metadata = {
   title: 'Mutant Ape Country Club (MACC) | GACC',
@@ -20,5 +22,10 @@ export const metadata: Metadata = {
 };
 
 export default function MACCLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return (
+    <>
+      <JsonLd data={maccCollectionJsonLd} />
+      {children}
+    </>
+  );
 }

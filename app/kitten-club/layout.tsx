@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { kittenClubJsonLd } from '@/components/seo/structured-data';
 
 export const metadata: Metadata = {
   title: 'Grandpa Ape Kitten Club (GAKC) | GACC',
@@ -20,5 +22,10 @@ export const metadata: Metadata = {
 };
 
 export default function KittenClubLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return (
+    <>
+      <JsonLd data={kittenClubJsonLd} />
+      {children}
+    </>
+  );
 }
