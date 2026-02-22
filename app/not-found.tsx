@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
+import { NotFoundRedirect } from '@/components/layout/NotFoundRedirect';
 
 export const metadata: Metadata = {
   title: '404 — Page Not Found | GACC',
@@ -41,7 +42,8 @@ export default function NotFound() {
           >
             The page you&apos;re looking for doesn&apos;t exist or has been moved.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <NotFoundRedirect />
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
             <Link
               href="/"
               className="inline-block px-6 py-3 rounded-lg text-white font-semibold transition-colors"
