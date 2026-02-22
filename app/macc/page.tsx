@@ -603,10 +603,10 @@ export default function MACCPage() {
           <a href="https://www.instagram.com/grandpaapecountryclubofficial" target="_blank" rel="noopener noreferrer" className="social-icon text-2xl">
             <i className="fa fa-instagram" aria-hidden="true"></i>
           </a>
-          <a href="https://opensea.io/collection/grandpa-ape-country-club" target="_blank" rel="noopener noreferrer" className="social-icon text-2xl">
+          <a href="https://opensea.io/collection/grandpaapecountryclub" target="_blank" rel="noopener noreferrer" className="social-icon text-2xl">
             <i className="fa fa-anchor" aria-hidden="true"></i>
           </a>
-          <a href="https://etherscan.io/address/0xa65b0dbe0992ebe8c68a08b8e9b58892b6248f68" target="_blank" rel="noopener noreferrer" className="social-icon text-2xl">
+          <a href="https://etherscan.io/address/0x4B103d07C18798365946E76845EDC6b565779402" target="_blank" rel="noopener noreferrer" className="social-icon text-2xl">
             <i className="fa fa-diamond" aria-hidden="true"></i>
           </a>
         </div>
