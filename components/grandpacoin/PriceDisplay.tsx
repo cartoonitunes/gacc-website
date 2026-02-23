@@ -40,14 +40,25 @@ export default function PriceDisplay({ vaultBalance, additionalWalletBalance }: 
   const fetchMarketData = useCallback(async () => {
     setLoadingMarketData(true);
     try {
-      const [dexResponse, floorPriceResponse] = await Promise.all([
-        fetch(`https://api.dexscreener.com/latest/dex/pairs/ethereum/${DEX_PAIR}`),
+      const [gtResponse, floorPriceResponse] = await Promise.all([
+        fetch(`https://api.geckoterminal.com/api/v2/networks/eth/pools/${DEX_PAIR}`, {
+          headers: { Accept: 'application/json;version=20230302' },
+        }),
         fetch('/api/gacc-floor-price'),
       ]);
 
-      if (dexResponse.ok) {
-        const data = await dexResponse.json();
-        setDexData(data.pair || data.pairs?.[0] || null);
+      if (gtResponse.ok) {
+        const data = await gtResponse.json();
+        const attr = data?.data?.attributes;
+        if (attr) {
+          setDexData({
+            priceUsd: attr.base_token_price_usd ?? '0',
+            priceNative: attr.base_token_price_native_currency ?? '0',
+            volume: { h24: parseFloat(attr.volume_usd?.h24 ?? '0') },
+            liquidity: { usd: parseFloat(attr.reserve_in_usd ?? '0') },
+            priceChange: { h24: parseFloat(attr.price_change_percentage?.h24 ?? '0') },
+          });
+        }
       }
 
       if (floorPriceResponse.ok) {
