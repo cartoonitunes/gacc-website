@@ -36,9 +36,12 @@ export default function PriceDisplay({ vaultBalance, additionalWalletBalance }: 
   const [floorPrice, setFloorPrice] = useState<number | null>(null);
   const [estimatedEth, setEstimatedEth] = useState<number | null>(null);
   const [loadingMarketData, setLoadingMarketData] = useState(false);
+  const [marketDataError, setMarketDataError] = useState<string | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<string | null>(null);
 
   const fetchMarketData = useCallback(async () => {
     setLoadingMarketData(true);
+    setMarketDataError(null);
     try {
       const [gtResponse, floorPriceResponse] = await Promise.all([
         fetch(`https://api.geckoterminal.com/api/v2/networks/eth/pools/${DEX_PAIR}`, {
@@ -58,7 +61,14 @@ export default function PriceDisplay({ vaultBalance, additionalWalletBalance }: 
             liquidity: { usd: parseFloat(attr.reserve_in_usd ?? '0') },
             priceChange: { h24: parseFloat(attr.price_change_percentage?.h24 ?? '0') },
           });
+          setLastUpdated(new Date().toLocaleTimeString());
+        } else {
+          setDexData(null);
+          setMarketDataError('Live market data is temporarily unavailable.');
         }
+      } else {
+        setDexData(null);
+        setMarketDataError('Live market data is temporarily unavailable.');
       }
 
       if (floorPriceResponse.ok) {
@@ -77,6 +87,13 @@ export default function PriceDisplay({ vaultBalance, additionalWalletBalance }: 
   }, [fetchMarketData]);
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      fetchMarketData();
+    }, 60000);
+    return () => clearInterval(interval);
+  }, [fetchMarketData]);
+
+  useEffect(() => {
     if (dexData && vaultBalance && additionalWalletBalance) {
       const totalGrandpa = parseFloat(vaultBalance) + parseFloat(additionalWalletBalance);
       const priceNative = parseFloat(dexData.priceNative || '0');
@@ -91,7 +108,7 @@ export default function PriceDisplay({ vaultBalance, additionalWalletBalance }: 
         <div className="text-center py-5">
           <p style={{ color: gray }}>Loading market data...</p>
         </div>
-      ) : dexData && (
+      ) : dexData ? (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
           <div className="bg-white p-5 rounded-lg shadow-md text-center">
             <h3 style={{ color: gold }} className="text-sm font-bold mb-3">Price (USD)</h3>
@@ -112,6 +129,14 @@ export default function PriceDisplay({ vaultBalance, additionalWalletBalance }: 
             </p>
           </div>
         </div>
+      ) : (
+        <div className="bg-white p-5 rounded-lg shadow-md text-center mt-4">
+          <p style={{ color: gray }}>{marketDataError || 'Market data unavailable right now.'}</p>
+        </div>
+      )}
+
+      {lastUpdated && (
+        <p className="text-xs mt-2" style={{ color: gray }}>Last market update: {lastUpdated}</p>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
