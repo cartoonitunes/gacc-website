@@ -217,17 +217,14 @@ export default function GrandpaCoinPage() {
             </div>
             <div className="lg:w-2/12 lg:ml-auto">
               <a
-                href={`https://app.uniswap.org/#/swap?exactField=input&exactAmount=${ethAmount}&inputCurrency=ETH&outputCurrency=${GRANDPA_COIN_ADDRESS}`}
+                href={`https://app.uniswap.org/swap?chain=ethereum&exactField=input&exactAmount=${ethAmount}&inputCurrency=ETH&outputCurrency=${GRANDPA_COIN_ADDRESS}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                style={{ backgroundColor: '#83D8FC', color: 'black' }}
+                className="font-bold py-2 px-6 rounded w-full inline-flex justify-center"
+                aria-label="Swap ETH for GRANDPA on Uniswap"
               >
-                <button
-                  style={{ backgroundColor: '#83D8FC', color: 'black' }}
-                  className="font-bold py-2 px-6 rounded w-full"
-                  type="button"
-                >
-                  SWAP ON UNISWAP
-                </button>
+                SWAP ON UNISWAP
               </a>
             </div>
           </div>
