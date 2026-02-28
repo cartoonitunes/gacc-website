@@ -5,6 +5,7 @@ import { ethers } from 'ethers';
 import { useWallet } from '@/contexts/WalletContext';
 import { getMACCContract } from '@/lib/blockchain/contracts';
 import { Navbar } from '@/components/layout/Navbar';
+import MaccMatchLookup from '@/components/macc/MaccMatchLookup';
 
 const LEGENDARIES = ['0','1','2','3','4','5','6','7','8','9','156','576','1713','2976','3023','3622','3767','3867'];
 const MYSTERY_IMAGE = 'https://ipfs.io/ipfs/Qme4RRP6Q5iWmjnwoqiY2xRdx9fc1cPdht9CA9JYQg8JEH';
@@ -454,6 +455,14 @@ export default function MACCPage() {
           </div>
         </div>
       </div>
+
+      {/* Gray Divider */}
+      <div className="px-4 mb-6">
+        <hr className="gray-line" />
+      </div>
+
+      {/* Match Lookup */}
+      <MaccMatchLookup />
 
       {/* Buy a MACC Banner */}
       <div className="common-container px-4 mb-10">
