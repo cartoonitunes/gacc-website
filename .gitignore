@@ -142,3 +142,6 @@ dist/
 _legacy/
 .vercel
 .env*.local
+
+# Migration data exports
+claimed-*.csv
