@@ -18,6 +18,8 @@ export default function MaccMatchLookup() {
   const [tokenId, setTokenId] = useState('');
   const [direction, setDirection] = useState<'from-macc' | 'to-macc'>('from-macc');
   const [result, setResult] = useState<MatchResult>(null);
+  const [noMatch, setNoMatch] = useState(false);
+  const [sourceImage, setSourceImage] = useState('');
   const [loading, setLoading] = useState(false);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -48,6 +50,7 @@ export default function MaccMatchLookup() {
   const lookup = async (id: string, dir: 'from-macc' | 'to-macc') => {
     if (!id || !/^\d+$/.test(id)) {
       setResult(null);
+      setNoMatch(false);
       return;
     }
     setLoading(true);
@@ -55,7 +58,10 @@ export default function MaccMatchLookup() {
       const apiDir = dir === 'from-macc' ? 'macc-to-mayc' : 'mayc-to-macc';
       const res = await fetch(`/api/matches/${apiDir}/${id}`);
       if (!res.ok) {
+        const img = dir === 'from-macc' ? await fetchMaccImage(id) : await fetchMaycImage(id);
+        setSourceImage(img);
         setResult(null);
+        setNoMatch(true);
         setLoading(false);
         return;
       }
@@ -66,6 +72,7 @@ export default function MaccMatchLookup() {
         fetchMaccImage(maccId),
         fetchMaycImage(maycId),
       ]);
+      setNoMatch(false);
       setResult({
         sourceId: id,
         matchId: data.match_id,
@@ -76,6 +83,7 @@ export default function MaccMatchLookup() {
       });
     } catch {
       setResult(null);
+      setNoMatch(false);
     }
     setLoading(false);
   };
@@ -89,6 +97,7 @@ export default function MaccMatchLookup() {
   const handleDirectionChange = (dir: 'from-macc' | 'to-macc') => {
     setDirection(dir);
     setResult(null);
+    setNoMatch(false);
     if (tokenId) {
       if (debounceRef.current) clearTimeout(debounceRef.current);
       debounceRef.current = setTimeout(() => lookup(tokenId, dir), 100);
@@ -99,6 +108,48 @@ export default function MaccMatchLookup() {
   const maycId = result ? (result.direction === 'from-macc' ? result.matchId : result.sourceId) : null;
   const maccImage = result ? (result.direction === 'from-macc' ? result.sourceImageUrl : result.matchImageUrl) : null;
   const maycImage = result ? (result.direction === 'from-macc' ? result.matchImageUrl : result.sourceImageUrl) : null;
+
+  let leftImg: string, leftLabel: string, rightImg: string, rightLabel: string;
+  let centerNode: React.ReactNode;
+
+  if (result && !loading) {
+    leftImg = maccImage!;
+    leftLabel = `MACC #${maccId}`;
+    rightImg = maycImage!;
+    rightLabel = `MAYC #${maycId}`;
+    centerNode = (
+      <>
+        <div className="text-xl font-bold bayc-color">{result.score}%</div>
+        <div className="text-xs">match</div>
+      </>
+    );
+  } else if (noMatch && !loading) {
+    if (direction === 'from-macc') {
+      leftImg = sourceImage || MYSTERY_IMAGE;
+      leftLabel = `MACC #${tokenId}`;
+      rightImg = MYSTERY_IMAGE;
+      rightLabel = 'No match';
+    } else {
+      leftImg = MYSTERY_IMAGE;
+      leftLabel = 'No match';
+      rightImg = sourceImage || MYSTERY_IMAGE;
+      rightLabel = `MAYC #${tokenId}`;
+    }
+    centerNode = (
+      <div className="text-sm font-bold bayc-color">&mdash;</div>
+    );
+  } else {
+    leftImg = MYSTERY_IMAGE;
+    leftLabel = 'MACC';
+    rightImg = MYSTERY_IMAGE;
+    rightLabel = 'MAYC';
+    centerNode = (
+      <>
+        <div className="text-xl font-bold bayc-color">?</div>
+        <div className="text-xs">match</div>
+      </>
+    );
+  }
 
   return (
     <div className="common-container px-4 mb-10">
@@ -114,13 +165,13 @@ export default function MaccMatchLookup() {
               className={`flex-1 px-4 py-2 text-sm font-bold transition-colors ${direction === 'from-macc' ? 'bayc-bg text-black' : 'bg-transparent text-white'}`}
               onClick={() => handleDirectionChange('from-macc')}
             >
-              MACC → MAYC
+              MACC &rarr; MAYC
             </button>
             <button
               className={`flex-1 px-4 py-2 text-sm font-bold transition-colors ${direction === 'to-macc' ? 'bayc-bg text-black' : 'bg-transparent text-white'}`}
               onClick={() => handleDirectionChange('to-macc')}
             >
-              MAYC → MACC
+              MAYC &rarr; MACC
             </button>
           </div>
 
@@ -134,24 +185,19 @@ export default function MaccMatchLookup() {
         </div>
 
         <div className="lg:w-5/12">
-          {result && !loading ? (
-            <div className="flex gap-3 items-center">
-              <div className="w-5/12">
-                <img className="w-full rounded-md" src={maccImage!} alt={`MACC #${maccId}`} loading="lazy" />
-                <p className="kitten-caption mt-1 text-center">MACC #{maccId}</p>
-              </div>
-              <div className="w-2/12 text-center">
-                <div className="text-xl font-bold bayc-color">{result.score}%</div>
-                <div className="text-xs">match</div>
-              </div>
-              <div className="w-5/12">
-                <img className="w-full rounded-md" src={maycImage!} alt={`MAYC #${maycId}`} loading="lazy" />
-                <p className="kitten-caption mt-1 text-center">MAYC #{maycId}</p>
-              </div>
+          <div className="flex gap-3 items-center">
+            <div className="w-5/12">
+              <img className="w-full rounded-md" src={leftImg} alt={leftLabel} loading="lazy" />
+              <p className="kitten-caption mt-1 text-center">{leftLabel}</p>
             </div>
-          ) : (
-            <img className="w-full rounded-md" src={MYSTERY_IMAGE} alt="mystery token" />
-          )}
+            <div className="w-2/12 text-center">
+              {centerNode}
+            </div>
+            <div className="w-5/12">
+              <img className="w-full rounded-md" src={rightImg} alt={rightLabel} loading="lazy" />
+              <p className="kitten-caption mt-1 text-center">{rightLabel}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
