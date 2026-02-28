@@ -1,7 +1,5 @@
 'use client';
 
-import Image from 'next/image';
-
 export default function GallerySection() {
   return (
     <section className="common-container px-4">
@@ -35,26 +33,6 @@ export default function GallerySection() {
         </div>
       </div>
 
-      <hr className="gray-line mb-5" />
-
-      <div className="mb-5 flex flex-col lg:flex-row gap-6">
-        <div className="lg:w-8/12">
-          <h2 className="common-title" style={{ color: 'black' }}>GACC LOUNGE ALPHA BOT</h2>
-          <p className="common-p" style={{ color: 'black' }}>
-            GACC holders with five or more grandpas get access to an exclusive Discord channel with a bot that pulls down and analyzes code from any ERC271 and ERC1155 contract. The bot allows holders to gain deep insights into an NFT contract before investing at the touch of a button.
-          </p>
-        </div>
-        <div className="lg:w-3/12 lg:ml-auto my-auto">
-          <Image
-            src="/assets/images/lightspeed_gacc_2561.gif"
-            alt="robot"
-            width={300}
-            height={300}
-            className="rounded-md w-full"
-            unoptimized
-          />
-        </div>
-      </div>
     </section>
   );
 }

@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react';
 
 const MYSTERY_IMAGE = 'https://ipfs.io/ipfs/Qme4RRP6Q5iWmjnwoqiY2xRdx9fc1cPdht9CA9JYQg8JEH';
+const MAYC_CONTRACT = '0x60E4d786628Fea6478F785A6d7e704777c86a7c6';
 
 type MatchResult = {
   sourceId: string;
@@ -20,11 +21,25 @@ export default function MaccMatchLookup() {
   const [loading, setLoading] = useState(false);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
-  const fetchImageUrl = async (id: string): Promise<string> => {
+  const fetchMaccImage = async (id: string): Promise<string> => {
     try {
       const res = await fetch(`/api/metadata/${id}`);
       const data = await res.json();
       return data.image_url || MYSTERY_IMAGE;
+    } catch {
+      return MYSTERY_IMAGE;
+    }
+  };
+
+  const fetchMaycImage = async (id: string): Promise<string> => {
+    try {
+      const res = await fetch('/api/nft-metadata', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contractAddress: MAYC_CONTRACT, tokenId: id }),
+      });
+      const data = await res.json();
+      return data.metadata?.image || MYSTERY_IMAGE;
     } catch {
       return MYSTERY_IMAGE;
     }
@@ -48,8 +63,8 @@ export default function MaccMatchLookup() {
       const maccId = dir === 'from-macc' ? id : data.match_id;
       const maycId = dir === 'from-macc' ? data.match_id : id;
       const [maccImage, maycImage] = await Promise.all([
-        fetchImageUrl(maccId),
-        fetchImageUrl(maycId),
+        fetchMaccImage(maccId),
+        fetchMaycImage(maycId),
       ]);
       setResult({
         sourceId: id,
