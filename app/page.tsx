@@ -27,12 +27,6 @@ export default function HomePage() {
         <hr className="gray-line mb-5" />
       </div>
 
-      <MatchLookup />
-
-      <div className="common-container px-4">
-        <hr className="gray-line mb-5" />
-      </div>
-
       <SubdomainManager />
 
       <div className="common-container px-4">
@@ -46,6 +40,12 @@ export default function HomePage() {
       </div>
 
       <GallerySection />
+
+      <div className="common-container px-4">
+        <hr className="gray-line mb-5" />
+      </div>
+
+      <MatchLookup />
 
       <div className="common-container px-4">
         <hr className="gray-line mb-5" />
