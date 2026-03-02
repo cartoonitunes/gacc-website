@@ -113,10 +113,10 @@ export default function MaccMatchLookup() {
   let centerNode: React.ReactNode;
 
   if (result && !loading) {
-    leftImg = maccImage!;
-    leftLabel = `MACC #${maccId}`;
-    rightImg = maycImage!;
-    rightLabel = `MAYC #${maycId}`;
+    leftImg = maycImage!;
+    leftLabel = `MAYC #${maycId}`;
+    rightImg = maccImage!;
+    rightLabel = `MACC #${maccId}`;
     centerNode = (
       <>
         <div className="text-xl font-bold bayc-color">{result.score}%</div>
@@ -125,24 +125,24 @@ export default function MaccMatchLookup() {
     );
   } else if (noMatch && !loading) {
     if (direction === 'from-macc') {
-      leftImg = sourceImage || MYSTERY_IMAGE;
-      leftLabel = `MACC #${tokenId}`;
-      rightImg = MYSTERY_IMAGE;
-      rightLabel = 'No match';
-    } else {
       leftImg = MYSTERY_IMAGE;
       leftLabel = 'No match';
       rightImg = sourceImage || MYSTERY_IMAGE;
-      rightLabel = `MAYC #${tokenId}`;
+      rightLabel = `MACC #${tokenId}`;
+    } else {
+      leftImg = sourceImage || MYSTERY_IMAGE;
+      leftLabel = `MAYC #${tokenId}`;
+      rightImg = MYSTERY_IMAGE;
+      rightLabel = 'No match';
     }
     centerNode = (
       <div className="text-sm font-bold bayc-color">&mdash;</div>
     );
   } else {
     leftImg = MYSTERY_IMAGE;
-    leftLabel = 'MACC';
+    leftLabel = 'MAYC';
     rightImg = MYSTERY_IMAGE;
-    rightLabel = 'MAYC';
+    rightLabel = 'MACC';
     centerNode = (
       <>
         <div className="text-xl font-bold bayc-color">?</div>

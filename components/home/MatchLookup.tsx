@@ -100,10 +100,10 @@ export default function MatchLookup() {
   let centerNode: React.ReactNode;
 
   if (result && !loading) {
-    leftImg = `${GACC_IMAGE_BASE}${gaccImageId}.png`;
-    leftLabel = `GACC #${gaccId}`;
-    rightImg = result.otherImageUrl || PLACEHOLDER;
-    rightLabel = `${project.label} #${otherId}`;
+    leftImg = result.otherImageUrl || PLACEHOLDER;
+    leftLabel = `${project.label} #${otherId}`;
+    rightImg = `${GACC_IMAGE_BASE}${gaccImageId}.png`;
+    rightLabel = `GACC #${gaccId}`;
     centerNode = (
       <>
         <div className="text-xl font-bold" style={{ color: '#977039' }}>{result.score}%</div>
@@ -112,24 +112,24 @@ export default function MatchLookup() {
     );
   } else if (noMatch && !loading) {
     if (direction === 'from-gacc') {
-      leftImg = `${GACC_IMAGE_BASE}${Number(tokenId) + 1}.png`;
-      leftLabel = `GACC #${tokenId}`;
-      rightImg = PLACEHOLDER;
-      rightLabel = 'No match';
-    } else {
       leftImg = PLACEHOLDER;
       leftLabel = 'No match';
-      rightImg = sourceImage || PLACEHOLDER;
-      rightLabel = `${project.label} #${tokenId}`;
+      rightImg = `${GACC_IMAGE_BASE}${Number(tokenId) + 1}.png`;
+      rightLabel = `GACC #${tokenId}`;
+    } else {
+      leftImg = sourceImage || PLACEHOLDER;
+      leftLabel = `${project.label} #${tokenId}`;
+      rightImg = PLACEHOLDER;
+      rightLabel = 'No match';
     }
     centerNode = (
       <div className="text-sm font-bold" style={{ color: '#977039' }}>—</div>
     );
   } else {
     leftImg = PLACEHOLDER;
-    leftLabel = 'GACC';
+    leftLabel = project.label;
     rightImg = PLACEHOLDER;
-    rightLabel = project.label;
+    rightLabel = 'GACC';
     centerNode = (
       <>
         <div className="text-xl font-bold" style={{ color: '#977039' }}>?</div>
