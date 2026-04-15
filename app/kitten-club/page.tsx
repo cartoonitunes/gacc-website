@@ -10,7 +10,6 @@ const KITTEN_ADDRESS = process.env.NEXT_PUBLIC_KITTEN_ADDRESS!;
 const LUNAGEM_ADDRESS = process.env.NEXT_PUBLIC_LUNAGEM_ADDRESS!;
 const GACC_ADDRESS = process.env.NEXT_PUBLIC_GACC_ADDRESS!;
 const UNREVEALED_IMAGE = 'https://gakc.s3.amazonaws.com/unrevealed_kitten.png';
-const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY!;
 
 const NAV_LINKS = [
   { href: '/#buy-a-gacc', label: 'BUY A GACC' },
@@ -107,8 +106,7 @@ export default function KittenClubPage() {
           withMetadata: false,
         };
         if (pageKey) params.pageKey = pageKey;
-        const url: string = `https://eth-mainnet.g.alchemy.com/nft/v3/${ALCHEMY_API_KEY}/getNFTsForOwner?` +
-          `owner=${address}&contractAddresses[]=${LUNAGEM_ADDRESS}&pageSize=100&withMetadata=false` +
+        const url: string = `/api/alchemy-nfts?owner=${address}&contractAddresses[]=${LUNAGEM_ADDRESS}&pageSize=100&withMetadata=false` +
           (pageKey ? `&pageKey=${pageKey}` : '');
         const res = await fetch(url);
         const data = await res.json();

@@ -3,7 +3,8 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { getPool } from '@/lib/db';
 
-const ALCHEMY_URL = `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`;
+const ALCHEMY_KEY = (process.env.RPC_URL || '').split('/').pop() || '';
+const ALCHEMY_NFT_BASE = `https://eth-mainnet.g.alchemy.com/nft/v3/${ALCHEMY_KEY}`;
 
 const CONTRACTS: Record<string, string> = {
   GACC: process.env.NEXT_PUBLIC_GACC_ADDRESS || '0xb73B1335C1f14ECCD0D6787490bCe85e1af62378',
@@ -13,7 +14,7 @@ const CONTRACTS: Record<string, string> = {
 
 async function getNFTsForWallet(wallet: string): Promise<any[]> {
   const contractAddresses = Object.values(CONTRACTS);
-  const url = `${ALCHEMY_URL}/getNFTsForOwner?owner=${wallet}&contractAddresses[]=${contractAddresses.join('&contractAddresses[]=')}&withMetadata=true`;
+  const url = `${ALCHEMY_NFT_BASE}/getNFTsForOwner?owner=${wallet}&contractAddresses[]=${contractAddresses.join('&contractAddresses[]=')}&withMetadata=true`;
 
   const res = await fetch(url, { next: { revalidate: 120 } });
   if (!res.ok) return [];

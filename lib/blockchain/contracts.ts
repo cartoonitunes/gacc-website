@@ -18,7 +18,8 @@ export function getLunagemContract(signerOrProvider: SignerOrProvider) {
 }
 
 export function getReadProvider() {
-  return new JsonRpcProvider(
-    `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
-  );
+  if (typeof window === 'undefined') {
+    return new JsonRpcProvider(process.env.RPC_URL);
+  }
+  return new JsonRpcProvider(`${window.location.origin}/api/rpc`);
 }

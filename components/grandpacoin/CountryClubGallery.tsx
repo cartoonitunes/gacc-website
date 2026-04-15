@@ -105,9 +105,8 @@ function NftImage({ imageUrl, nftName, loading: isLoading }: { imageUrl: string 
 }
 
 function getReadProvider() {
-  return new JsonRpcProvider(
-    `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
-  );
+  const url = typeof window !== 'undefined' ? `${window.location.origin}/api/rpc` : '/api/rpc';
+  return new JsonRpcProvider(url);
 }
 
 export default function CountryClubGallery() {
@@ -259,7 +258,7 @@ export default function CountryClubGallery() {
     if (!account) return;
     try {
       const res = await fetch(
-        `https://eth-mainnet.g.alchemy.com/nft/v3/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}/getNFTsForOwner?owner=${account}&contractAddresses[]=${collectionAddress}&pageSize=100`
+        `/api/alchemy-nfts?owner=${account}&contractAddresses[]=${collectionAddress}&pageSize=100`
       );
       const data = await res.json();
       const nfts = (data.ownedNfts || []).map((nft: any) => ({

@@ -34,9 +34,8 @@ const NAMEWRAPPER_ABI = [
 type SubdomainState = 'NONE' | 'CLAIMED_NO_RESOLVER' | 'RESOLVER_SET_NO_ADDR' | 'FULLY_ACTIVE';
 
 function getReadProvider() {
-  return new JsonRpcProvider(
-    `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
-  );
+  const url = typeof window !== 'undefined' ? `${window.location.origin}/api/rpc` : '/api/rpc';
+  return new JsonRpcProvider(url);
 }
 
 function validateEnsLabel(label: string): { valid: boolean; error?: string } {

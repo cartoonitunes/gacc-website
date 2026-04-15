@@ -14,9 +14,8 @@ const ERC20_ABI = [
 ];
 
 function getReadProvider() {
-  return new JsonRpcProvider(
-    `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
-  );
+  const url = typeof window !== 'undefined' ? `${window.location.origin}/api/rpc` : '/api/rpc';
+  return new JsonRpcProvider(url);
 }
 
 function formatNumber(num: string | number | null, decimals = 2): string {
