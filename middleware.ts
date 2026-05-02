@@ -3,8 +3,13 @@ import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
   const host = request.headers.get('host') || '';
-  
-  // Redirect www to bare domain for consistency
+
+  // Skip the www->bare redirect for API routes so POST bodies aren't dropped
+  // when the client follows the 301.
+  if (request.nextUrl.pathname.startsWith('/api/')) {
+    return NextResponse.next();
+  }
+
   if (host.startsWith('www.')) {
     const url = request.nextUrl.clone();
     url.host = host.replace('www.', '');
