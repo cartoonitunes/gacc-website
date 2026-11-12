@@ -63,9 +63,13 @@ export function entryWeightGain(buyVolume: bigint, sellVolume: bigint, ethSide: 
   return after - before;
 }
 
-/** sqrt(wei) weights are 1e9 per sqrt(ETH); display them as "entries" where 1 ETH bought = 1 entry. */
-export function weightToEntries(weight: bigint): number {
-  return Number(weight) / 1e9;
+// Tickets are a display scale over the contract's sqrt(wei) weights: sqrt(ETH volume) x 16, the same
+// convention as the Unicorn Meat Cauldron, so 1 ETH bought = 16 tickets and 0.05 ETH = about 3.6.
+// Odds are always computed from the raw weights, never from rounded tickets.
+export const TICKETS_PER_SQRT_ETH = 16;
+
+export function weightToTickets(weight: bigint): number {
+  return (Number(weight) / 1e9) * TICKETS_PER_SQRT_ETH;
 }
 
 export interface BuyBreakdown {

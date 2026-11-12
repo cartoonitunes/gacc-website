@@ -3,8 +3,8 @@
 import { ReactNode } from 'react';
 import { useWallet } from '@/contexts/WalletContext';
 import { GSWAP_CONFIG } from '@/lib/gswap/config';
-import { HOLDER_BONUS_FLOOR, holderMultiplierBps, MAX_HOLDER_MULTIPLIER_BPS, nextMultiplierStep, weightToEntries } from '@/lib/gswap/math';
-import { fmtBpsPct, fmtEntries, fmtEth, fmtMultiplier, fmtToken, shortAddr } from '@/lib/gswap/format';
+import { HOLDER_BONUS_FLOOR, holderMultiplierBps, MAX_HOLDER_MULTIPLIER_BPS, nextMultiplierStep, weightToTickets } from '@/lib/gswap/math';
+import { fmtBpsPct, fmtTickets, fmtEth, fmtMultiplier, fmtToken, shortAddr } from '@/lib/gswap/format';
 import type { useGSwapData } from './useGSwapData';
 import { SectionHeading, Skeleton } from './ui';
 import { WalletButton } from './GSwapNav';
@@ -46,9 +46,9 @@ export function Hero({ data, children }: { data: Data; children: ReactNode }) {
           Win the pot.
         </p>
         <p className="mt-5 max-w-xl text-[15px] sm:text-base text-gs-muted leading-relaxed">
-          Every swap through GSwap sends a small fee into a shared ETH prize pot and earns you raffle entries. When the pot fills, one
+          Every swap through GSwap sends a small fee into a shared ETH prize pot and earns you raffle tickets. When the pot fills, one
           swapper is drawn and wins the ETH plus any bonus tokens and NFTs in the round, paid automatically right inside the swap that
-          tipped it over. Hold more GRANDPA and your entries count up to twice as much.
+          tipped it over. Hold more GRANDPA and your tickets count up to twice as much.
         </p>
 
         <div className="mt-7 flex flex-wrap gap-2.5">
@@ -91,7 +91,7 @@ export function RoundPanel({ data }: { data: Data }) {
     return (
       <section className="mx-auto max-w-6xl px-4 py-12">
         <SectionHeading id="round" eyebrow="The prize" title="Current round" />
-        <PreLaunch>The prize, round and entries show up here as soon as GSwap is deployed.</PreLaunch>
+        <PreLaunch>The prize, round and tickets show up here as soon as GSwap is deployed.</PreLaunch>
       </section>
     );
   }
@@ -165,7 +165,7 @@ export function RoundPanel({ data }: { data: Data }) {
 
         <div className="mt-7 grid grid-cols-2 md:grid-cols-4 gap-3">
           <Stat label="Players" value={protocol ? protocol.participants : <Skeleton />} sub="this round" />
-          <Stat label="Entries" value={protocol ? fmtEntries(weightToEntries(protocol.totalWeight)) : <Skeleton />} sub="before holder bonus" />
+          <Stat label="Tickets" value={protocol ? fmtTickets(weightToTickets(protocol.totalWeight)) : <Skeleton />} sub="before holder boosts" />
           <Stat label="Rounds drawn" value={protocol ? protocol.completedRounds : <Skeleton />} />
           {/* totalLifetimeVolume() sums amountIn across buys (ETH) and sells (GRANDPA), so it is not shown as a volume. */}
           <Stat label="Swappers" value={protocol ? protocol.uniqueSwappers : <Skeleton />} sub="all time" />
@@ -201,14 +201,14 @@ export function YourStats({ data }: { data: Data }) {
       <SectionHeading eyebrow="Your card" title="Your stats" />
       {!isConnected ? (
         <div className="gswap-card rounded-3xl p-8 flex flex-col sm:flex-row items-center justify-between gap-5">
-          <p className="text-gs-muted text-center sm:text-left">Connect your wallet to see your entries, odds, holder bonus and wins.</p>
+          <p className="text-gs-muted text-center sm:text-left">Connect your wallet to see your tickets, odds, holder boost and wins.</p>
           <WalletButton />
         </div>
       ) : (
         <StatsBody data={data} />
       )}
       {isConnected && !live && (
-        <p className="mt-3 text-xs text-gs-muted">Entries, odds and wins start counting when GSwap launches. Your holder bonus is live now.</p>
+        <p className="mt-3 text-xs text-gs-muted">Tickets, odds and wins start counting when GSwap launches. Your holder boost is live now.</p>
       )}
     </section>
   );
@@ -229,7 +229,7 @@ function StatsBody({ data }: { data: Data }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-4">
       <div className="gswap-card rounded-3xl p-5 sm:p-6 grid grid-cols-2 gap-3 content-start">
-        <Stat label="Your entries" value={user ? (live ? fmtEntries(weightToEntries(user.entryWeight)) : '0') : <Skeleton />} sub="this round" />
+        <Stat label="Your tickets" value={user ? (live ? fmtTickets(weightToTickets(user.entryWeight)) : '0') : <Skeleton />} sub="this round" />
         <Stat label="Est. odds" value={odds === null ? (user ? '0%' : <Skeleton />) : `${odds < 0.01 ? '<0.01' : odds.toFixed(2)}%`} sub="with your holder bonus" />
         <Stat
           label="Wins"
@@ -258,12 +258,12 @@ function StatsBody({ data }: { data: Data }) {
           {!user
             ? ' '
             : mult >= MAX_HOLDER_MULTIPLIER_BPS
-              ? 'Maxed out. Every entry you hold counts double at the draw.'
+              ? 'Maxed out. Every ticket you hold counts double at the draw.'
               : next
                 ? `Hold ${fmtToken(next.balance - user.grandpaBalance, { compact: true })} more GRANDPA to reach ${fmtMultiplier(next.bps)}.`
                 : null}
         </p>
-        <p className="mt-2 text-xs text-gs-muted">Read from your live balance at the moment of the draw, so it applies to all your entries.</p>
+        <p className="mt-2 text-xs text-gs-muted">Read from your live balance at the moment of the draw, so it applies to all your tickets.</p>
       </div>
     </div>
   );
@@ -352,13 +352,13 @@ const STEPS = [
   },
   {
     n: '02',
-    title: 'Earn entries',
-    body: 'Entries grow with the square root of your ETH volume this round, so every swapper has a real shot. Buys earn full entries and sells earn half.',
+    title: 'Earn tickets',
+    body: 'Every swap earns raffle tickets. They grow with the square root of your ETH volume, so every swapper has a real shot. Buys earn full tickets and sells earn half.',
   },
   {
     n: '03',
     title: 'Hold for a bonus',
-    body: 'Holding 10K GRANDPA or more multiplies all your entries, rising to a 2x cap. It is read from your live balance at the draw.',
+    body: 'Holding 10K GRANDPA or more boosts all your tickets, rising to a 2x cap. It is read from your live balance at the draw.',
   },
   {
     n: '04',
@@ -398,14 +398,14 @@ export function HowItWorks({ data }: { data: Data }) {
           </p>
           <dl className="mt-4 text-sm divide-y divide-gs-line">
             <div className="flex justify-between py-2"><dt className="text-gs-muted">Country Club contribution, buys</dt><dd className="font-bold">{tax.enabled ? fmtBpsPct(tax.bps) : 'Paused'}</dd></div>
-            <div className="flex justify-between py-2"><dt className="text-gs-muted">GSwap fee (to the prize pot)</dt><dd className="font-bold">{fee} of the ETH side</dd></div>
+            <div className="flex justify-between py-2"><dt className="text-gs-muted">To the prize pot, every swap</dt><dd className="font-bold">{fee} of the ETH side</dd></div>
           </dl>
         </div>
 
         <div className="gswap-card rounded-3xl p-5 sm:p-6">
           <h3 className="text-lg font-extrabold">Holder bonus levels</h3>
           <p className="mt-2 text-sm text-gs-muted leading-relaxed">
-            Below {fmtToken(HOLDER_BONUS_FLOOR, { compact: true })} GRANDPA your entries count 1x. Above it the bonus climbs each time your
+            Below {fmtToken(HOLDER_BONUS_FLOOR, { compact: true })} GRANDPA your tickets count 1x. Above it the bonus climbs each time your
             balance doubles, up to the 2x cap.
           </p>
           <dl className="mt-4 text-sm divide-y divide-gs-line">

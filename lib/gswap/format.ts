@@ -27,10 +27,10 @@ export function fmtMultiplier(bps: bigint | number): string {
   return `${(Number(bps) / 10_000).toFixed(2)}x`;
 }
 
-export function fmtEntries(n: number): string {
-  if (n === 0) return '0';
-  if (n < 0.001) return '<0.001';
-  return new Intl.NumberFormat('en-US', { maximumFractionDigits: n >= 100 ? 1 : 3 }).format(n);
+/** Whole tickets; anything above zero shows at least 1 so a real (if tiny) entry never reads as nothing. */
+export function fmtTickets(n: number): string {
+  if (n <= 0) return '0';
+  return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(Math.max(1, Math.round(n)));
 }
 
 export function shortAddr(a: string): string {

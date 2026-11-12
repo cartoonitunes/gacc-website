@@ -5,6 +5,7 @@ import { BrowserProvider, Contract, Interface, TransactionReceipt, id as topicId
 import { GSWAP_ABI } from '@/lib/gswap/abi';
 import { GSWAP_CONFIG, GRANDPA_TOKEN_ABI } from '@/lib/gswap/config';
 import { describeTxError } from '@/lib/gswap/errors';
+import { weightToTickets } from '@/lib/gswap/math';
 import type { Quote } from './useQuote';
 
 export type TxPhase =
@@ -24,15 +25,17 @@ export interface SwapResult {
   // (e.g. a wallet that rejects ETH or NFTs) stays in the contract for the winner to claim().
   wonEthPaid: boolean;
   wonBundlePaid: boolean;
+  // Tickets this swap added, from EntryRegistered.newWeight minus the user's weight before the swap.
+  ticketsEarned: number | null;
 }
 
 const gswapIface = new Interface(GSWAP_ABI as any);
 const TRANSFER_TOPIC = topicId('Transfer(address,address,uint256)');
 
-function parseReceipt(rcpt: TransactionReceipt, account: string, direction: 'buy' | 'sell'): SwapResult {
+function parseReceipt(rcpt: TransactionReceipt, account: string, direction: 'buy' | 'sell', weightBefore: bigint): SwapResult {
   const me = account.toLowerCase();
   const gswapAddr = GSWAP_CONFIG.gswap!.toLowerCase();
-  const res: SwapResult = { direction, received: null, fee: null, drawnRound: null, wonPrize: null, wonEthPaid: true, wonBundlePaid: true };
+  const res: SwapResult = { direction, received: null, fee: null, drawnRound: null, wonPrize: null, wonEthPaid: true, wonBundlePaid: true, ticketsEarned: null };
   let ethVolume: bigint | null = null;
   let tokenIn = 0n;
 
@@ -52,7 +55,11 @@ function parseReceipt(rcpt: TransactionReceipt, account: string, direction: 'buy
     }
     if (!parsed) continue;
     if (parsed.name === 'FeeCollected' && parsed.args.swapper.toLowerCase() === me) res.fee = parsed.args.feeAmount;
-    if (parsed.name === 'EntryRegistered' && parsed.args.swapper.toLowerCase() === me) ethVolume = parsed.args.ethVolume;
+    if (parsed.name === 'EntryRegistered' && parsed.args.swapper.toLowerCase() === me) {
+      ethVolume = parsed.args.ethVolume;
+      const newWeight: bigint = parsed.args.newWeight;
+      res.ticketsEarned = newWeight > weightBefore ? weightToTickets(newWeight - weightBefore) : 0;
+    }
     if (parsed.name === 'WinnerDrawn') {
       res.drawnRound = Number(parsed.args.roundId);
     }
@@ -75,7 +82,7 @@ export function useSwapTx(onSettled: () => void) {
   const reset = useCallback(() => setPhase({ kind: 'idle' }), []);
 
   const execute = useCallback(
-    async ({ account, quote, allowance }: { account: string; quote: Quote; allowance: bigint }) => {
+    async ({ account, quote, allowance, weightBefore }: { account: string; quote: Quote; allowance: bigint; weightBefore: bigint }) => {
       const eth = (window as any).ethereum;
       if (!eth || !GSWAP_CONFIG.gswap) return;
       const browser = new BrowserProvider(eth);
@@ -129,7 +136,7 @@ export function useSwapTx(onSettled: () => void) {
         setPhase({ kind: 'pending', step: 'swap', hash: tx.hash });
         const rcpt: TransactionReceipt | null = await tx.wait();
         if (!rcpt || rcpt.status !== 1) throw new Error('The swap transaction failed onchain.');
-        setPhase({ kind: 'success', hash: tx.hash, result: parseReceipt(rcpt, account, quote.direction) });
+        setPhase({ kind: 'success', hash: tx.hash, result: parseReceipt(rcpt, account, quote.direction, weightBefore) });
       } catch (err: any) {
         console.error('GSwap swap failed', err);
         setPhase({ kind: 'error', message: describeTxError(err), hash });

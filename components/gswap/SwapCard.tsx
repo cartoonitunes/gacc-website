@@ -4,8 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { formatUnits } from 'ethers';
 import { useWallet } from '@/contexts/WalletContext';
 import { GSWAP_CONFIG } from '@/lib/gswap/config';
-import { entryWeightGain, holderMultiplierBps, sanitizeAmountInput, weightToEntries } from '@/lib/gswap/math';
-import { fmtBpsPct, fmtEntries, fmtEth, fmtMultiplier, fmtToken } from '@/lib/gswap/format';
+import { BPS, entryWeightGain, holderMultiplierBps, sanitizeAmountInput, weightToTickets } from '@/lib/gswap/math';
+import { fmtBpsPct, fmtEth, fmtMultiplier, fmtTickets, fmtToken } from '@/lib/gswap/format';
 import { useQuote, type Direction } from './useQuote';
 import { useSwapTx } from './useSwapTx';
 import type { useGSwapData } from './useGSwapData';
@@ -13,6 +13,8 @@ import { Notice, Row, Skeleton, TokenPill } from './ui';
 import { TxStatus } from './TxStatus';
 import { useAutoSlippage } from './useAutoSlippage';
 import { InfoTip } from './InfoTip';
+import { TicketReward } from './TicketReward';
+import { extrasChipText } from './Prizes';
 
 type Data = ReturnType<typeof useGSwapData>;
 
@@ -36,7 +38,7 @@ export function SwapCard({ data }: { data: Data }) {
   const [manualBps, setManualBps] = useState<number | null>(null);
   const [customSlippage, setCustomSlippage] = useState('');
   const [showSettings, setShowSettings] = useState(false);
-  const [showDetails, setShowDetails] = useState(true);
+  const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => {
     const saved = Number(window.localStorage.getItem(SLIPPAGE_KEY));
@@ -80,7 +82,8 @@ export function SwapCard({ data }: { data: Data }) {
     if (phase.kind !== 'idle' && !busy) reset();
   };
 
-  // Raffle preview: the weight this swap adds and the multiplier the draw would apply afterwards.
+  // Ticket preview: the weight this swap adds, the holder multiplier the draw would apply afterwards, and
+  // the resulting chance at this round's prize.
   const preview = useMemo(() => {
     if (!quote) return null;
     const ethSide = quote.direction === 'buy' ? quote.amountIn : quote.grossOut;
@@ -89,8 +92,22 @@ export function SwapCard({ data }: { data: Data }) {
     const balanceAfter = quote.direction === 'buy' ? balanceNow + quote.received : balanceNow > quote.amountIn ? balanceNow - quote.amountIn : 0n;
     const multNow = user?.multiplierBps ?? holderMultiplierBps(balanceNow);
     const multAfter = holderMultiplierBps(balanceAfter);
-    return { entries: weightToEntries(gain), multNow, multAfter };
-  }, [quote, user]);
+
+    let oddsPct: number | null = null;
+    let prizeLabel: string | null = null;
+    if (protocol) {
+      // Other players' boosts are unknown without reading every balance, so they count at 1x here.
+      const mine = user?.entryWeight ?? 0n;
+      const myEff = ((mine + gain) * multAfter) / BPS;
+      const others = protocol.totalWeight - mine;
+      const denom = others + myEff;
+      oddsPct = denom > 0n ? (Number(myEff) / Number(denom)) * 100 : null;
+      const ethPrize = protocol.pot + protocol.boost;
+      const extras = extrasChipText(protocol.queued);
+      prizeLabel = ethPrize > 0n || extras ? `${fmtEth(ethPrize, 4)}${extras ? ` ${extras}` : ''}` : null;
+    }
+    return { tickets: weightToTickets(gain), multNow, multAfter, oddsPct, prizeLabel };
+  }, [quote, user, protocol]);
 
   const slippageWarning =
     manualBps !== null && manualBps < auto.bps
@@ -114,8 +131,11 @@ export function SwapCard({ data }: { data: Data }) {
   else if (quoting || !quote || !user) button = { label: 'Fetching best price...', disabled: true };
   else
     button = {
-      label: needsApproval ? 'Approve and sell GRANDPA' : isBuy ? 'Buy GRANDPA' : 'Sell GRANDPA',
-      onClick: () => execute({ account: account!, quote, allowance: user.allowance }),
+      label:
+        preview && preview.tickets > 0
+          ? `${needsApproval ? 'Approve, sell' : isBuy ? 'Buy GRANDPA' : 'Sell'} & earn ${fmtTickets(preview.tickets)} ticket${fmtTickets(preview.tickets) === '1' ? '' : 's'}`
+          : needsApproval ? 'Approve and sell GRANDPA' : isBuy ? 'Buy GRANDPA' : 'Sell GRANDPA',
+      onClick: () => execute({ account: account!, quote, allowance: user.allowance, weightBefore: user.entryWeight }),
       disabled: false,
     };
 
@@ -287,76 +307,60 @@ export function SwapCard({ data }: { data: Data }) {
         </div>
       </div>
 
-      {/* Raffle preview */}
-      {live && preview && preview.entries > 0 && (
-        <div className="mt-3 flex items-center justify-between gap-3 rounded-2xl bg-gradient-to-r from-gs-ochre/15 to-transparent ring-1 ring-gs-ochre/30 px-4 py-3">
-          <div className="flex items-center gap-2.5">
-            <span className="text-xl" aria-hidden="true">🎟️</span>
-            <div>
-              <p className="text-sm font-extrabold">+{fmtEntries(preview.entries)} raffle entries</p>
-              <p className="text-xs text-gs-muted">{isBuy ? 'Buys earn full entries' : 'Sells earn half entries'}</p>
-            </div>
-          </div>
-          <div className="text-right">
-            <p className="text-sm font-extrabold text-gs-glint">{fmtMultiplier(preview.multAfter)}</p>
-            <p className="text-xs text-gs-muted">holder bonus</p>
-          </div>
-        </div>
+      {/* The reward: tickets this swap earns */}
+      {preview && (
+        <TicketReward
+          tickets={preview.tickets}
+          isBuy={isBuy}
+          multiplierBps={preview.multAfter}
+          oddsPct={preview.oddsPct}
+          prizeLabel={preview.prizeLabel}
+          live={live}
+        />
       )}
       {live && preview && !isBuy && preview.multAfter < preview.multNow && (
         <div className="mt-2">
           <Notice tone="warn">
-            Selling this much lowers your holder bonus from {fmtMultiplier(preview.multNow)} to {fmtMultiplier(preview.multAfter)} for every entry you hold.
+            Selling this much lowers your holder boost from {fmtMultiplier(preview.multNow)} to {fmtMultiplier(preview.multAfter)} on every ticket you hold.
           </Notice>
         </div>
       )}
 
-      {/* Details */}
+      {/* Fine print, collapsed by default */}
       {quote && (
-        <div className="mt-3 rounded-2xl ring-1 ring-gs-line px-4 py-2">
-          <button onClick={() => setShowDetails((s) => !s)} aria-expanded={showDetails} className="w-full flex items-center justify-between py-1.5 text-[13px]">
-            <span className="text-gs-muted">
-              {quote.direction === 'buy'
-                ? `1 ETH = ${fmtToken((quote.received * 10n ** 18n) / quote.amountIn, { compact: true })} GRANDPA received`
-                : `1M GRANDPA = ${fmtEth((quote.received * 10n ** 24n) / quote.amountIn, 5)} after fees`}
+        <div className="mt-3 rounded-2xl ring-1 ring-gs-line px-4 py-1.5">
+          <button onClick={() => setShowDetails((v) => !v)} aria-expanded={showDetails} className="w-full flex items-center justify-between gap-3 py-1.5 text-[13px]">
+            <span className="font-semibold text-gs-muted">Swap details</span>
+            <span className="flex items-center gap-2 text-gs-muted">
+              <span className="truncate">
+                {quote.direction === 'buy'
+                  ? `1 ETH = ${fmtToken((quote.received * 10n ** 18n) / quote.amountIn, { compact: true })} GRANDPA`
+                  : `1M GRANDPA = ${fmtEth((quote.received * 10n ** 24n) / quote.amountIn, 5)}`}
+              </span>
+              <svg viewBox="0 0 20 20" className={`w-4 h-4 shrink-0 transition-transform ${showDetails ? 'rotate-180' : ''}`} fill="currentColor" aria-hidden="true">
+                <path d="M5.3 7.3a1 1 0 0 1 1.4 0L10 10.6l3.3-3.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 0-1.4z" />
+              </svg>
             </span>
-            <svg viewBox="0 0 20 20" className={`w-4 h-4 text-gs-muted transition-transform ${showDetails ? 'rotate-180' : ''}`} fill="currentColor" aria-hidden="true">
-              <path d="M5.3 7.3a1 1 0 0 1 1.4 0L10 10.6l3.3-3.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 0-1.4z" />
-            </svg>
           </button>
           {showDetails && (
             <dl className="border-t border-gs-line pt-1.5 pb-1">
-              {quote.direction === 'buy' ? (
-                <>
-                  <Row label={`GSwap fee (${fmtBpsPct(feeBps)}, to the pot)`} value={fmtEth(quote.fee, 6)} />
-                  <Row label="Total bought" value={`${fmtToken(quote.poolOut)} GRANDPA`} />
-                  {taxBps > 0n && (
-                    <Row
-                      label={`To the Country Club (${fmtBpsPct(taxBps)})`}
-                      value={`${fmtToken(quote.tax)} GRANDPA`}
-                      hint="Used to permanently acquire and lock Grandpa Ape NFTs in the Country Club."
-                    />
-                  )}
-                  <Row label="You receive" value={`${fmtToken(quote.received)} GRANDPA`} emphasis />
-                  <Row
-                    label={`Minimum received (${fmtBpsPct(slippageBps)} slippage)`}
-                    value={`${fmtToken(quote.minReceived)} GRANDPA`}
-                    hint="GSwap reverts the swap if less than this reaches your wallet."
-                  />
-                </>
-              ) : (
-                <>
-                  <Row label="Pool output" value={fmtEth(quote.grossOut, 6)} />
-                  <Row label={`GSwap fee (${fmtBpsPct(feeBps)}, to the pot)`} value={`-${fmtEth(quote.fee, 6)}`} />
-                  <Row label="You receive" value={fmtEth(quote.received, 6)} emphasis />
-                  <Row label={`Minimum received (${fmtBpsPct(slippageBps)} slippage)`} value={fmtEth(quote.minReceived, 6)} />
-                </>
-              )}
+              <Row
+                label={`Minimum received (${fmtBpsPct(slippageBps)} slippage)`}
+                value={quote.direction === 'buy' ? `${fmtToken(quote.minReceived)} GRANDPA` : fmtEth(quote.minReceived, 6)}
+                hint="The swap is cancelled if less than this would reach your wallet."
+              />
               <Row
                 label="Price impact"
                 value={<span className={impactTone}>{impact === null ? '-' : impact < 0.01 ? '<0.01%' : `${impact.toFixed(2)}%`}</span>}
               />
-              <Row label="Route" value="Uniswap V3" />
+              <Row label={`To the prize pot (${fmtBpsPct(feeBps)})`} value={fmtEth(quote.fee, 6)} />
+              {quote.direction === 'buy' && taxBps > 0n && (
+                <Row
+                  label={`To the Country Club (${fmtBpsPct(taxBps)})`}
+                  value={`${fmtToken(quote.tax)} GRANDPA`}
+                  hint="Used to permanently acquire and lock Grandpa Ape NFTs in the Country Club."
+                />
+              )}
             </dl>
           )}
         </div>

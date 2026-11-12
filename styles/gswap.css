@@ -131,9 +131,53 @@
   animation: gswap-pulse-dot 2s ease-in-out infinite;
 }
 
+/* Ticket reward: the centerpiece of the swap card. */
+.gswap-ticket-reward {
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgba(214, 171, 103, 0.24), transparent 55%),
+    linear-gradient(135deg, rgba(198, 138, 75, 0.16), rgba(26, 21, 15, 0.6));
+  box-shadow: 0 0 0 1px rgba(214, 171, 103, 0.08) inset, 0 12px 36px -18px rgba(214, 171, 103, 0.55);
+}
+/* A slow gold sheen across the card. */
+.gswap-ticket-reward::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgba(249, 237, 205, 0.1) 50%, transparent 65%);
+  background-size: 250% 100%;
+  animation: gswap-sheen 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes gswap-sheen {
+  0% { background-position: 150% 0; }
+  60%, 100% { background-position: -100% 0; }
+}
+/* Ticket stub with notched sides. */
+.gswap-ticket-stub {
+  background: linear-gradient(160deg, #2c2218, #1a150f);
+  box-shadow: 0 0 0 1px rgba(214, 171, 103, 0.45) inset, 0 6px 18px -8px rgba(214, 171, 103, 0.6);
+  -webkit-mask: radial-gradient(circle 6px at 0 50%, transparent 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle 6px at 100% 50%, transparent 98%, #000) right / 51% 100% no-repeat;
+  mask: radial-gradient(circle 6px at 0 50%, transparent 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle 6px at 100% 50%, transparent 98%, #000) right / 51% 100% no-repeat;
+  transform: rotate(-6deg);
+}
+@keyframes gswap-pop {
+  0% { transform: scale(0.82); opacity: 0.4; }
+  55% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.gswap-pop {
+  display: inline-block;
+  transform-origin: left bottom;
+  animation: gswap-pop 0.42s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .gswap-skeleton,
-  .gswap-live-dot {
+  .gswap-live-dot,
+  .gswap-pop,
+  .gswap-ticket-reward::after {
     animation: none;
   }
   .gswap-progress {

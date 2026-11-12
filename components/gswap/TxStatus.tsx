@@ -1,7 +1,7 @@
 'use client';
 
 import { GSWAP_CONFIG } from '@/lib/gswap/config';
-import { fmtEth, fmtToken } from '@/lib/gswap/format';
+import { fmtEth, fmtTickets, fmtToken } from '@/lib/gswap/format';
 import type { TxPhase } from './useSwapTx';
 
 function TxLink({ hash }: { hash: string }) {
@@ -76,16 +76,29 @@ export function TxStatus({ phase, onDismiss, bonusCount = 0 }: { phase: TxPhase;
   }
 
   const { result } = phase;
+  const tickets = result.ticketsEarned !== null && result.ticketsEarned > 0 ? fmtTickets(result.ticketsEarned) : null;
   return (
-    <div className="mt-3 rounded-2xl bg-gs-good/10 ring-1 ring-gs-good/40 p-4 text-sm" role="status" aria-live="polite">
-      <div className="flex items-start justify-between gap-3">
-        <p className="font-extrabold text-[#c4e3ab]">Swap confirmed</p>
+    <div
+      className={`mt-3 rounded-2xl p-4 text-sm ring-1 ${tickets ? 'gswap-ticket-reward ring-gs-glint/50' : 'bg-gs-good/10 ring-gs-good/40'}`}
+      role="status"
+      aria-live="polite"
+    >
+      <div className="relative flex items-start justify-between gap-3">
+        {tickets ? (
+          <p className="flex items-baseline gap-2 leading-none">
+            <span className="text-2xl" aria-hidden="true">🎟️</span>
+            <span className="gswap-pop gswap-title gswap-gold-text text-4xl tabular-nums pr-1">+{tickets}</span>
+            <span className="text-base font-extrabold italic">ticket{tickets === '1' ? '' : 's'} earned!</span>
+          </p>
+        ) : (
+          <p className="font-extrabold text-[#c4e3ab]">Swap confirmed</p>
+        )}
         <button onClick={onDismiss} className="text-xs text-gs-muted hover:text-gacc-cream" aria-label="Dismiss">
           Dismiss
         </button>
       </div>
       {result.received !== null && (
-        <p className="mt-1">
+        <p className="relative mt-2">
           You received{' '}
           <span className="font-extrabold">
             {result.direction === 'buy' ? `${fmtToken(result.received)} GRANDPA` : fmtEth(result.received, 6)}
