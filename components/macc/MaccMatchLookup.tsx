@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import { MACC_MYSTERY_IMAGE, toIpfsGateway } from '@/lib/ipfs';
 
-const MYSTERY_IMAGE = 'https://ipfs.io/ipfs/Qme4RRP6Q5iWmjnwoqiY2xRdx9fc1cPdht9CA9JYQg8JEH';
+const MYSTERY_IMAGE = MACC_MYSTERY_IMAGE;
 const MAYC_CONTRACT = '0x60E4d786628Fea6478F785A6d7e704777c86a7c6';
 
 type MatchResult = {
@@ -27,7 +28,7 @@ export default function MaccMatchLookup() {
     try {
       const res = await fetch(`/api/metadata/${id}`);
       const data = await res.json();
-      return data.image_url || MYSTERY_IMAGE;
+      return toIpfsGateway(data.image_url) || MYSTERY_IMAGE;
     } catch {
       return MYSTERY_IMAGE;
     }
@@ -41,7 +42,7 @@ export default function MaccMatchLookup() {
         body: JSON.stringify({ contractAddress: MAYC_CONTRACT, tokenId: id }),
       });
       const data = await res.json();
-      return data.metadata?.image || MYSTERY_IMAGE;
+      return toIpfsGateway(data.metadata?.image) || MYSTERY_IMAGE;
     } catch {
       return MYSTERY_IMAGE;
     }

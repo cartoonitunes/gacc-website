@@ -6,9 +6,10 @@ import { useWallet } from '@/contexts/WalletContext';
 import { getMACCContract } from '@/lib/blockchain/contracts';
 import { Navbar } from '@/components/layout/Navbar';
 import MaccMatchLookup from '@/components/macc/MaccMatchLookup';
+import { MACC_MYSTERY_IMAGE, toIpfsGateway } from '@/lib/ipfs';
 
 const LEGENDARIES = ['0','1','2','3','4','5','6','7','8','9','156','576','1713','2976','3023','3622','3767','3867'];
-const MYSTERY_IMAGE = 'https://ipfs.io/ipfs/Qme4RRP6Q5iWmjnwoqiY2xRdx9fc1cPdht9CA9JYQg8JEH';
+const MYSTERY_IMAGE = MACC_MYSTERY_IMAGE;
 const MACC_ADDRESS = process.env.NEXT_PUBLIC_MACC_ADDRESS!;
 
 type SaleState = {
@@ -128,7 +129,7 @@ export default function MACCPage() {
       const rankData = await rankRes.json();
       const metaData = await metaRes.json();
       setRankToShow(rankData.rank);
-      setRankImageUrl(metaData.image_url);
+      setRankImageUrl(toIpfsGateway(metaData.image_url) || '');
     } catch {
       setRankToShow('');
       setRankImageUrl('');

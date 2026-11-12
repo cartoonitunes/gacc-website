@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import { gaccImageUrl } from '@/lib/ipfs';
 
 const BAYC_CONTRACT = '0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D';
-const GACC_IMAGE_BASE = 'https://ipfs.io/ipfs/QmY6CdW5UGJPu76qm6SkBBiWPBcnH7sr4JMBcA9mjuaNSU/';
 const PLACEHOLDER = '/assets/images/Sneak_Peek_Preview.gif';
 
 const PROJECTS = [
@@ -94,7 +94,6 @@ export default function MatchLookup() {
 
   const gaccId = result ? (result.direction === 'from-gacc' ? result.sourceId : result.matchId) : null;
   const otherId = result ? (result.direction === 'from-gacc' ? result.matchId : result.sourceId) : null;
-  const gaccImageId = gaccId ? Number(gaccId) + 1 : null;
 
   let leftImg: string, leftLabel: string, rightImg: string, rightLabel: string;
   let centerNode: React.ReactNode;
@@ -102,7 +101,7 @@ export default function MatchLookup() {
   if (result && !loading) {
     leftImg = result.otherImageUrl || PLACEHOLDER;
     leftLabel = `${project.label} #${otherId}`;
-    rightImg = `${GACC_IMAGE_BASE}${gaccImageId}.png`;
+    rightImg = gaccImageUrl(gaccId!);
     rightLabel = `GACC #${gaccId}`;
     centerNode = (
       <>
@@ -114,7 +113,7 @@ export default function MatchLookup() {
     if (direction === 'from-gacc') {
       leftImg = PLACEHOLDER;
       leftLabel = 'No match';
-      rightImg = `${GACC_IMAGE_BASE}${Number(tokenId) + 1}.png`;
+      rightImg = gaccImageUrl(tokenId);
       rightLabel = `GACC #${tokenId}`;
     } else {
       leftImg = sourceImage || PLACEHOLDER;

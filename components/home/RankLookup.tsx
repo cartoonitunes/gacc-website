@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
+import { gaccImageUrl } from '@/lib/ipfs';
 
 export default function RankLookup() {
   const [apeSelection, setApeSelection] = useState<string | null>(null);
@@ -28,7 +29,6 @@ export default function RankLookup() {
   };
 
   const isValid = apeSelection && /^\d+$/.test(apeSelection) && Number(apeSelection) >= 0 && Number(apeSelection) < 5000;
-  const tokenId = apeSelection ? Number(apeSelection) + 1 : null;
 
   return (
     <section className="common-container px-4">
@@ -51,12 +51,12 @@ export default function RankLookup() {
           />
         </div>
         <div className="lg:w-4/12 lg:ml-auto my-auto">
-          {isValid && tokenId && rankToShow ? (
+          {isValid && rankToShow ? (
             <div className="imageItem">
               <img
                 className="w-full rounded-md"
-                src={`https://ipfs.io/ipfs/QmY6CdW5UGJPu76qm6SkBBiWPBcnH7sr4JMBcA9mjuaNSU/${tokenId}.png`}
-                alt={`GACC #${tokenId}`}
+                src={gaccImageUrl(apeSelection)}
+                alt={`GACC #${apeSelection}`}
                 loading="lazy"
               />
               <span className="caption mt-2">Rank #{rankToShow}</span>
