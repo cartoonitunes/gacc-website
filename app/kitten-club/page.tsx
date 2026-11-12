@@ -16,6 +16,7 @@ const NAV_LINKS = [
   { href: '/#roadmap', label: 'ROADMAP' },
   { href: '/#team', label: 'TEAM' },
   { href: '/grandpacoin', label: '$GRANDPA' },
+  { href: '/gswap', label: 'GSWAP' },
 ];
 
 const SOCIALS = [

@@ -4,6 +4,7 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import HeroSection from '@/components/home/HeroSection';
 import RankLookup from '@/components/home/RankLookup';
+import GSwapPromo from '@/components/home/GSwapPromo';
 import MatchLookup from '@/components/home/MatchLookup';
 import SubdomainManager from '@/components/home/SubdomainManager';
 import RoadmapSection from '@/components/home/RoadmapSection';
@@ -22,6 +23,8 @@ export default function HomePage() {
       </div>
 
       <RankLookup />
+
+      <GSwapPromo />
 
       <div className="common-container px-4">
         <hr className="gray-line mb-5" />

@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { href: '/macc', label: 'MACC' },
   { href: '/kitten-club', label: 'KITTENS' },
   { href: '/grandpacoin', label: '$GRANDPA' },
+  { href: '/gswap', label: 'GSWAP' },
 ];
 
 const SOCIALS = [

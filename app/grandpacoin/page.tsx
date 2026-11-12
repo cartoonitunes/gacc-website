@@ -8,6 +8,7 @@ import PriceDisplay, { GRANDPA_COIN_ADDRESS } from '@/components/grandpacoin/Pri
 import CountryClubGallery from '@/components/grandpacoin/CountryClubGallery';
 import { ConnectWallet } from '@/components/shared/ConnectWallet';
 import { Footer } from '@/components/layout/Footer';
+import { GSWAP_CONFIG } from '@/lib/gswap/config';
 
 const NAV_LINKS = [
   { href: '#about', label: 'ABOUT' },
@@ -15,6 +16,7 @@ const NAV_LINKS = [
   { href: '#chart', label: 'CHART' },
   { href: '#buy-grandpacoin', label: 'BUY' },
   { href: '#country-club', label: 'COUNTRY CLUB' },
+  { href: '/gswap', label: 'GSWAP' },
 ];
 
 const SOCIALS = [
@@ -128,7 +130,7 @@ export default function GrandpaCoinPage() {
     loading: true,
   });
 
-  const ethAmount = '0.05';
+  const gswapLive = !!GSWAP_CONFIG.gswap;
 
   return (
     <div className="home-page min-h-screen">
@@ -208,26 +210,57 @@ export default function GrandpaCoinPage() {
 
         {/* Buy */}
         <div id="buy-grandpacoin" className="mb-10">
-          <div className="bg-white p-4 flex flex-col lg:flex-row items-center gap-4 rounded">
-            <div className="lg:w-3/12">
-              <h3 className="buy-ape-title" style={{ color: 'black' }}>BUY GRANDPA COIN</h3>
+          <h2 className="common-title mb-4" style={{ color: 'black' }}>BUY GRANDPA COIN</h2>
+
+          <div className="bg-white p-4 md:p-5 rounded flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
+            <div className="flex items-start md:items-center gap-4 md:w-8/12">
+              <Image
+                src="/assets/images/gswap/grandpa-640.jpg"
+                alt=""
+                width={72}
+                height={72}
+                className="w-16 h-16 md:w-[72px] md:h-[72px] rounded-md shrink-0"
+                style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
+              />
+              <div>
+                <h3 className="buy-ape-title flex flex-wrap items-center gap-2" style={{ color: 'black' }}>
+                  BUY ON GSWAP
+                  <span
+                    className="not-italic text-[11px] font-bold tracking-wider px-2 py-0.5 rounded-full"
+                    style={{ backgroundColor: 'black', color: '#d6ab67' }}
+                  >
+                    {gswapLive ? 'WIN THE POT' : 'LAUNCHING SOON'}
+                  </span>
+                </h3>
+                <p style={{ color: 'black' }} className="text-sm mt-1">
+                  Buy through the same Uniswap pool and earn raffle tickets on every swap. A small cut of each swap
+                  fills the prize pot, and when it fills, one swapper wins the ETH plus any token and NFT prizes.
+                </p>
+              </div>
             </div>
-            <div className="lg:w-4/12 lg:ml-4">
-              <p style={{ color: 'black' }} className="text-sm">Swap ETH for $GRANDPA on Uniswap. Connect your wallet and complete the swap on Uniswap&apos;s secure interface.</p>
-            </div>
-            <div className="lg:w-2/12 lg:ml-auto">
-              <a
-                href={`https://app.uniswap.org/swap?chain=ethereum&exactField=input&exactAmount=${ethAmount}&inputCurrency=ETH&outputCurrency=${GRANDPA_COIN_ADDRESS}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ backgroundColor: '#83D8FC', color: 'black' }}
+            <div className="md:w-3/12 md:ml-auto">
+              <Link
+                href="/gswap"
+                style={{ backgroundColor: '#d6ab67', color: 'black' }}
                 className="font-bold py-2 px-6 rounded w-full inline-flex justify-center"
-                aria-label="Swap ETH for GRANDPA on Uniswap"
               >
-                SWAP ON UNISWAP
-              </a>
+                {gswapLive ? 'SWAP & WIN' : 'PREVIEW GSWAP'}
+              </Link>
             </div>
           </div>
+
+          <p style={{ color: 'black' }} className="text-sm mt-4 text-center md:text-left">
+            Or buy directly on{' '}
+            <a
+              href={`https://app.uniswap.org/swap?outputCurrency=${GRANDPA_COIN_ADDRESS}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-bold underline underline-offset-2 hover:opacity-70"
+            >
+              Uniswap
+            </a>
+            {' '}(the same pool GSwap routes through) for a plain swap with no raffle tickets.
+          </p>
         </div>
 
         <hr className="gray-line mb-10" />
