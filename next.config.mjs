@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // GSwap lives at /gswap; /swap serves the same page without a redirect.
+  async rewrites() {
+    return [{ source: '/swap', destination: '/gswap' }];
+  },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'ipfs.io' },

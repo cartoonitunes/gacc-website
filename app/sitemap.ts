@@ -17,6 +17,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/gswap`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    {
       url: `${baseUrl}/macc`,
       lastModified: new Date(),
       changeFrequency: 'weekly',

@@ -1,0 +1,142 @@
+/* GSwap page. Everything is scoped under .gswap so it cannot leak into the rest of the site. */
+
+.gswap {
+  background-color: #0f0c08;
+  color: #f9edcd;
+  min-height: 100vh;
+  /* Decorative elements bleed past the edges; clip (unlike hidden) keeps the sticky nav working. */
+  overflow-x: clip;
+  /* Country club argyle, drawn as two hairline diagonal grids in the bronze tone. */
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(198, 138, 75, 0.18), transparent 70%),
+    repeating-linear-gradient(45deg, rgba(151, 112, 57, 0.06) 0 1px, transparent 1px 56px),
+    repeating-linear-gradient(-45deg, rgba(151, 112, 57, 0.06) 0 1px, transparent 1px 56px);
+  background-attachment: scroll;
+}
+
+/* The site sets a dark grey background, padding and top margin on every <input>. Reset them here. */
+.gswap input {
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+/* Zero specificity so Tailwind text-* utilities (e.g. the red over-balance state) still win. */
+:where(.gswap) input {
+  color: #f9edcd;
+}
+.gswap input::placeholder {
+  color: rgba(249, 237, 205, 0.28);
+  font-size: inherit;
+  font-style: normal;
+}
+.gswap input[type='number']::-webkit-outer-spin-button,
+.gswap input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.gswap-title {
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+}
+
+.gswap-gold-text {
+  background: linear-gradient(100deg, #f9edcd 0%, #d6ab67 40%, #c47f34 75%, #d6ab67 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+.gswap-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #d6ab67;
+}
+
+.gswap-card {
+  background: linear-gradient(180deg, rgba(44, 34, 24, 0.92), rgba(26, 21, 15, 0.96));
+  border: 1px solid #3b2f21;
+  box-shadow:
+    0 1px 0 rgba(214, 171, 103, 0.12) inset,
+    0 24px 60px -24px rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+}
+
+.gswap-card-gilded {
+  position: relative;
+}
+.gswap-card-gilded::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(140deg, rgba(214, 171, 103, 0.7), rgba(59, 47, 33, 0.2) 40%, rgba(198, 138, 75, 0.5));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.gswap-btn-primary {
+  background: linear-gradient(180deg, #d6ab67, #c47f34);
+  color: #1a150f !important;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  box-shadow: 0 8px 24px -10px rgba(198, 138, 75, 0.7);
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+.gswap-btn-primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+.gswap-btn-primary:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.gswap-btn-primary:disabled {
+  background: #2c2218;
+  color: #a8977c !important;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.gswap-progress {
+  background: repeating-linear-gradient(
+    90deg,
+    #d6ab67 0 14px,
+    #c68a4b 14px 28px
+  );
+  transition: width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes gswap-shimmer {
+  from { background-position: -200% 0; }
+  to { background-position: 200% 0; }
+}
+.gswap-skeleton {
+  background: linear-gradient(90deg, #231b13 25%, #2c2218 50%, #231b13 75%);
+  background-size: 200% 100%;
+  animation: gswap-shimmer 1.6s linear infinite;
+  border-radius: 6px;
+}
+
+@keyframes gswap-pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(143, 191, 106, 0.6); }
+  50% { box-shadow: 0 0 0 6px rgba(143, 191, 106, 0); }
+}
+.gswap-live-dot {
+  animation: gswap-pulse-dot 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gswap-skeleton,
+  .gswap-live-dot {
+    animation: none;
+  }
+  .gswap-progress {
+    transition: none;
+  }
+}
