@@ -6,6 +6,7 @@ import { useGSwapData } from './useGSwapData';
 import { GSwapNav } from './GSwapNav';
 import { SwapCard } from './SwapCard';
 import { Hero, HowItWorks, PastWinners, RoundPanel, YourStats } from './Sections';
+import { AdminPanel } from './admin/AdminPanel';
 
 export default function GSwapApp() {
   const { account } = useWallet();
@@ -26,6 +27,7 @@ export default function GSwapApp() {
         <Hero data={data}>
           <SwapCard data={data} />
         </Hero>
+        <AdminPanel provider={data.provider} onChanged={data.refresh} />
         <div className="border-t border-gs-line/60" />
         <RoundPanel data={data} />
         <YourStats data={data} />

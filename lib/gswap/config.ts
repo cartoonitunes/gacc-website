@@ -18,6 +18,8 @@ export const GSWAP_CONFIG = {
   // Set NEXT_PUBLIC_GSWAP_ADDRESS once GSwap is deployed. Until then the page runs in preview mode:
   // live Uniswap quotes, but no raffle reads and no swaps.
   gswap: parseAddress(process.env.NEXT_PUBLIC_GSWAP_ADDRESS),
+  // Optional: the GSwap deployment block, so admin log scans (prize manager history) start there.
+  deployBlock: Number(process.env.NEXT_PUBLIC_GSWAP_DEPLOY_BLOCK) || 0,
 
   // GrandpaCoin: symbol GRANDPA, 18 decimals, BUY_TAX_BPS() = 600, taxEnabled() = true.
   token: '0x20BFd82E6AD6A39cf4bD1F803e662FC065cD3d5F',

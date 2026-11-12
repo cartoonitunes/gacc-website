@@ -1,7 +1,7 @@
 import { Interface } from 'ethers';
-import { GSWAP_ABI } from './abi';
+import { GSWAP_ADMIN_ABI } from './admin';
 
-const iface = new Interface(GSWAP_ABI as any);
+const iface = new Interface(GSWAP_ADMIN_ABI);
 
 const SLIPPAGE_MESSAGE =
   'The price moved past your slippage limit. Your quote already shows what reaches your wallet, so a small increase in slippage is usually enough.';
@@ -10,7 +10,7 @@ const REVERT_MESSAGES: Record<string, string> = {
   InsufficientOutput: SLIPPAGE_MESSAGE,
   IsPaused: 'GSwap is paused right now. Swaps will reopen once it is unpaused.',
   UnsupportedPair: 'GSwap only routes ETH and GRANDPA.',
-  InvalidParams: 'That swap amount is not valid. Enter an amount greater than zero.',
+  InvalidParams: 'That amount is not valid. Enter an amount greater than zero.',
   ETHTransferFailed: 'GSwap could not send ETH to your wallet. If you are using a smart contract wallet, try a regular wallet.',
   SafeERC20FailedOperation: 'The GRANDPA transfer failed. Check your balance and approval, then try again.',
   ReentrancyGuardReentrantCall: 'The transaction was blocked by a reentrancy guard. Please try again.',
@@ -18,6 +18,13 @@ const REVERT_MESSAGES: Record<string, string> = {
   RoundAlreadySettled: 'This prize has already been delivered.',
   NothingToClaim: 'There is nothing left to claim for this round.',
   RoundNotDrawn: 'This round has not been drawn yet.',
+  // Admin actions
+  NotOwner: 'Only the contract owner can do this.',
+  NotPrizeManager: 'Only the owner or a prize manager can add prizes.',
+  FeeTooHigh: 'That fee is above the 20% maximum.',
+  ThresholdTooLow: 'The pot threshold must be at least 0.01 ETH.',
+  ZeroAddress: 'The zero address is not allowed here.',
+  RoundInPast: 'That round has already been drawn. Pick the current round or a later one.',
 };
 
 // Uniswap V3 router reverts with string reasons.
@@ -35,7 +42,7 @@ function findRevertData(err: any): string | null {
   return null;
 }
 
-export function describeTxError(err: any, context: 'swap' | 'claim' = 'swap'): string {
+export function describeTxError(err: any, context: 'swap' | 'claim' | 'admin' = 'swap'): string {
   if (!err) return 'Something went wrong. Please try again.';
 
   if (err.code === 'ACTION_REJECTED' || err?.info?.error?.code === 4001 || err?.error?.code === 4001) {
@@ -68,6 +75,7 @@ export function describeTxError(err: any, context: 'swap' | 'claim' = 'swap'): s
   }
   if (err.code === 'CALL_EXCEPTION') {
     if (name) return `The transaction would fail onchain (${name}).`;
+    if (context === 'admin') return 'The transaction would fail onchain. Check that your wallet has permission for this action.';
     return context === 'claim'
       ? 'The claim would fail onchain. This usually means your wallet cannot accept one of the prizes (some smart and delegated wallets reject NFTs). Please contact the GACC team.'
       : 'The swap would fail onchain. Try a smaller amount or a higher slippage.';
