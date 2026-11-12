@@ -17,7 +17,8 @@ function TxLink({ hash }: { hash: string }) {
   );
 }
 
-export function TxStatus({ phase, onDismiss }: { phase: TxPhase; onDismiss: () => void }) {
+// bonusCount: token + NFT prizes bundled into the round this swap drew, once known.
+export function TxStatus({ phase, onDismiss, bonusCount = 0 }: { phase: TxPhase; onDismiss: () => void; bonusCount?: number }) {
   if (phase.kind === 'idle') return null;
 
   if (phase.kind === 'wallet' || phase.kind === 'pending') {
@@ -94,7 +95,13 @@ export function TxStatus({ phase, onDismiss }: { phase: TxPhase; onDismiss: () =
       )}
       {result.wonPrize !== null && (
         <p className="mt-2 rounded-xl bg-gs-glint/15 ring-1 ring-gs-glint/50 px-3 py-2 font-extrabold text-gs-glint">
-          🏆 Your swap drew round #{result.drawnRound} and you won {fmtEth(result.wonPrize, 4)}!
+          🏆 Your swap drew round #{result.drawnRound} and you won {fmtEth(result.wonPrize, 4)}
+          {bonusCount > 0 ? ` plus ${bonusCount} bonus prize${bonusCount === 1 ? '' : 's'}` : ''}!
+        </p>
+      )}
+      {result.wonPrize !== null && (!result.wonEthPaid || !result.wonBundlePaid) && (
+        <p className="mt-2 text-[#f3c98b]">
+          Part of your prize could not be sent to your wallet automatically and is waiting for you to claim it from the GSwap contract.
         </p>
       )}
       {result.wonPrize === null && result.drawnRound !== null && (

@@ -13,7 +13,11 @@ const REVERT_MESSAGES: Record<string, string> = {
   InvalidParams: 'That swap amount is not valid. Enter an amount greater than zero.',
   ETHTransferFailed: 'GSwap could not send ETH to your wallet. If you are using a smart contract wallet, try a regular wallet.',
   SafeERC20FailedOperation: 'The GRANDPA transfer failed. Check your balance and approval, then try again.',
-  ReentrancyGuardReentrantCall: 'The swap was blocked by a reentrancy guard. Please try again.',
+  ReentrancyGuardReentrantCall: 'The transaction was blocked by a reentrancy guard. Please try again.',
+  NotWinner: 'Only the winner of this round can claim its prize.',
+  RoundAlreadySettled: 'This prize has already been delivered.',
+  NothingToClaim: 'There is nothing left to claim for this round.',
+  RoundNotDrawn: 'This round has not been drawn yet.',
 };
 
 // Uniswap V3 router reverts with string reasons.
@@ -31,7 +35,7 @@ function findRevertData(err: any): string | null {
   return null;
 }
 
-export function describeTxError(err: any): string {
+export function describeTxError(err: any, context: 'swap' | 'claim' = 'swap'): string {
   if (!err) return 'Something went wrong. Please try again.';
 
   if (err.code === 'ACTION_REJECTED' || err?.info?.error?.code === 4001 || err?.error?.code === 4001) {
@@ -63,7 +67,10 @@ export function describeTxError(err: any): string {
     return 'Network trouble reaching Ethereum. Check your connection and try again.';
   }
   if (err.code === 'CALL_EXCEPTION') {
-    return name ? `The swap would fail onchain (${name}).` : 'The swap would fail onchain. Try a smaller amount or higher slippage.';
+    if (name) return `The transaction would fail onchain (${name}).`;
+    return context === 'claim'
+      ? 'The claim would fail onchain. This usually means your wallet cannot accept one of the prizes (some smart and delegated wallets reject NFTs). Please contact the GACC team.'
+      : 'The swap would fail onchain. Try a smaller amount or a higher slippage.';
   }
   return reason ? reason.slice(0, 180) : 'Something went wrong. Please try again.';
 }

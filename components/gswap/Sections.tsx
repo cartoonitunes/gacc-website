@@ -8,6 +8,8 @@ import { fmtBpsPct, fmtEntries, fmtEth, fmtMultiplier, fmtToken, shortAddr } fro
 import type { useGSwapData } from './useGSwapData';
 import { SectionHeading, Skeleton } from './ui';
 import { WalletButton } from './GSwapNav';
+import { extrasChipText, PrizeChips, PrizeShowcase } from './Prizes';
+import { ClaimButton } from './ClaimButton';
 
 type Data = ReturnType<typeof useGSwapData>;
 
@@ -45,8 +47,8 @@ export function Hero({ data, children }: { data: Data; children: ReactNode }) {
         </p>
         <p className="mt-5 max-w-xl text-[15px] sm:text-base text-gs-muted leading-relaxed">
           Every swap through GSwap sends a small fee into a shared ETH prize pot and earns you raffle entries. When the pot fills, one
-          swapper is drawn and paid automatically, right inside the swap that tipped it over. Hold more GRANDPA and your entries count up to
-          twice as much.
+          swapper is drawn and wins the ETH plus any bonus tokens and NFTs in the round, paid automatically right inside the swap that
+          tipped it over. Hold more GRANDPA and your entries count up to twice as much.
         </p>
 
         <div className="mt-7 flex flex-wrap gap-2.5">
@@ -55,7 +57,11 @@ export function Hero({ data, children }: { data: Data; children: ReactNode }) {
             {!live ? 'Launching soon' : protocol?.paused ? 'Paused' : protocol ? `Round #${protocol.currentRound} live` : 'Connecting...'}
           </span>
           <span className="inline-flex items-center gap-2 rounded-full bg-gs-panel/80 ring-1 ring-gs-line px-3.5 py-2 text-sm">
-            Pot <strong className="tabular-nums">{live ? protocol ? fmtEth(protocol.pot, 4) : <Skeleton className="h-4 w-16" /> : 'opens at launch'}</strong>
+            Prize{' '}
+            <strong className="tabular-nums">
+              {live ? protocol ? fmtEth(protocol.pot + protocol.boost, 4) : <Skeleton className="h-4 w-16" /> : 'opens at launch'}
+            </strong>
+            {protocol && extrasChipText(protocol.queued) && <span className="text-gs-glint font-bold">{extrasChipText(protocol.queued)}</span>}
           </span>
           <span className="inline-flex items-center gap-2 rounded-full bg-gs-panel/80 ring-1 ring-gs-line px-3.5 py-2 text-sm">
             Fee <strong>{fmtBpsPct(protocol?.feeBps ?? GSWAP_CONFIG.fallbackFeeBps)}</strong>
@@ -80,72 +86,84 @@ export function Hero({ data, children }: { data: Data; children: ReactNode }) {
 // ---------------------------------------------------------------------------
 
 export function RoundPanel({ data }: { data: Data }) {
-  const { protocol, live, loading } = data;
+  const { protocol, live, loading, provider } = data;
   if (!live) {
     return (
       <section className="mx-auto max-w-6xl px-4 py-12">
-        <SectionHeading id="round" eyebrow="The pot" title="Current round" />
-        <PreLaunch>The pot, round and entries show up here as soon as GSwap is deployed.</PreLaunch>
+        <SectionHeading id="round" eyebrow="The prize" title="Current round" />
+        <PreLaunch>The prize, round and entries show up here as soon as GSwap is deployed.</PreLaunch>
       </section>
     );
   }
 
   const pot = protocol?.pot ?? 0n;
+  const boost = protocol?.boost ?? 0n;
   const threshold = protocol?.potThreshold ?? 0n;
+  // Only the fee pot counts toward the draw target; boosts are added to the prize at the draw.
   const pct = threshold > 0n ? Math.min(100, Number((pot * 10_000n) / threshold) / 100) : 0;
   const ready = threshold > 0n && pot >= threshold;
   const status = !protocol ? null : protocol.paused ? 'Paused' : ready ? 'Ready to draw' : 'Filling';
 
+  const ethCard = (
+    <div>
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-gs-muted">ETH prize</p>
+        {status && (
+          <span
+            className={`rounded-full px-2.5 py-1 text-[11px] font-extrabold uppercase tracking-wider ring-1 ${
+              status === 'Paused' ? 'ring-gs-bad/50 text-gs-bad' : ready ? 'ring-gs-glint text-gs-glint' : 'ring-gs-good/50 text-gs-good'
+            }`}
+          >
+            {status}
+          </span>
+        )}
+      </div>
+      <p className="mt-1 gswap-title text-5xl sm:text-6xl gswap-gold-text tabular-nums">
+        {protocol ? fmtToken(pot + boost, { max: 4 }) : loading ? <Skeleton className="h-12 w-40" /> : '-'}
+        <span className="ml-2 text-2xl not-italic text-gs-muted" style={{ WebkitTextFillColor: '#a8977c' }}>
+          ETH
+        </span>
+      </p>
+      {boost > 0n && (
+        <p className="mt-1.5 text-xs text-gs-muted">
+          {fmtEth(pot, 4)} from fees plus <span className="text-gs-glint font-bold">{fmtEth(boost, 4)} boost</span>
+        </p>
+      )}
+
+      <div className="mt-6">
+        <div className="relative h-4 rounded-full bg-gs-ink ring-1 ring-gs-line overflow-visible" role="progressbar" aria-valuenow={Math.round(pct)} aria-valuemin={0} aria-valuemax={100} aria-label="Pot progress toward the draw">
+          <div className="gswap-progress h-full rounded-full" style={{ width: `${pct}%` }} />
+          {/* The flag on the green: the draw target. */}
+          <span className="absolute -right-1 -top-7 text-xl" aria-hidden="true">⛳</span>
+        </div>
+        <div className="mt-2.5 flex justify-between text-xs text-gs-muted tabular-nums">
+          <span>{pct.toFixed(1)}% to the draw</span>
+          <span>Target {protocol ? fmtEth(threshold, 3) : '-'}</span>
+        </div>
+        <p className="mt-3 text-sm text-gs-muted">
+          {protocol?.paused
+            ? 'GSwap is paused, so no fees are collected and no draw can happen.'
+            : ready
+              ? 'The pot is full. The next swap draws the winner.'
+              : protocol
+                ? `${fmtEth(threshold - pot, 4)} more in fees until the draw.`
+                : null}
+        </p>
+      </div>
+    </div>
+  );
+
   return (
     <section className="mx-auto max-w-6xl px-4 py-12">
-      <SectionHeading id="round" eyebrow="The pot" title={protocol ? `Round #${protocol.currentRound}` : 'Current round'}>
-        The pot fills from the GSwap fee on every buy and sell. The swap that pushes it over the target draws the winner on the spot.
+      <SectionHeading id="round" eyebrow="The prize" title={protocol ? `Round #${protocol.currentRound}` : 'Current round'}>
+        The pot fills from the GSwap fee on every buy and sell. The swap that pushes it over the target draws the winner on the spot,
+        and the winner takes everything in the prize.
       </SectionHeading>
 
       <div className="gswap-card rounded-3xl p-5 sm:p-7">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-gs-muted">Prize pot</p>
-            <p className="mt-1 gswap-title text-5xl sm:text-6xl gswap-gold-text tabular-nums">
-              {protocol ? fmtToken(pot, { max: 4 }) : loading ? <Skeleton className="h-12 w-40" /> : '-'}
-              <span className="ml-2 text-2xl not-italic text-gs-muted" style={{ WebkitTextFillColor: '#a8977c' }}>
-                ETH
-              </span>
-            </p>
-          </div>
-          {status && (
-            <span
-              className={`rounded-full px-3 py-1.5 text-xs font-extrabold uppercase tracking-wider ring-1 ${
-                status === 'Paused' ? 'ring-gs-bad/50 text-gs-bad' : ready ? 'ring-gs-glint text-gs-glint' : 'ring-gs-good/50 text-gs-good'
-              }`}
-            >
-              {status}
-            </span>
-          )}
-        </div>
+        <PrizeShowcase provider={provider} raw={protocol?.queued ?? { tokens: [], nfts: [] }} ethCard={ethCard} />
 
-        <div className="mt-6">
-          <div className="relative h-4 rounded-full bg-gs-ink ring-1 ring-gs-line overflow-visible" role="progressbar" aria-valuenow={Math.round(pct)} aria-valuemin={0} aria-valuemax={100} aria-label="Pot progress">
-            <div className="gswap-progress h-full rounded-full" style={{ width: `${pct}%` }} />
-            {/* The flag on the green: the draw target. */}
-            <span className="absolute -right-1 -top-7 text-xl" aria-hidden="true">⛳</span>
-          </div>
-          <div className="mt-2.5 flex justify-between text-xs text-gs-muted tabular-nums">
-            <span>{pct.toFixed(1)}% to the draw</span>
-            <span>Target {protocol ? fmtEth(threshold, 3) : '-'}</span>
-          </div>
-          <p className="mt-3 text-sm text-gs-muted">
-            {protocol?.paused
-              ? 'GSwap is paused, so no fees are collected and no draw can happen.'
-              : ready
-                ? 'The pot is full. The next swap draws the winner.'
-                : protocol
-                  ? `${fmtEth(threshold - pot, 4)} more in fees until the draw.`
-                  : null}
-          </p>
-        </div>
-
-        <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="mt-7 grid grid-cols-2 md:grid-cols-4 gap-3">
           <Stat label="Players" value={protocol ? protocol.participants : <Skeleton />} sub="this round" />
           <Stat label="Entries" value={protocol ? fmtEntries(weightToEntries(protocol.totalWeight)) : <Skeleton />} sub="before holder bonus" />
           <Stat label="Rounds drawn" value={protocol ? protocol.completedRounds : <Skeleton />} />
@@ -255,7 +273,7 @@ function StatsBody({ data }: { data: Data }) {
 
 export function PastWinners({ data }: { data: Data }) {
   const { account } = useWallet();
-  const { protocol, live, loading } = data;
+  const { protocol, live, loading, provider, refresh } = data;
   const me = account?.toLowerCase();
   const rows = protocol?.history.slice(0, GSWAP_CONFIG.historyDisplay) ?? [];
 
@@ -276,28 +294,44 @@ export function PastWinners({ data }: { data: Data }) {
             {rows.map((r) => {
               const isMe = me && r.winner.toLowerCase() === me;
               return (
-                <li key={r.id} className={`flex items-center gap-3 sm:gap-5 px-4 sm:px-6 py-3.5 ${isMe ? 'bg-gs-glint/10' : ''}`}>
-                  <span className="w-12 shrink-0 text-sm font-extrabold text-gs-muted tabular-nums">#{r.id}</span>
-                  <a
-                    href={`${GSWAP_CONFIG.explorer}/address/${r.winner}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="min-w-0 flex-1 truncate font-bold tabular-nums hover:text-gs-glint"
-                    title={r.winner}
-                  >
-                    {shortAddr(r.winner)}
-                    {isMe && <span className="ml-2 rounded-full bg-gs-glint/20 px-2 py-0.5 text-[11px] font-extrabold text-gs-glint">YOU</span>}
-                  </a>
-                  <span className="hidden sm:inline text-sm text-gs-muted tabular-nums">{r.participants} player{r.participants === 1 ? '' : 's'}</span>
-                  <a
-                    href={`${GSWAP_CONFIG.explorer}/block/${r.drawnAtBlock}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hidden md:inline text-xs text-gs-muted hover:text-gacc-cream tabular-nums"
-                  >
-                    Block {r.drawnAtBlock.toLocaleString('en-US')}
-                  </a>
-                  <span className="shrink-0 font-extrabold gswap-gold-text tabular-nums">{fmtEth(r.prizeETH, 4)}</span>
+                <li key={r.id} className={`px-4 sm:px-6 py-3.5 ${isMe ? 'bg-gs-glint/10' : ''}`}>
+                  <div className="flex items-center gap-3 sm:gap-5">
+                    <span className="w-12 shrink-0 text-sm font-extrabold text-gs-muted tabular-nums">#{r.id}</span>
+                    <a
+                      href={`${GSWAP_CONFIG.explorer}/address/${r.winner}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="min-w-0 flex-1 truncate font-bold tabular-nums hover:text-gs-glint"
+                      title={r.winner}
+                    >
+                      {shortAddr(r.winner)}
+                      {isMe && <span className="ml-2 rounded-full bg-gs-glint/20 px-2 py-0.5 text-[11px] font-extrabold text-gs-glint">YOU</span>}
+                    </a>
+                    <span className="hidden sm:inline text-sm text-gs-muted tabular-nums">{r.participants} player{r.participants === 1 ? '' : 's'}</span>
+                    <a
+                      href={`${GSWAP_CONFIG.explorer}/block/${r.drawnAtBlock}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hidden md:inline text-xs text-gs-muted hover:text-gacc-cream tabular-nums"
+                    >
+                      Block {r.drawnAtBlock.toLocaleString('en-US')}
+                    </a>
+                    <span className="shrink-0 font-extrabold gswap-gold-text tabular-nums">{fmtEth(r.prizeETH, 4)}</span>
+                  </div>
+                  {r.settled === false && (
+                    <div className="mt-2 pl-[3.75rem] sm:pl-[4.25rem] flex flex-wrap items-center justify-between gap-2">
+                      <span className="rounded-full bg-[#c47f34]/15 ring-1 ring-[#c47f34]/40 px-2.5 py-0.5 text-[11px] font-bold text-[#f3c98b]">
+                        {isMe ? 'Part of your prize could not be sent automatically' : 'Prize waiting to be claimed'}
+                      </span>
+                      {isMe && account && <ClaimButton roundId={r.id} account={account} onDone={refresh} />}
+                    </div>
+                  )}
+                  {r.bundle && r.bundle.tokens.length + r.bundle.nfts.length > 0 && (
+                    <div className="mt-2 pl-[3.75rem] sm:pl-[4.25rem] flex items-center gap-2">
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-gs-muted shrink-0">Plus</span>
+                      <PrizeChips provider={provider} raw={r.bundle} />
+                    </div>
+                  )}
                 </li>
               );
             })}
@@ -314,7 +348,7 @@ const STEPS = [
   {
     n: '01',
     title: 'Swap through GSwap',
-    body: 'Buy GRANDPA with ETH or sell it back, routed through the Uniswap V3 1% pool. A small fee on the ETH side goes into the prize pot.',
+    body: 'Buy GRANDPA with ETH or sell it back, routed through Uniswap. A small fee on the ETH side goes into the prize pot.',
   },
   {
     n: '02',
@@ -329,7 +363,7 @@ const STEPS = [
   {
     n: '04',
     title: 'Win the pot',
-    body: 'When the pot reaches its target, the swap that fills it draws a winner and pays the ETH out on the spot. Then the next round begins.',
+    body: 'When the pot reaches its target, the swap that fills it draws a winner, who gets the ETH and any bonus tokens and NFTs on the spot. Then the next round begins.',
   },
 ];
 
@@ -366,7 +400,6 @@ export function HowItWorks({ data }: { data: Data }) {
             <div className="flex justify-between py-2"><dt className="text-gs-muted">GSwap fee (to the pot)</dt><dd className="font-bold">{fee} of the ETH side</dd></div>
             <div className="flex justify-between py-2"><dt className="text-gs-muted">GRANDPA buy tax</dt><dd className="font-bold">{tax.enabled ? fmtBpsPct(tax.bps) : 'Off'}</dd></div>
             <div className="flex justify-between py-2"><dt className="text-gs-muted">GRANDPA sell tax</dt><dd className="font-bold">None</dd></div>
-            <div className="flex justify-between py-2"><dt className="text-gs-muted">Uniswap pool fee</dt><dd className="font-bold">1%</dd></div>
           </dl>
         </div>
 
@@ -388,8 +421,7 @@ export function HowItWorks({ data }: { data: Data }) {
       </div>
 
       <p className="mt-6 text-xs text-gs-muted leading-relaxed max-w-3xl">
-        GSwap is an independent, permissionless contract. Winners are drawn with onchain randomness from block data, which is not a
-        perfect source of randomness. Swapping carries market risk. Only swap what you are comfortable with.
+        GSwap is an independent, permissionless contract. Swapping carries market risk. Only swap what you are comfortable with.
       </p>
     </section>
   );

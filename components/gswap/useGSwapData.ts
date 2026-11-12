@@ -5,6 +5,7 @@ import { Contract, JsonRpcProvider } from 'ethers';
 import { GSWAP_ABI } from '@/lib/gswap/abi';
 import { GSWAP_CONFIG, GRANDPA_TOKEN_ABI, isGSwapLive } from '@/lib/gswap/config';
 import { holderMultiplierBps } from '@/lib/gswap/math';
+import type { RawPrizes } from '@/lib/gswap/prizes';
 
 export interface RoundResult {
   id: number;
@@ -12,12 +13,22 @@ export interface RoundResult {
   prizeETH: bigint;
   participants: number;
   drawnAtBlock: number;
+  // Bonus token / NFT prizes bundled into the round. Loaded only for the rounds that are displayed.
+  bundle: RawPrizes | null;
+  // False while any prize leg is still owed to the winner (auto-pay failed; the winner can claim()).
+  // Null for rounds outside the displayed window.
+  settled: boolean | null;
 }
 
 export interface ProtocolState {
   paused: boolean;
   feeBps: bigint;
   pot: bigint;
+  // Permissionless ETH top-ups for the open round. Added to the prize at the draw, but held apart from
+  // the pot, so they never count toward potThreshold.
+  boost: bigint;
+  // Token / NFT prizes queued for the open round (bundled into its draw).
+  queued: RawPrizes;
   potThreshold: bigint;
   currentRound: number;
   participants: number;
@@ -51,6 +62,13 @@ export function getReadProvider(): JsonRpcProvider {
     sharedProvider = new JsonRpcProvider(url, GSWAP_CONFIG.chainId, { staticNetwork: true });
   }
   return sharedProvider;
+}
+
+function toRawPrizes([tokens, amounts]: any, [nfts, ids]: any): RawPrizes {
+  return {
+    tokens: (tokens as string[]).map((address, i) => ({ address, amount: amounts[i] as bigint })),
+    nfts: (nfts as string[]).map((address, i) => ({ address, tokenId: (ids[i] as bigint).toString() })),
+  };
 }
 
 export function useGSwapData(account: string | null) {
@@ -93,27 +111,38 @@ export function useGSwapData(account: string | null) {
       gswap.completedRounds(),
       gswap.uniqueSwappers(),
     ]);
-    const [participants, totalWeight] = await Promise.all([
+    const [participants, totalWeight, boost, [qTokens, qAmounts], [qNfts, qIds]] = await Promise.all([
       gswap.getParticipantCount(round),
       gswap.totalSqrtWeight(round),
+      gswap.getRoundBoost(round),
+      gswap.getQueuedPrizesForRound(round),
+      gswap.getQueuedNFTsForRound(round),
     ]);
 
     const n = Number(completed);
     const ids: number[] = [];
     for (let id = n; id >= 1 && ids.length < GSWAP_CONFIG.historyLimit; id--) ids.push(id);
-    const results = await Promise.all(ids.map((id) => gswap.getRoundResult(id)));
+    const shown = ids.slice(0, GSWAP_CONFIG.historyDisplay);
+    const [results, bundles] = await Promise.all([
+      Promise.all(ids.map((id) => gswap.getRoundResult(id))),
+      Promise.all(shown.map((id) => Promise.all([gswap.getRoundPrizeTokens(id), gswap.getRoundPrizeNFTs(id), gswap.getRound(id)]))),
+    ]);
     const history: RoundResult[] = results.map((r: any, i: number) => ({
       id: ids[i],
       winner: r[0] as string,
       prizeETH: r[1] as bigint,
       participants: Number(r[2]),
       drawnAtBlock: Number(r[3]),
+      bundle: i < bundles.length ? toRawPrizes(bundles[i][0], bundles[i][1]) : null,
+      settled: i < bundles.length ? Boolean((bundles[i][2] as any).settled) : null,
     }));
 
     setProtocol({
       paused,
       feeBps,
       pot,
+      boost,
+      queued: toRawPrizes([qTokens, qAmounts], [qNfts, qIds]),
       potThreshold,
       currentRound: Number(round),
       participants: Number(participants),

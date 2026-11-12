@@ -20,6 +20,10 @@ export interface SwapResult {
   fee: bigint | null;
   drawnRound: number | null; // this swap filled the pot and triggered a draw
   wonPrize: bigint | null; // the connected wallet won that draw
+  // Whether each prize leg was delivered at draw time. A leg that could not be pushed to the winner
+  // (e.g. a wallet that rejects ETH or NFTs) stays in the contract for the winner to claim().
+  wonEthPaid: boolean;
+  wonBundlePaid: boolean;
 }
 
 const gswapIface = new Interface(GSWAP_ABI as any);
@@ -28,7 +32,7 @@ const TRANSFER_TOPIC = topicId('Transfer(address,address,uint256)');
 function parseReceipt(rcpt: TransactionReceipt, account: string, direction: 'buy' | 'sell'): SwapResult {
   const me = account.toLowerCase();
   const gswapAddr = GSWAP_CONFIG.gswap!.toLowerCase();
-  const res: SwapResult = { direction, received: null, fee: null, drawnRound: null, wonPrize: null };
+  const res: SwapResult = { direction, received: null, fee: null, drawnRound: null, wonPrize: null, wonEthPaid: true, wonBundlePaid: true };
   let ethVolume: bigint | null = null;
   let tokenIn = 0n;
 
@@ -52,7 +56,11 @@ function parseReceipt(rcpt: TransactionReceipt, account: string, direction: 'buy
     if (parsed.name === 'WinnerDrawn') {
       res.drawnRound = Number(parsed.args.roundId);
     }
-    if (parsed.name === 'PrizeAutoPaid' && parsed.args.winner.toLowerCase() === me) res.wonPrize = parsed.args.ethAmount;
+    if (parsed.name === 'PrizeAutoPaid' && parsed.args.winner.toLowerCase() === me) {
+      res.wonPrize = parsed.args.ethAmount;
+      res.wonEthPaid = parsed.args.ethPaid;
+      res.wonBundlePaid = parsed.args.tokensPaid;
+    }
   }
 
   if (direction === 'buy') res.received = tokenIn > 0n ? tokenIn : null;

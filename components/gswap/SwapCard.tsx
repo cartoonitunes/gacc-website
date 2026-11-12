@@ -113,6 +113,11 @@ export function SwapCard({ data }: { data: Data }) {
       disabled: false,
     };
 
+  // Once the history refreshes after a winning draw, count the bonus prizes bundled into that round.
+  const wonRound = phase.kind === 'success' && phase.result.wonPrize !== null ? phase.result.drawnRound : null;
+  const wonBundle = wonRound !== null ? protocol?.history.find((r) => r.id === wonRound)?.bundle : null;
+  const wonBonusCount = wonBundle ? wonBundle.tokens.length + wonBundle.nfts.length : 0;
+
   const impact = quote?.priceImpactPct ?? null;
   const impactTone = impact === null ? '' : impact > 5 ? 'text-gs-bad' : impact > 2 ? 'text-[#f3c98b]' : 'text-gs-good';
 
@@ -329,7 +334,7 @@ export function SwapCard({ data }: { data: Data }) {
                 label="Price impact"
                 value={<span className={impactTone}>{impact === null ? '-' : impact < 0.01 ? '<0.01%' : `${impact.toFixed(2)}%`}</span>}
               />
-              <Row label="Route" value="Uniswap V3, 1% pool" />
+              <Row label="Route" value="Uniswap V3" />
             </dl>
           )}
         </div>
@@ -360,7 +365,7 @@ export function SwapCard({ data }: { data: Data }) {
         {button.label}
       </button>
 
-      <TxStatus phase={phase} onDismiss={reset} />
+      <TxStatus phase={phase} onDismiss={reset} bonusCount={wonBonusCount} />
     </div>
   );
 }
