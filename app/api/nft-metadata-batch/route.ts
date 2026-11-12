@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { toIpfsGateway } from '@/lib/ipfs';
 
 export const runtime = 'nodejs';
 
@@ -45,11 +46,13 @@ export async function POST(request: NextRequest) {
       tokenId: nft.tokenId,
       metadata: {
         name: nft.name || null,
+        // Prefer the original (IPFS) image: Alchemy's cachedUrl for GACC tokens
+        // points at broken partial uploads that return a JSON stub, not the PNG.
         image:
+          toIpfsGateway(nft.raw?.metadata?.image) ||
+          toIpfsGateway(nft.image?.originalUrl) ||
           nft.image?.cachedUrl ||
           nft.image?.pngUrl ||
-          nft.image?.originalUrl ||
-          nft.raw?.metadata?.image ||
           null,
       },
     }));
