@@ -390,16 +390,15 @@ export function HowItWorks({ data }: { data: Data }) {
 
       <div className="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="gswap-card rounded-3xl p-5 sm:p-6">
-          <h3 className="text-lg font-extrabold">The 6% buy tax</h3>
+          <h3 className="text-lg font-extrabold">The {fmtBpsPct(tax.bps)} Country Club contribution</h3>
           <p className="mt-2 text-sm text-gs-muted leading-relaxed">
-            GRANDPA charges a {fmtBpsPct(tax.bps)} tax on every buy, which funds the Grandpa Strategy vault. GSwap shows the amount you
-            receive after that tax, and your slippage limit protects the after-tax amount. You never need to add 6% to your slippage. Sells
-            are not taxed.
+            Every GRANDPA buy contributes {fmtBpsPct(tax.bps)} to the Country Club, which permanently acquires and locks Grandpa Ape NFTs
+            in the Country Club contract. GSwap always shows the amount that actually reaches your wallet, and your slippage setting
+            protects that amount, so there is nothing extra to account for.
           </p>
           <dl className="mt-4 text-sm divide-y divide-gs-line">
-            <div className="flex justify-between py-2"><dt className="text-gs-muted">GSwap fee (to the pot)</dt><dd className="font-bold">{fee} of the ETH side</dd></div>
-            <div className="flex justify-between py-2"><dt className="text-gs-muted">GRANDPA buy tax</dt><dd className="font-bold">{tax.enabled ? fmtBpsPct(tax.bps) : 'Off'}</dd></div>
-            <div className="flex justify-between py-2"><dt className="text-gs-muted">GRANDPA sell tax</dt><dd className="font-bold">None</dd></div>
+            <div className="flex justify-between py-2"><dt className="text-gs-muted">Country Club contribution, buys</dt><dd className="font-bold">{tax.enabled ? fmtBpsPct(tax.bps) : 'Paused'}</dd></div>
+            <div className="flex justify-between py-2"><dt className="text-gs-muted">GSwap fee (to the prize pot)</dt><dd className="font-bold">{fee} of the ETH side</dd></div>
           </dl>
         </div>
 

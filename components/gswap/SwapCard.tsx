@@ -11,11 +11,14 @@ import { useSwapTx } from './useSwapTx';
 import type { useGSwapData } from './useGSwapData';
 import { Notice, Row, Skeleton, TokenPill } from './ui';
 import { TxStatus } from './TxStatus';
+import { useAutoSlippage } from './useAutoSlippage';
+import { InfoTip } from './InfoTip';
 
 type Data = ReturnType<typeof useGSwapData>;
 
-const SLIPPAGE_KEY = 'gswap:slippageBps';
-const PRESETS = [50, 100, 200, 300];
+// Stores 'auto' or a manual bps value. New key, so older saved values from the 1% default do not carry over.
+const SLIPPAGE_KEY = 'gswap:slippage';
+const PRESETS = [100, 200, 300];
 
 async function switchToMainnet() {
   const eth = (window as any).ethereum;
@@ -29,24 +32,27 @@ export function SwapCard({ data }: { data: Data }) {
 
   const [direction, setDirection] = useState<Direction>('buy');
   const [amountText, setAmountText] = useState('');
-  const [slippageBps, setSlippageBps] = useState<number>(GSWAP_CONFIG.defaultSlippageBps);
+  // null = Auto (sized from current pool depth); a number = the user's manual choice.
+  const [manualBps, setManualBps] = useState<number | null>(null);
   const [customSlippage, setCustomSlippage] = useState('');
   const [showSettings, setShowSettings] = useState(false);
   const [showDetails, setShowDetails] = useState(true);
 
   useEffect(() => {
     const saved = Number(window.localStorage.getItem(SLIPPAGE_KEY));
-    if (saved >= GSWAP_CONFIG.minSlippageBps && saved <= GSWAP_CONFIG.maxSlippageBps) setSlippageBps(saved);
+    if (saved >= GSWAP_CONFIG.minSlippageBps && saved <= GSWAP_CONFIG.maxSlippageBps) setManualBps(saved);
   }, []);
-  const setSlippage = (bps: number) => {
-    setSlippageBps(bps);
-    window.localStorage.setItem(SLIPPAGE_KEY, String(bps));
+  const setSlippage = (bps: number | null) => {
+    setManualBps(bps);
+    window.localStorage.setItem(SLIPPAGE_KEY, bps === null ? 'auto' : String(bps));
   };
 
   const feeBps = protocol?.feeBps ?? GSWAP_CONFIG.fallbackFeeBps;
   const taxBps = tax.enabled ? tax.bps : 0n;
   const isBuy = direction === 'buy';
 
+  const auto = useAutoSlippage(provider);
+  const slippageBps = manualBps ?? auto.bps;
   const { amountIn, quote, quoting, error: quoteError } = useQuote({ provider, direction, amountText, feeBps, taxBps, slippageBps });
   const { phase, execute, reset } = useSwapTx(refresh);
   const busy = phase.kind === 'wallet' || phase.kind === 'pending';
@@ -87,8 +93,8 @@ export function SwapCard({ data }: { data: Data }) {
   }, [quote, user]);
 
   const slippageWarning =
-    slippageBps < GSWAP_CONFIG.lowSlippageWarnBps
-      ? 'Very low slippage. Small price moves will make the swap fail.'
+    manualBps !== null && manualBps < auto.bps
+      ? `Below the ${fmtBpsPct(auto.bps)} suggested for this pool. A single trade landing before yours could make the swap fail.`
       : slippageBps > GSWAP_CONFIG.highSlippageWarnBps
         ? 'High slippage leaves room for a worse price or a sandwich attack.'
         : null;
@@ -152,7 +158,7 @@ export function SwapCard({ data }: { data: Data }) {
             <path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0" strokeLinecap="round" />
             <circle cx="16" cy="6" r="2" /><circle cx="10" cy="12" r="2" /><circle cx="18" cy="18" r="2" />
           </svg>
-          {fmtBpsPct(slippageBps)} slippage
+          {manualBps === null ? `Auto ${fmtBpsPct(slippageBps)}` : fmtBpsPct(slippageBps)} slippage
         </button>
       </div>
 
@@ -161,15 +167,23 @@ export function SwapCard({ data }: { data: Data }) {
         <div className="mb-3 rounded-2xl bg-gs-ink/60 ring-1 ring-gs-line p-3.5">
           <div className="flex items-center justify-between mb-2.5">
             <span className="text-sm font-bold">Max slippage</span>
-            <span className="text-xs text-gs-muted">{isBuy ? 'Applied after the buy tax' : 'Sells are not taxed'}</span>
+            <span className="text-xs text-gs-muted">Protects the amount you receive</span>
           </div>
           <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => { setSlippage(null); setCustomSlippage(''); }}
+              className={`px-3 py-1.5 rounded-lg text-sm font-bold ring-1 transition-colors ${
+                manualBps === null ? 'bg-gs-ochre/20 ring-gs-ochre text-gacc-cream' : 'ring-gs-line text-gs-muted hover:text-gacc-cream'
+              }`}
+            >
+              Auto <span className="font-semibold opacity-80">{fmtBpsPct(auto.bps)}</span>
+            </button>
             {PRESETS.map((p) => (
               <button
                 key={p}
                 onClick={() => { setSlippage(p); setCustomSlippage(''); }}
                 className={`px-3 py-1.5 rounded-lg text-sm font-bold ring-1 transition-colors ${
-                  slippageBps === p && !customSlippage ? 'bg-gs-ochre/20 ring-gs-ochre text-gacc-cream' : 'ring-gs-line text-gs-muted hover:text-gacc-cream'
+                  manualBps === p && !customSlippage ? 'bg-gs-ochre/20 ring-gs-ochre text-gacc-cream' : 'ring-gs-line text-gs-muted hover:text-gacc-cream'
                 }`}
               >
                 {fmtBpsPct(p)}
@@ -200,7 +214,9 @@ export function SwapCard({ data }: { data: Data }) {
           )}
           {slippageWarning && <p className="mt-2 text-xs text-[#f3c98b]">{slippageWarning}</p>}
           <p className="mt-2 text-xs text-gs-muted leading-relaxed">
-            Quotes already subtract the {fmtBpsPct(tax.bps)} buy tax, so you do not need to add it here. Slippage only covers price movement.
+            The GRANDPA pool is small, so another trade landing just before yours can move the price. Auto sizes slippage to cover one
+            0.1 ETH trade at the pool&apos;s current depth. Quotes already show what reaches your wallet, so slippage only has to cover
+            price movement.
           </p>
         </div>
       )}
@@ -252,7 +268,15 @@ export function SwapCard({ data }: { data: Data }) {
       {/* You receive */}
       <div className="rounded-2xl bg-gs-ink/40 ring-1 ring-gs-line p-4">
         <div className="flex justify-between text-xs text-gs-muted mb-2">
-          <span className="font-bold uppercase tracking-wider">{isBuy ? 'You receive, after tax' : 'You receive'}</span>
+          <span className="flex items-center gap-1.5">
+            <span className="font-bold uppercase tracking-wider">You receive</span>
+            {isBuy && tax.enabled && (
+              <InfoTip label="Why this amount">
+                Every buy contributes {fmtBpsPct(tax.bps)} to the Country Club, which permanently acquires and locks Grandpa Ape NFTs. This is
+                the amount that reaches your wallet.
+              </InfoTip>
+            )}
+          </span>
           {user && <span>Balance {fmtToken(balanceOut, { compact: isBuy })}</span>}
         </div>
         <div className="flex items-center gap-3">
@@ -261,13 +285,6 @@ export function SwapCard({ data }: { data: Data }) {
           </div>
           <TokenPill symbol={isBuy ? 'GRANDPA' : 'ETH'} />
         </div>
-        {isBuy && (
-          <p className="mt-2 text-xs text-gs-muted">
-            {tax.enabled
-              ? `GRANDPA charges a ${fmtBpsPct(tax.bps)} buy tax. This amount is what reaches your wallet.`
-              : 'The GRANDPA buy tax is currently switched off.'}
-          </p>
-        )}
       </div>
 
       {/* Raffle preview */}
@@ -300,7 +317,7 @@ export function SwapCard({ data }: { data: Data }) {
           <button onClick={() => setShowDetails((s) => !s)} aria-expanded={showDetails} className="w-full flex items-center justify-between py-1.5 text-[13px]">
             <span className="text-gs-muted">
               {quote.direction === 'buy'
-                ? `1 ETH = ${fmtToken((quote.received * 10n ** 18n) / quote.amountIn, { compact: true })} GRANDPA after tax and fees`
+                ? `1 ETH = ${fmtToken((quote.received * 10n ** 18n) / quote.amountIn, { compact: true })} GRANDPA received`
                 : `1M GRANDPA = ${fmtEth((quote.received * 10n ** 24n) / quote.amountIn, 5)} after fees`}
             </span>
             <svg viewBox="0 0 20 20" className={`w-4 h-4 text-gs-muted transition-transform ${showDetails ? 'rotate-180' : ''}`} fill="currentColor" aria-hidden="true">
@@ -312,11 +329,17 @@ export function SwapCard({ data }: { data: Data }) {
               {quote.direction === 'buy' ? (
                 <>
                   <Row label={`GSwap fee (${fmtBpsPct(feeBps)}, to the pot)`} value={fmtEth(quote.fee, 6)} />
-                  <Row label="Pool output before tax" value={`${fmtToken(quote.poolOut)} GRANDPA`} />
-                  <Row label={`Buy tax (${fmtBpsPct(taxBps)})`} value={taxBps > 0n ? `-${fmtToken(quote.tax)} GRANDPA` : 'Off'} />
+                  <Row label="Total bought" value={`${fmtToken(quote.poolOut)} GRANDPA`} />
+                  {taxBps > 0n && (
+                    <Row
+                      label={`To the Country Club (${fmtBpsPct(taxBps)})`}
+                      value={`${fmtToken(quote.tax)} GRANDPA`}
+                      hint="Used to permanently acquire and lock Grandpa Ape NFTs in the Country Club."
+                    />
+                  )}
                   <Row label="You receive" value={`${fmtToken(quote.received)} GRANDPA`} emphasis />
                   <Row
-                    label={`Minimum after tax (${fmtBpsPct(slippageBps)} slippage)`}
+                    label={`Minimum received (${fmtBpsPct(slippageBps)} slippage)`}
                     value={`${fmtToken(quote.minReceived)} GRANDPA`}
                     hint="GSwap reverts the swap if less than this reaches your wallet."
                   />
@@ -325,7 +348,6 @@ export function SwapCard({ data }: { data: Data }) {
                 <>
                   <Row label="Pool output" value={fmtEth(quote.grossOut, 6)} />
                   <Row label={`GSwap fee (${fmtBpsPct(feeBps)}, to the pot)`} value={`-${fmtEth(quote.fee, 6)}`} />
-                  <Row label="Sell tax" value="None" />
                   <Row label="You receive" value={fmtEth(quote.received, 6)} emphasis />
                   <Row label={`Minimum received (${fmtBpsPct(slippageBps)} slippage)`} value={fmtEth(quote.minReceived, 6)} />
                 </>

@@ -37,10 +37,9 @@ export const GSWAP_CONFIG = {
   // (the contract itself defaults to 30 bps, but the deploy script sets 50).
   fallbackFeeBps: 50n,
 
-  defaultSlippageBps: 100,
+  // Default slippage is Auto (components/gswap/useAutoSlippage.ts), sized from current pool depth.
   minSlippageBps: 10,
   maxSlippageBps: 5_000,
-  lowSlippageWarnBps: 50,
   highSlippageWarnBps: 500,
 
   // ETH kept back from "Max" on buys so the user can still pay gas.

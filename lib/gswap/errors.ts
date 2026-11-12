@@ -4,7 +4,7 @@ import { GSWAP_ABI } from './abi';
 const iface = new Interface(GSWAP_ABI as any);
 
 const SLIPPAGE_MESSAGE =
-  'The price moved past your slippage limit. Your quote already accounts for the 6% buy tax, so a small increase in slippage is usually enough.';
+  'The price moved past your slippage limit. Your quote already shows what reaches your wallet, so a small increase in slippage is usually enough.';
 
 const REVERT_MESSAGES: Record<string, string> = {
   InsufficientOutput: SLIPPAGE_MESSAGE,
